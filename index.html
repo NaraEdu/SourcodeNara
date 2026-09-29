@@ -4,68 +4,108 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
+    <!-- Meta SEO Utama -->
+    <title>NARA — Navigasi Aman Remaja | Platform Edukasi Digital</title>
+    <meta name="description" content="NARA (Navigasi Aman Remaja) adalah platform edukasi digital terpadu untuk remaja dan orang tua. Menyediakan materi pergaulan sehat, keamanan digital, kesehatan mental, dan literasi AI." />
+    <meta name="keywords" content="NARA, Navigasi Aman Remaja, Nara Edu, edukasi remaja, kesehatan mental remaja, keamanan digital, pergaulan sehat, literasi AI, kuis edukasi, konsultasi remaja" />
+    <meta name="author" content="Nara Edu Team" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://naraedu.web.id/" />
+
     <!-- Tag Verifikasi Google Search Console -->
     <meta name="google-site-verification" content="vO9fSEXg6_z_wLoIquWFxaROr98a7nuUVq2Dt3CpGtE" />
 
-    <meta name="description" content="NARA — Navigasi Aman Remaja: edukasi, kuis, dan konsultasi untuk remaja dan orang tua tentang pergaulan sehat, keamanan digital, kesehatan mental, dan literasi AI." />
+    <!-- Open Graph / Facebook / WhatsApp (Tampilan saat link dibagikan) -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="NARA — Navigasi Aman Remaja" />
-    <meta property="og:description" content="Edukasi, kuis, dan konsultasi untuk remaja dan orang tua: pergaulan sehat, keamanan digital, kesehatan mental." />
-    <meta property="og:image" content="assets/images/app-icon-512.png" />
+    <meta property="og:url" content="https://naraedu.web.id/" />
+    <meta property="og:title" content="NARA — Navigasi Aman Remaja | Platform Edukasi & Konsultasi" />
+    <meta property="og:description" content="Edukasi, kuis interaktif, dan konsultasi untuk remaja & orang tua tentang pergaulan sehat, keamanan digital, serta kesehatan mental." />
+    <meta property="og:image" content="https://naraedu.web.id/assets/images/app-icon-512.png" />
+    <meta property="og:site_name" content="NARA Edu" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://naraedu.web.id/" />
+    <meta name="twitter:title" content="NARA — Navigasi Aman Remaja" />
+    <meta name="twitter:description" content="Platform edukasi terpadu pergaulan sehat, keamanan digital, dan kesehatan mental remaja." />
+    <meta name="twitter:image" content="https://naraedu.web.id/assets/images/app-icon-512.png" />
+
+    <!-- Web App & Theme Mobile -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>NARA — Navigasi Aman Remaja</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
-    <link rel="preload" as="image" href="assets/images/splash-bg.png" />
-    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-title" content="NARA Edu" />
+    <meta name="theme-color" content="#132242" />
+
+    <!-- Favicon & Icons -->
     <link rel="icon" type="image/jpeg" sizes="64x64" href="assets/images/favicon-64.jpg?v=2" data-static="true" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.jpg" />
-    <meta name="theme-color" content="#132242" />
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Preconnect & Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
+    
+    <!-- Stylesheets & Preload -->
+    <link rel="preload" as="image" href="assets/images/splash-bg.png" />
     <link rel="stylesheet" href="styles/nara.bundle.css?v=20260929h1" />
-    <!-- Lapisan penyempurnaan visual (3D modern, glassmorphism, depth) — aditif, tidak mengubah style.css -->
-    
-    <!-- Lapisan polish akhir: gaya Android modern, tenang, konsisten — aditif, tidak mengubah style.css / style-v2.css -->
-    
-    <!-- Redesign menu Konsultasi: compact, minimalis, mobile-first — aditif, hanya menata #page-konsultasi & #counselorModal -->
-    
-    <!-- Redesign halaman Edukasi: kartu materi jadi horizontal scroll, lebih ringkas & modern — aditif, hanya menata #page-edukasi (+ sedikit polish bottom nav bersama) -->
-    <!-- Optimasi lanjutan halaman Edukasi: performa scroll, layout responsif, micro-interaction kartu — aditif, hanya menata #page-edukasi (+ perf bottom nav bersama) -->
-    <!-- Optimasi scroll tahap 2 halaman Edukasi: konsistensi touch-action, isolasi reflow filter, render tertunda kategori di bawah layar — aditif, hanya #page-edukasi -->
-    <!-- v20260913fix2: diganti dari "tiap .page = kotak scroll sendiri" ke scroll
-         dokumen penuh (html/body) agar card naik/turun natural seperti halaman
-         web biasa, tidak lagi terpotong/terlihat masuk ke navbar. -->
-    <!-- Config tampilan: ganti isi file di config/ untuk mengubah background & logo -->
+
+    <!-- ========================================================= -->
+    <!-- STRUCTURED DATA (JSON-LD) UNTUK TAMPILAN PROFESIONAL GOOGLE -->
+    <!-- ========================================================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://naraedu.web.id/#organization",
+          "name": "NARA — Navigasi Aman Remaja",
+          "alternateName": ["NARA", "Nara Edu", "Navigasi Aman Remaja"],
+          "url": "https://naraedu.web.id/",
+          "logo": "https://naraedu.web.id/assets/images/app-icon-512.png",
+          "description": "Platform edukasi, kuis, dan konsultasi interaktif mengenai pergaulan sehat, keamanan digital, kesehatan mental, dan literasi AI.",
+          "sameAs": []
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://naraedu.web.id/#website",
+          "url": "https://naraedu.web.id/",
+          "name": "NARA — Navigasi Aman Remaja",
+          "publisher": {
+            "@id": "https://naraedu.web.id/#organization"
+          },
+          "inLanguage": "id-ID",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://naraedu.web.id/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://naraedu.web.id/#webpage",
+          "url": "https://naraedu.web.id/",
+          "name": "NARA — Navigasi Aman Remaja | Platform Edukasi Digital",
+          "isPartOf": {
+            "@id": "https://naraedu.web.id/#website"
+          },
+          "about": {
+            "@id": "https://naraedu.web.id/#organization"
+          },
+          "description": "Edukasi, kuis, dan konsultasi untuk remaja dan orang tua tentang pergaulan sehat, keamanan digital, dan kesehatan mental.",
+          "inLanguage": "id-ID"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Config & Scripts -->
     <script src="config/appAppearance.js?v=20260920nobg"></script>
     <script src="config/branding.js?v=20260905fix1"></script>
     <script src="config/cardsContent.js?v=20260920materi1"></script>
-    
-    <!-- Redesign visual halaman Tanya RANA AI: mobile-first ala aplikasi Android — aditif, hanya menata #page-rana, tidak mengubah teks/fungsi/alur -->
-    
-    <!-- Redesign bottom nav mobile: kartu mengambang (floating) ala Material Design 3 — aditif, hanya menata .bottom-nav & .bottom-nav-btn di layar <760px, tidak mengubah fungsi/route/click -->
-    
-    <!-- Liquid Glass navbar + perbaikan z-index sheet Bantuan (aditif, dimuat terakhir agar menang atas v11) -->
-    
-    <!-- Floating glass header saat scroll: header atas berubah jadi pill mengambang (aditif, tidak mengubah style lain) -->
-    <!-- v13 & v14 (eksperimen navbar sebelumnya) sudah digantikan sepenuhnya oleh
-         v15 di bawah dan tidak lagi dimuat. File-nya masih ada di folder project
-         (tidak dihapus) tapi non-aktif. -->
-
-    <!-- Navbar redesign final: clean, minimal, glass ringan, transisi smooth saat scroll -->
-    
-
-    <!-- Premium glassmorphism layer: kartu kaca, ambience gradient, micro-interaction,
-         responsive fluid spacing — aditif murni, dimuat terakhir, tidak mengubah
-         fungsi/struktur/konten apapun. Tidak menyentuh performa scroll Edukasi. -->
-    
-    
-    
-    <!-- Halaman Uji Pemahamanmu (7 tantangan) bergaya aplikasi Android: tanpa kotak, pilihan baris penuh,
-         tombol hasil selebar layar. Murni CSS, dimuat paling akhir, hanya menyentuh .uji-page. -->
-    
-    <!-- Halaman About (Tim Pengembang & Kontak) bergaya aplikasi Android: murni CSS, dimuat paling akhir, hanya menyentuh #page-tim. -->
-    
 </head>
 <body>
 
