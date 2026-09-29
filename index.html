@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    <!-- Tag Verifikasi Google Search Console -->
+    <meta name="google-site-verification" content="vO9fSEXg6_z_wLoIquWFxaROr98a7nuUVq2Dt3CpGtE" />
+
+    <meta name="description" content="NARA — Navigasi Aman Remaja: edukasi, kuis, dan konsultasi untuk remaja dan orang tua tentang pergaulan sehat, keamanan digital, kesehatan mental, dan literasi AI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NARA — Navigasi Aman Remaja" />
+    <meta property="og:description" content="Edukasi, kuis, dan konsultasi untuk remaja dan orang tua: pergaulan sehat, keamanan digital, kesehatan mental." />
+    <meta property="og:image" content="assets/images/app-icon-512.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>NARA — Navigasi Aman Remaja</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
+    <link rel="preload" as="image" href="assets/images/splash-bg.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/jpeg" sizes="64x64" href="assets/images/favicon-64.jpg?v=2" data-static="true" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.jpg" />
+    <meta name="theme-color" content="#132242" />
+    <link rel="stylesheet" href="styles/nara.bundle.css?v=20260929h1" />
+    <!-- Lapisan penyempurnaan visual (3D modern, glassmorphism, depth) — aditif, tidak mengubah style.css -->
+    
+    <!-- Lapisan polish akhir: gaya Android modern, tenang, konsisten — aditif, tidak mengubah style.css / style-v2.css -->
+    
+    <!-- Redesign menu Konsultasi: compact, minimalis, mobile-first — aditif, hanya menata #page-konsultasi & #counselorModal -->
+    
+    <!-- Redesign halaman Edukasi: kartu materi jadi horizontal scroll, lebih ringkas & modern — aditif, hanya menata #page-edukasi (+ sedikit polish bottom nav bersama) -->
+    <!-- Optimasi lanjutan halaman Edukasi: performa scroll, layout responsif, micro-interaction kartu — aditif, hanya menata #page-edukasi (+ perf bottom nav bersama) -->
+    <!-- Optimasi scroll tahap 2 halaman Edukasi: konsistensi touch-action, isolasi reflow filter, render tertunda kategori di bawah layar — aditif, hanya #page-edukasi -->
+    <!-- v20260913fix2: diganti dari "tiap .page = kotak scroll sendiri" ke scroll
+         dokumen penuh (html/body) agar card naik/turun natural seperti halaman
+         web biasa, tidak lagi terpotong/terlihat masuk ke navbar. -->
+    <!-- Config tampilan: ganti isi file di config/ untuk mengubah background & logo -->
+    <script src="config/appAppearance.js?v=20260920nobg"></script>
+    <script src="config/branding.js?v=20260905fix1"></script>
+    <script src="config/cardsContent.js?v=20260920materi1"></script>
+    
+    <!-- Redesign visual halaman Tanya RANA AI: mobile-first ala aplikasi Android — aditif, hanya menata #page-rana, tidak mengubah teks/fungsi/alur -->
+    
+    <!-- Redesign bottom nav mobile: kartu mengambang (floating) ala Material Design 3 — aditif, hanya menata .bottom-nav & .bottom-nav-btn di layar <760px, tidak mengubah fungsi/route/click -->
+    
+    <!-- Liquid Glass navbar + perbaikan z-index sheet Bantuan (aditif, dimuat terakhir agar menang atas v11) -->
+    
+    <!-- Floating glass header saat scroll: header atas berubah jadi pill mengambang (aditif, tidak mengubah style lain) -->
+    <!-- v13 & v14 (eksperimen navbar sebelumnya) sudah digantikan sepenuhnya oleh
+         v15 di bawah dan tidak lagi dimuat. File-nya masih ada di folder project
+         (tidak dihapus) tapi non-aktif. -->
+
+    <!-- Navbar redesign final: clean, minimal, glass ringan, transisi smooth saat scroll -->
+    
+
+    <!-- Premium glassmorphism layer: kartu kaca, ambience gradient, micro-interaction,
+         responsive fluid spacing — aditif murni, dimuat terakhir, tidak mengubah
+         fungsi/struktur/konten apapun. Tidak menyentuh performa scroll Edukasi. -->
+    
+    
+    
+    <!-- Halaman Uji Pemahamanmu (7 tantangan) bergaya aplikasi Android: tanpa kotak, pilihan baris penuh,
+         tombol hasil selebar layar. Murni CSS, dimuat paling akhir, hanya menyentuh .uji-page. -->
+    
+    <!-- Halaman About (Tim Pengembang & Kontak) bergaya aplikasi Android: murni CSS, dimuat paling akhir, hanya menyentuh #page-tim. -->
+    
+</head>
+<body>
+
+    <!-- ===== SPLASH / LOADING SCREEN ===== -->
+    <div id="naraSplash" class="nara-splash" role="status" aria-live="polite" data-testid="nara-splash">
+        <div class="nara-splash-bg-wrap">
+            <div class="nara-splash-bg"></div>
+            <div class="nara-splash-light" aria-hidden="true"></div>
+        </div>
+        <div class="nara-splash-overlay"></div>
+
+        <div class="nara-splash-brand" data-testid="nara-splash-brand">
+            <div class="nara-splash-logo">
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCACAAIADASIAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAABgcEBQECAwgA/8QARBAAAQMCBQIEBAMFBAcJAAAAAQIDBAURAAYSITETQQciUWEUcYGRFTKhIyRCUpIIYnLRFiUzNbHB4UNTVFVjgqLS8P/EABsBAAMAAwEBAAAAAAAAAAAAAAQFBgIDBwAB/8QANhEAAQMDAgMGBQIFBQAAAAAAAQIDEQAEIQUxEkFREyJhgZGhBhRxscHR8BUjMkJSM4KS4fH/2gAMAwEAAhEDEQA/AK+TBkwHixKjPR3QLlDqChVvkccSn2x6czPkulZxVCdn9QiIsqAbIHUBtdKja9tu1sC/iB4aUh2hPSaHSlNVFjTobiJP7UXAIKe+xJvztjoNr8TMOFCHEkKOD0H79q55dfDD7QWttQKRkdT+/ekXpx9px2KCCQQQRsQcZCMUtS/FXHTj7TiSww264EOSWY4PCnNR1H0ASCSr2A7YvaTlx2pBKqfS5E1Jt+8zf2LHY3CEm557r7EFOF93qbFseFeT0H67UystMfuhxIwOp/Tf2oeiwpE10tRWHX3BuUtpKiB6m3A9ziYxTIzbyUSpPVc1WMWCOu4TtdJUDoSbEfxKPthgxfD8vMJTW6gp1hIuYcZIZjp238oAB5O5F/fa+NJVdpdDJiUSMy3awW+2AVFPHl7q9OfpiP1f4wFsgqJ4RyAyT+Pbzqw0v4S7VQB7x8cAeQ/XyoAcpTDq7RJSUuE2EaaBHdvzYEnQoj2UD7Yhyob8J7oymHWHf5HElJPyvyPcYZcar0jMI+ErkaOtZFg+qySR7kG49OfpjEvw+fisqRRakfhzv8FNSHWD8gQQPmAD74+6T8X/ADLYUO8Oc4I/Ht5181P4SDSyB3T4ZHp/35UsLe2M6fbBHVaCqnlRqdJlU+wJ+Ih/t2DYXuUKNx8krPyxSPNNocUhmSzJSk2K2woWPcEKAII7jFfZ6mzcnhRIPQ/uKkL3THrUcS4I6j9N/ao+nGCnHbRgjyTkeXnOoKZbWY8RkXekadQR6JAuLk4LffbZQXHDAFBsNOPuBpoSTWMmeHtTzbJZcQw43TOroelAjygC50gnc9tgbXwyK34JZf8Aw9IgSJUSQ2N3XF9QObfxA8b+lsGWV6H/AKK0NilLmB9uOVaXC2EHSVEgHc77nfE2TUWWlWWEKb+98QV5rty7cSwqEjaOfiZroNloVszbw+mVHeeR6CKrY+YAlCUKdZ8vuNxiW3UIkjczENqv5SlwbYUBgZSTc/i4Pm/80cN0/wBXOKTLlSynW3piXZK2EMvWbL055JW1wDurm4POFbraUrSgpIKtsdMmmKLgRlYIHjRbnbw3pzEBEmhOvy53UJfCnkK6gIKlL7WN/T14wtHWFsoWpTTg0Ak3SRg4MLJ+kkVCMVBXlvUXbW/r5xrNp+UpMaQw3VmGlONKS24Z7iilRGxIKiCAbbW7YpbLVbllIQ4gq8YM1N32i2r6+0aWE+GIoKo9XZp1UjTH4aZKGV6+mVDc2IHIPrg8h+KCZzpaapKtSUFQBkbm3YAJ3PthNUmBXqsw8tqoM6mSUr0tpVptye3ocRW15iVdcWoslBuAtJ0lQv7D9Mar/UdOvluMNn+cgRkGB0naa26fpuo2LaHDHZKM4gk+xin8M7Pr6YFJQeqnUj96vcaQeNG35rW9QcQns/tNMxXXKM0GpJug9W9jbuNFwbEbc7jCPAzUD5akkXN9lkXO3t7D7DHwOa219VNTSlxJuFBZuD6g22wnbtFhXfWkjwBHIxzPOOuxxkQ3W+4R3QQfLw8Pr6jOMvA+ILfxTsVujsqLNiVB8abkf4Nj2PyPpjUeJb9/9wu29TIAHF+6cJWpO1+XWJSW57WptemyySRYAckE7fPHIx8yABPxzGkcDb/LG23Q0tCVpUkyBMhWCB3tlDnygRX27avLdwtOhSSDP9uxyn+08ueZp0yPFJceyXqE4gLB2U+Nx/TgGqlUZn1KRLYhIitvL1hpKtkmwvwBgNKK4zZTs9hDeoAqsDyflibWKfXKMwy47UkXfUlLYU2kXv32vbkc4bWmqabZPIZP+qvAgGD6kx60lvdL1K+ZU4SC2jOYBHoBRpSKS3UVtmTLTBZULlxbLjlvkEp3++G5lepZPyxDcRS5jwW8lHVL3UAUpI/NpI2Jv2wDQoWTY0Rtl2oQ33UNJSXTJcBWsAXUQDYAnsBjr8PkfyAyodreb95d/TzY13909d9xSF8PQbeeKz06wZszxpcQVdTuPpn8UeTM+Up39kZg0ne6WnD9zp5xWrztR0lN3ZTl/wCWK4dPzuBgTMbI5Qr96har+UmS7a39WMmPkXUbSIhFhb95d+vfASGgnHYq/flTBayrd5P7/wB1JKfUqtCkyIknSS2i5KG7gjbe43A35xpRVTVJQ4p2NEEg3QlCQt11R7qHqcWfiA0um5wnxokh1pbCkNqb1JS4oWG4SdlXvtb1+mBpiRBh1EiFEkypql3AfBbLHqLDj1viY1jVHXb1LqVElEQQZjrvAHvXmLRpCFI4QAd8UbSqPWI0Z15M1pZbQVaekBe2I1Eh1Wt04ShNbbClKQR0h2NsQcsJlGuzG59ScWtyFIWIvWKgg6QR5e218RK5Lbi5fpcSNVHoklK3nXUtuFBKSbC/r+U4rmtYdctu2DuJA38OtD/w217UICBsTtT48B8rppMLMjsktSVSOkPM2LABK78+t8J7KsGRKYloBSEsyFJGr33t974jZB8b6rkOi1aJBhqqbs55Kkyp7yihpISRYI2J5vyMBcvMFV6S0pmrjdV0vlDPksSPUb29jhOm6R2jq15Koz9N6dm2VwISjYTTRmwXafEdlulJQ0nUQm97YzDp7tQhNy2ikIdQVJCr3tvzgEyfXTMbq0SozpLjz0SzLa3CsKUFAm1+NgcSczVJKo9PjQauuKuJE0PI6xbBUTft7EDBCnmUsdqTzj2mhjxB7sz0/NP/ADBk2j5+hst0paaZmWkxw2SpCUibpSLA2/NuNjyL7gjC1jUqRJYbeuhPUSFWN7i4vbFVVp3Qrmaoyqm87KMht2OhLpKmtKhe38p3GBvM012RVUIp1XdQluO00plL6kHqBABAT3JJ+tsDNJYaQXgr+ox5gUZcX7txwW7hkIGDGYJ26wIx0nFEGZYMiO9To50qD8hOw72IsPuf0w4/HvLKatHy67HLcdTHWAKWxuClFvtbCcolIqRh0hM1qc86xOLrjrqVEBslNjdW+1j8sND+0++TljKy2Z6o3UlLAcbdKNSekO45xuuHA0ph0Y/qzQjJS6l1BMjFAIy3VUJ/3kDb/wBEYpY5qj1UmwzLCW4l9bnSB49vv9sDESQ9HmRnnq86W2nEKcT8WVCwULi3c2wZ1R9iJLr621uIMnSI6jcJUokEJUf4QoYYI1l0tOOByeETv4xS13T7UKSAgZPTwmuNKVIq5U0zUQl1takn9mDrA4PttjjPFYjVqPS2ZKXXHkatSm0gDn/I4HacrU882zS5LDgUAtLbihdVtgV32TfcJB3J9Bg4ocVuo5ky2zrWp0R0sPX3UlwBVwfU8YA0LWbh0KaccMiTuPr1O3pEV5+wtgAeAbgbeVVGbFwZMh1+kvqq8QK2jVBBS+x7JXck/oeMU0Bbs7qRHFOU5gEKkOuHU8sDhIKrdth7djjhU2o6p6lLcfgVJtwBKkoC0KV2sU7Ek98c6hT58l1gV+QIqACEvObXHJSLcng7nEU+hAdIJj6gg/8AHIPlTJBJEkU1MkZmyzrDC4RaisoBSvzuvukncrNwBt62v2xUeNlRoMrK6XaYVIWiQlRQthWoJufyqvZNr8HYgnvgXprzzNNdVAeQ3HaBKHFJSOsfYc/fHVyj1TNWW1LK1PL1KU20lCQFqSdgO+/H1xZ2TdqvTyrjUVj6AeGOQ9PoKDbfu/mUphPB5zFd8q+BVdrtJROqNRZpReIW0yWNbmi2ylEEWuO2Cmb/AGfaOxRJJFTq0mpJZWttaVISHFgEhIRbgnbnvgvy5XFCsNwp1aelPVCMZMaOYqGmUJTbUGyPMdOoJOo7kG24NouYaLGgZopkxrLSKi7U5KrzluuFyOpCdVwq9m0jYAbX398c0Ve3zjxSVxjiEAAR5wY9a6Om2tkthQTPLOftNITw+qrWVs002atS3WHHm2pTATcuNqNlJ37i9+24x6CXVco3WS06fL/3B+35vlhW5i8M3f8ASvMdcae+FhwpBlR2VNbPWCVrIJsAkKXYWBubja2J8anVWZERIbluqQ4jWk6Gxe4+WOkaE9Z3TBcdUrcYHKQDmR41D603eW7wQylOx355jEU0qnV8sRq1JMhp1TiXruJSydyDuOd+3tilnyIT0nrQmA0hZ1IUpNl2O/vY2PrgZzxGqEKt1SUqUtDPxNgNCCPMQAOL98XENBnTlsgPFDLK3F9EXWEJJvpB77AD3Iw+ZFlbsm7kwgSZjpy/FILtV8+6LQgSswIn38OtTmqPWaq1qpbDGm5BfkLskH2A3Uf0xyhTZlLWuj5naPSjq66UpTqTZW3UQL/MEA+hwReHcpFXpwrER2stwXQplpia8lxo6FlOtuyQRukiwsPbvigzxWTVY3Vju06QyXlxo78VxRcSSDdK0qFjum4Uk2ukjEfafE9ze6h8rcoHZkxHNPTPX78ulUr/AMOsWVl8xbqPaJEzyV1kdPt71M/F8pCw6LttthHPqf73ywA+JVegzCpNODjLGjSl0lRad/mbdQSbEHhQxg0mq7/vTv8AQ3/lgKmyF/iyo7zEhyUF6FxlbIeVb24+eGeuC1QxDHETzmI+33j6ilDC7wqh8JjwmtoOmC5GZeqrsqAoakMQiQtar7oPcf4sOLLlaoEensInRFRXQLiMw0qzSd7C+rc8E4TXVco0sdCGukqe5ckp16LdkH0O+2LemSngGo0QzVmQuwlPIsFDi4BH03wh0Yo+ZTxzwnciJ9sfUknwFb7hTqUy1E+NQquxU4glIivR5UJKyUr0E3txpFiQeO+KtUOoOmO3Ie6KVpulU4EJBtvYH+If88Sa1EnQ5ulul1WFL6mptpKCW9X90d/pfEeoyaky+yK3GemtJB/ZO3CQ4NlcdxfABbWDKUAeWfcn70UhJ4CaIqI1T/h5yZq1VaoFpSGVMuXQ2NO6inYC3rgkpuZIWVaTT2XKc4844lbyVpUAB+0ULWPyxU5aoWZldYQaEqmRZjR1JbUB1UgXCSDva++OlXytmCoqjJXRHlJiNlttbUhABBUVXIPuo/bFFp6uzsCh1JyraBtB6cq0JChcBQGAPeRTVylU4NboMafBZ0Lj62EB1AWti6rqRcb2O3HscX7a1OCy08DdXAJ9h6YrvCbLf4T4VVFU+IuNJZlSXmi64kqB0JtuNiCRxiqpRzBmQBioIZj6Vlt6PEv5lD8ySo9hweBzzjn2qaQ426VNSUEwOo6Cug6bqaHUAOd1QEnp4n3oZzLmlnMaMyU5lsFiGltCXk/9qnUkEE+mvV89sQ5ma6ZlWm02K/TXZDjkFDoLardrW+e2J+cPDCfTqhKFEYMxM5IemlK9mF6ipOkHkEG3/tvtfApmLLeZKw6whVIcUzFYSy2pmQhIcAHJv7k+mOiWKG7KxSyhBGQTGSTw5J86irx83F0XVKncfQTj2ouzVVIeY5mZoLURbL0GSgLdWq4USq+39OJfh9Voyauyt8hsVKMG2lq7Og3Ld+xNjb1IwOZgiy6HmvMhdiqZTPka2ytwHqq3CbAbgC559MaUuKpqnfDy0oW2baykmwUP4vVJ2H1Fxh63p41DTF265Tx8+kEQfUelIbjUfk9RQ+gTwcuszPsaeKl6EpYS2AkeWxBtp9rfPjCmzm7ScuVSHToFPR8BQoinXI7BtZTiyQkk97qKt/5scnq/mxqL8HHzAFRk7dRaUiQkehWQfvzgalpkuwJVMhMCYup2aU4pdnHCFBS1JUT7Ab84mNK+ErrTlrurhQISDATJnlJ22BNUN/8AE9teJRbsJPeIkmMc486lyfEClToy4yaI8C6OmCp4AAnYE23+2AqsN1CnuyYcsFlhJI67SOtf0SFgi4PqcXCPD6tMuJc/A5RU3YpBlN2O99/0GIGY11KizpBcZfo6Xt+iElxsX7JJ477Yw1FfaAKSkyOuPwaEUNqirbqFNhtTKg83Mb20xnJG4J/KdI5+V8XlEl1KRNhzJxZjQlOpWptK/wAiQbWUORfm2BdxidSGGKiiOqOoWClODVp1i6SQRtcAnF3l55VWqzD3xjtTnBSXEMBspbuDsD27cnCthBbdSpaQc9FYz/iPvNefQoY542poNeI76nSpMamOKF9QBUeTz+bbFZQ82OwGJCTCgu9aS5IBdBOgr2IG/GB+iQ0w38wVAocdDCOslCBZTouogD54hjNIpnTaNImSC6jram1Cyb/wnbkYtbm4tBcNcLQKYJwTBwIoe1trpds4e2MyOQxk0wk+JEqKeoiLTmiL+Y6rbi382JlHzdUK9UYsCNBp63HlABXnIA7qPm4AucL+a43X8myaj8O/EKX0tdJ0gk2I34HrhteG9HiUOixqjKfQ3IkxUhgKICgjSCSB2ue/oB64LeftEs8fYgTI3NCot7rteEvExB2FE82GlqgPmHJ6GhCnesohRBCSSQCbA3A342wJ+GMetOR5FXTMdcivJEdDMpV1OuA7uk83BNv7wvv3xaZiqPSyLHAsFSkttGyr2B3ULW9AfviwyQ108qQQm119RwbpsCVr7EfLAwZCbcqIGVQPIZisy8VXASCcCfU4mrmOgQ0oaRqU46dSlkWKif4jb5jYethYDAtn6QrL8JNTjtx1qW5ocDoICri4ULEW4+v0xT+IdbrVLpqpNJLqZMuUQ100X0x2+eN/Mojjt88Beas91WZkCK7XEh15+etLbbQIUENtgm9x6qH/AOG+hEcXEoBSRvkenWjS2S33V8KuW8/UYj3osj02PnHxLnJnpBZpqFANoUQFnVtq/qV+mLHMeQlxyuTSA46lKbriqN1geqCef8J++BvLuZFxPEzMnSjLKunJ0MqV/tVNeYD2uL4vsl+Ij+bKm47KhiCiOpIBAJC0Luk32I2XoPPfBvzDrSkqawmBjl+yaCVZNvIX2sEyfrv+PSgWSw2u6Chu6TYtupNgfT1T8jjtRaC9WKoyhtzQsAEuoG0dsG5UP0/QeuGR4k0OFJozs7phqUh1u7zXlUoFWnST35BxnKDEBjI7hbQhLuhxLy1HzOKSTYqPPphkvUeK37RKckxSdGn8Nx2ZVgCfehWs5qn0Spyac/DgFTCtAJCvMLbK/N3BB+uK+R4iPSz8PIhUh9IV1A04gqsbWvYq9Bi58ZXVUeBCzEiA9MDmmO+GVAEEi6Tax25H2wvocBDmcFvbpC4CXtPfdtKrX/TALDtspMFgSB1NNHWLmZD5gnoKto+ZVJqVUkuQae8mZ0gtp1BUjyJsLAn0O+JbOeEU7yR6dRYmu9ktt9O/2O+ApGauk0qoCkTFB9ejohY1IsBuduDiTW4yJr+XZ1lM/EgLLa9y3dSdicDaa7bLlJZBPEvmepMeW1E6jb3KCFh4jup5DoB771WxKuqQ3UKa2gH42I5HccWSG0Eg6SPTe3z3xAn0GI7UGV1Bbim24yGE9E7EgEG5A29RjjT4GYKfHU2aPIKFruvSU+cdgd8bvsV9yN8O1Q3WrELuAL6r88/THNg+4iG23AEicyOe/PFHpdUlBSNjRtl2l0xPhxMpsVa3ZX4kkthZKVKQsgJ27i4IvhjwaK/FbS06tT+gI/aqcuoqA7X4sRt7W7C2Ejl6XmSmVuLUH6VLeYZcT1G7p8wBv68i23vhywM7M1J9qNGpdTL7p0pQtkDe19zf2xo1jULq7aZs0wqCTgySTAG3h9zT74fNu0tx95YCjAzjA/X8V2qtNqc2nxaey2w2xGecWkKdNgkgaQAB2830ti1ZmTqbldqA22z12IvS167gr9vLsMDdVzdJhVU02WlNNNknqOIK/wA3A9Afni+iMRHAlfWVKcSb61uFRCh7cD7Yzutd1mzaQw+OEDaU7+ZmaYW+iaVdOLuGTxE7wrbyG1QswMtz6M0xmiDFqkGMUrPwyTHeZI7oIO424PPrhMePmZIIrNNhUZv/AFfCiBTYKlAlbpKlFV7nVsL33vfDqzBKT0VsW1pbbU+6LX8oBIH1P6A488eM01qsVZEtmMiOlLDDIQ2bp8qTvxycPvh43T1oq7uMyYBgTH/v2pRrDVq1dhlkQQM/j2+9GNJrAheJM2qugJaRXn2XLnYoVZCr+2+HXJyZBpKXH6PFd1TFgPkuqWdOwATqNkpBsbC3HtjznV5STmvNFNdujRU5K2yOCSq+/vj0HkXPtPqeW4jkx8CQygNuFR5UkWJ7c4qbphu4t2iDmIxgjrB5VNNOKZuF8Q5yJyM1PlZdqtXon4dMlMMjUgh0DWqwVfgAC545xEXQo1FpC6WKtIcdde/KhKQpRVYaUj/r64+zBnx6JTpMuDCdfQzYlVtANyByd+/bFblHNEeaH6j+FzXpiCELcWhJ0AjYJsTZOxxn2DyrctyQPDeY3nrWHaNB8OQOL8TtHSrrM1Bk5kyTUqJU2AFyIi0oCFghC0jUj3HmAN98JaVVYkGZDnRVIKlU1hkpUTpKukAsX42O2GNmjxbXHp8qNSKROkylJU0nU1ZAUbi5JIuB8jhDvRMzvM9FVLlFOkJtYbW+u233xNalqRQA3bupBMhRkTy9+v4okd4ZHOa5mgKkUViIl0IYE1SuuobBJBF/vt88Ec+qtxIlJgNNoLMOKGEyVG93OVE242AsPniqcXXnG+kmiSkpA0dMgFAAFthft/yvjhIi5jlxPhDR3y2VBQUoAG432N8ITevrSULcASZnI5/vbY0Q84XIkbAD0q3FKraiSqp026hZRJd3/wDhj5NHrKVpV+J006bHdTpuR3/Jz74fZRFFrIaJ97YwW2Twyyft/lgn5dj/AApr/D26QYodaQSlFUpqWzcBIU7bfn+D2xzlw8wQgmQxVYyXQ4lQMVxaXBY32JSBwLc98egA0z3YZ+3/AEwC+JjyUP0+K2htKdC3Vae5JAH/AAOGej6excXjaOGMz6Z/FAam0i1tlvDcfkxQXEzpmF+XAlViAie+hoqkOukBILespC0jkWSj0vtzjWb41Veox1ynMt0pL4UkEJS4kqKgo3232t+u+NSgFZvY7i1xe3OOlt9yTi9VohX3Vukp2ggGpVOtpR3kNAK3JBIquoniHmat1aPClssQ6c88lDyG2yOoDcEFSrn0G2DGXlqjSzd+lRHFf30X/S2A+W58JIQ6keZCw6g+4NyP0vj0Ihxp1tLiUtALAUPqL4m9bt1WXAhCjwmfAY8BjnVLo1wLzjcUmCPM58d+VLOdRqRUKtLqa6RDS/LdU8sgd1c723wt63CqcDML03KkxdNQhOktsrKAop5O+x3PcY9CZiqSKPQp07S1qaaOj/Edk/qRhHspOggm5Nkk+pO5/wCON2gWYvAtbpMDAzz5/itGvXhtChLYEnfHKpMbxCzuXHKXMkdemOJUkh5pA1+QlN1CxF1BO+3bcYqpmYc4y4CobEsQWJAWX0xHbBWwSgqVcnkq2BxaAAKP+MY0Um4t6hQxR/wdPEf5ioOYnFTo1g8I/lp4hzjNQqdTaw5FYdRVKemydKQ4XNSbWH8h329TiT+D1nzBVTphC7g+Z3g9vyYYHhZKZegT4TiG1KaeDqdVr2WN+3qP1wcltkj/AGLJ+g/yxzfUdPYt7lbXBsfbcVZ2LDdwwh7qPfnSHNHrSr3qdM3ttrd/+mNFUet+f/WtO8/I1u+t/wCTD6DDP/h2f0xhTDHdhsfQYC+XY/wor5Buv//Z" alt="Logo NARA" width="34" height="34" decoding="async" onerror="this.parentNode.style.display='none'" />
+            </div>
+            <div class="nara-splash-brand-text">
+                <span class="nara-splash-name">NARA</span>
+                <span class="nara-splash-sub">Navigasi Aman Remaja</span>
+            </div>
+        </div>
+
+        <div class="nara-splash-content" data-testid="nara-splash-content">
+            <div class="nara-splash-card">
+                <p class="nara-splash-text">Mempersiapkan ruang aman untukmu...</p>
+                <div class="nara-splash-dots" aria-hidden="true" data-testid="nara-splash-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="nara-splash-progress" aria-hidden="true" data-testid="nara-splash-progress">
+                    <span class="nara-splash-progress-bar"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            /* ------------------------------------------------------------
+               Loading screen NARA (tanpa suara)
+               - Tidak menunggu window "load" (gambar/font eksternal bisa lambat
+                 atau gagal) -> cukup DOM siap + batas waktu maksimal.
+               - Selalu tertutup paling lama MAX_DISPLAY_MS, apapun yang terjadi.
+               ------------------------------------------------------------ */
+            var MIN_DISPLAY_MS = 2600;  /* minimal tampil agar animasi terasa utuh */
+            var MAX_DISPLAY_MS = 5000;  /* batas keras: splash tidak akan pernah nyangkut */
+
+            var startTime = Date.now();
+            var splashEl = document.getElementById('naraSplash');
+            var htmlEl = document.documentElement;
+            var hidden = false, domReady = false, fontsReady = false, closeTimer = null;
+
+            if (htmlEl) { htmlEl.classList.add('nara-splash-lock'); }
+
+            /* ---------- Menutup splash ---------- */
+            function cleanup() {
+                if (!splashEl) return;
+                splashEl.setAttribute('aria-hidden', 'true');
+                splashEl.style.display = 'none';
+                if (splashEl.parentNode) { splashEl.parentNode.removeChild(splashEl); }
+                splashEl = null;
+            }
+
+            function hideSplash() {
+                if (hidden || !splashEl) return;
+                hidden = true;
+                clearTimeout(closeTimer);
+                var el = splashEl;
+                requestAnimationFrame(function () {
+                    el.classList.add('is-hiding');
+                    if (htmlEl) { htmlEl.classList.remove('nara-splash-lock'); }
+                });
+                /* Jaga-jaga jika transisi tidak terpicu (mis. prefers-reduced-motion) */
+                setTimeout(cleanup, 800);
+            }
+
+            /* Splash ditutup setelah MIN_DISPLAY_MS (dan DOM + font siap) */
+            function evaluate() {
+                if (hidden || !(domReady && fontsReady)) return;
+                clearTimeout(closeTimer);
+                var need = MIN_DISPLAY_MS - (Date.now() - startTime);
+                if (need <= 0) { hideSplash(); } else { closeTimer = setTimeout(evaluate, need); }
+            }
+            function check() { if (domReady && fontsReady) evaluate(); }
+
+            /* DOM siap (bukan menunggu semua gambar) */
+            function onDom() { domReady = true; check(); }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', onDom);
+            } else { onDom(); }
+
+            /* Tunggu font sebentar saja (maks 1.5 dtk) supaya ikon tidak tampil sebagai teks */
+            (function () {
+                var done = function () { fontsReady = true; check(); };
+                try {
+                    if (document.fonts && document.fonts.ready) {
+                        document.fonts.ready.then(done, done);
+                        setTimeout(done, 1500);
+                    } else { done(); }
+                } catch (e) { done(); }
+            })();
+
+            /* Pengaman mutlak: apapun yang terjadi, splash tertutup */
+            setTimeout(hideSplash, MAX_DISPLAY_MS);
+            window.addEventListener('error', function () {
+                if (Date.now() - startTime > MAX_DISPLAY_MS - 500) hideSplash();
+            });
+            /* Kembali lewat tombol Back (bfcache): jangan tampilkan splash lagi */
+            window.addEventListener('pageshow', function (e) { if (e.persisted) { hideSplash(); } });
+        })();
+    </script>
+
+    <!-- ===== NAVBAR ===== -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">
+                <div class="mark">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="white" stroke-width="1.4"/><path class="needle" d="M12 6.5L14 12L12 17.5L10 12L12 6.5Z" fill="white"/></svg>
+                </div>
+                <div data-brand-name>NARA<span class="sub" data-brand-sub>Navigasi Aman Remaja</span></div>
+            </div>
+            <div class="nav-cta"></div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR (DESKTOP/LAPTOP >=1024px) ===== -->
+    <nav class="sidebar" id="sidebarNav" aria-label="Navigasi utama">
+        <div class="sidebar-brand">
+            <div class="logo">
+                <div class="mark">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="white" stroke-width="1.4"/><path class="needle" d="M12 6.5L14 12L12 17.5L10 12L12 6.5Z" fill="white"/></svg>
+                </div>
+                <div data-brand-name>NARA<span class="sub" data-brand-sub>Navigasi Aman Remaja</span></div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <button class="bottom-nav-btn sidebar-nav-btn active" data-group="beranda" onclick="goTo('beranda')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V10"/><path d="M9.5 20v-5.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V20"/></svg></span><span class="sidebar-label">Beranda</span></button>
+            <button class="bottom-nav-btn sidebar-nav-btn" data-group="edukasi" onclick="goTo('edukasi')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c1.8-1 4-1.3 6-.8 1 .25 1.7.7 2 1V19c-.3-.3-1-.75-2-1-2-.5-4.2-.2-6 .8Z"/><path d="M21 5.5c-1.8-1-4-1.3-6-.8-1 .25-1.7.7-2 1V19c.3-.3 1-.75 2-1 2-.5 4.2-.2 6 .8Z"/></svg></span><span class="sidebar-label">Edukasi</span></button>
+            <button class="bottom-nav-btn sidebar-nav-btn" data-group="bantuan" onclick="toggleSheet('bantuan')" aria-label="Buka menu Bantuan: RANA AI, Konsultasi, dan Kritik & Saran" title="Bantuan"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.17 0-2.29-.19-3.34-.55L4 21l1.62-3.87A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg></span><span class="sidebar-label">Bantuan</span></button>
+            <button class="bottom-nav-btn sidebar-nav-btn" data-group="data" onclick="goTo('data')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V10"/><path d="M12 21V4"/><path d="M19 21v-7"/></svg></span><span class="sidebar-label">Data</span></button>
+            <button class="bottom-nav-btn sidebar-nav-btn" data-group="about" onclick="goTo('tim')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.01"/></svg></span><span class="sidebar-label">About</span></button>
+        </div>
+    </nav>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <main>
+
+        <!-- ===== BERANDA ===== -->
+        <section class="page active" id="page-beranda">
+            <div class="wrap section" style="padding-top:6px;">
+                <!-- ===== BANNER UTAMA (carousel/slider beranda) ===== -->
+                <div class="nara-carousel-wrap">
+                    <div class="nara-carousel" id="naraCarousel" role="region" aria-roledescription="carousel" aria-label="Banner NARA">
+                        <div class="nara-carousel-track" id="naraCarouselTrack">
+                            <div class="nara-carousel-slide" style="--slide-grad: linear-gradient(135deg, var(--navy-2), var(--blue));" aria-hidden="false">
+                                <div class="slide-bg"></div>
+                                <img src="assets/images/banner-selamat-datang.jpg" alt="Selamat Datang" width="1200" height="800" loading="eager" decoding="async">
+                                <div class="slide-deco"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span></div>
+                                <div class="slide-content">
+                                    <span class="slide-eyebrow"><span class="material-symbols-rounded" translate="no" aria-hidden="true">waving_hand</span>Selamat Datang</span>
+                                    <h4>Selamat Datang Di NARA</h4>
+                                    <p>Navigasi Aman Remaja — teman belajarmu untuk lebih paham dan lebih aman.</p>
+                                </div>
+                            </div>
+                            <div class="nara-carousel-slide" style="--slide-grad: linear-gradient(135deg, #1A2A4A, #17A398);">
+                                <div class="slide-bg"></div>
+                                <img src="assets/images/banner-edukasi.jpg" alt="Edukasi" width="1200" height="800" loading="lazy" decoding="async">
+                                <div class="slide-deco"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span></div>
+                                <div class="slide-content">
+                                    <span class="slide-eyebrow"><span class="material-symbols-rounded" translate="no" aria-hidden="true">school</span>Edukasi</span>
+                                    <h4>Belajar Membuat Keputusan Yang Bijak</h4>
+                                    <p>Materi edukasi untuk membantu remaja membuat keputusan yang aman dan bijak.</p>
+                                </div>
+                            </div>
+                            <div class="nara-carousel-slide" style="--slide-grad: linear-gradient(135deg, #7C6FEF, #1A2A4A);">
+                                <div class="slide-bg"></div>
+                                <img src="assets/images/banner-kenali-resiko.jpg" alt="Kenali Resiko" width="1200" height="800" loading="lazy" decoding="async">
+                                <div class="slide-deco"><span class="material-symbols-rounded" translate="no" aria-hidden="true">warning</span></div>
+                                <div class="slide-content">
+                                    <span class="slide-eyebrow"><span class="material-symbols-rounded" translate="no" aria-hidden="true">visibility</span>Kenali Resiko</span>
+                                    <h4>Kenali Resiko Di Sekitar Mu</h4>
+                                    <p>Pergaulan bebas, bullying, dan ancaman digital — kenali sejak dini agar lebih siap.</p>
+                                </div>
+                            </div>
+                            <div class="nara-carousel-slide slide-char-mid" style="--slide-grad: linear-gradient(135deg, #4A9FF5, #1A2A4A);">
+                                <div class="slide-bg"></div>
+                                <img src="assets/images/banner-kami-ada.jpg" alt="Kami Ada" width="1200" height="800" loading="lazy" decoding="async">
+                                <div class="slide-deco"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span></div>
+                                <div class="slide-content">
+                                    <span class="slide-eyebrow"><span class="material-symbols-rounded" translate="no" aria-hidden="true">volunteer_activism</span>Kami Ada</span>
+                                    <h4>Jangan Takut Bercerita</h4>
+                                    <p>NARA siap membantu dan mendampingi setiap langkahmu.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nara-carousel-dots" id="naraCarouselDots" role="tablist" aria-label="Pilih banner"></div>
+                </div>
+
+                <!-- ===== A. RINGKASAN PENGGUNA (data asli dari NaraState) ===== -->
+                <div class="card progress-card">
+                    <div class="ring-progress">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="42" stroke="#EAF3FE" stroke-width="10" fill="none"/>
+                            <circle id="dashRingCircle" cx="50" cy="50" r="42" stroke="#4A9FF5" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" style="transition:stroke-dashoffset .6s ease;"/>
+                        </svg>
+                        <div class="pct" id="dashRingPct">0%</div>
+                    </div>
+                    <div class="info">
+                        <h4 style="margin-bottom:4px;">Progress belajarmu</h4>
+                        <p style="color:var(--text-muted); font-size:0.88rem;" id="dashProgressText">Yuk mulai materi pertamamu hari ini.</p>
+                        <div class="bar"><div id="dashProgressBar" style="width:0%;"></div></div>
+                    </div>
+                    <button class="btn btn-accent" onclick="goTo('edukasi')">Lihat Detail →</button>
+                </div>
+                <div class="card level-card">
+                    <div id="dashLevelBadge">Lv. 1</div>
+                    <div id="dashNextLevelMsg">Mulai belajar untuk naik level.</div>
+                    <div id="dashStreakInline"><span class="material-symbols-rounded" translate="no" aria-hidden="true">local_fire_department</span> 0 hari</div>
+                    <div id="dashBadgeCount"><span class="material-symbols-rounded" translate="no" aria-hidden="true">emoji_events</span> 0</div>
+                </div>
+
+                <!-- ===== INFO / NOTIFIKASI INTERNAL ===== -->
+                <div id="naraNotifBanner" class="nara-notif-wrap"></div>
+
+                <!-- ===== B. AKTIVITAS HARI INI ===== -->
+                <div class="edu-cat-block">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--blue);"></span>
+                        <h3>Aktivitas Hari Ini</h3>
+                        <span class="count" id="naraActivityCount">0/3 selesai</span>
+                    </div>
+                    <div id="naraTodayActivities" class="nara-activity-list nara-hscroll"></div>
+                </div>
+
+                <!-- ===== D. TANTANGAN HARI INI ===== -->
+                <div class="card nara-challenge-card" id="naraChallengeCard">
+                    <div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span></div>
+                    <div style="flex:1;min-width:180px;">
+                        <h5 style="margin-bottom:2px;">Tantangan Hari Ini</h5>
+                        <p id="naraChallengeText" style="color:var(--text-muted);font-size:.85rem;margin:0 0 8px;">Selesaikan minimal 2 aktivitas hari ini untuk bonus XP.</p>
+                        <div class="bar"><div id="naraChallengeBar" style="width:0%;"></div></div>
+                        <span id="naraChallengeStatus" style="display:block;color:var(--text-muted);font-size:.78rem;margin-top:6px;">0/2 aktivitas</span>
+                    </div>
+                </div>
+
+
+                <!-- ===== MODUL SAYA (dipisah, scroll ke samping) ===== -->
+                <div class="edu-cat-block">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--blue);"></span>
+                        <h3>Modul Saya</h3>
+                        <span class="count" id="dashModulSaya">0/10 selesai</span>
+                    </div>
+                    <div id="naraModulSaya" class="nara-modul-list nara-hscroll"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===== EDUKASI ===== -->
+        <section class="page" id="page-edukasi">
+            <div class="wrap section">
+                <div class="edu-summary-compact">
+                    <div class="player-mini">
+                        <div id="naraStatLevel2" class="player-mini-avatar">Lv.1</div>
+                        <div class="player-mini-info">
+                            <div class="player-mini-row1">
+                                <span class="player-mini-title">Petualang NARA</span>
+                                <span class="player-mini-materi" id="naraStatMateri">0/10 materi</span>
+                            </div>
+                            <div class="player-mini-bar"><div id="naraXPBar" style="height:100%;width:0%;background:linear-gradient(90deg,#4A9FF5,#9CD3FF);border-radius:999px;transition:width .6s ease;"></div></div>
+                            <span class="player-mini-next" id="naraNextLevelMsg">200 XP lagi untuk mencapai Lv. 2</span>
+                        </div>
+                        <div id="naraBadgeRow" class="player-mini-badges"></div>
+                    </div>
+
+                    <div class="edu-stats-compact">
+                        <div class="stat-mini"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span><b id="naraStatLevel">Lv.1</b><i id="naraStatLevelName" hidden>Pemula</i></div>
+                        <div class="stat-mini"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span><b id="naraStatXPFraction">0/200 XP</b></div>
+                        <div class="stat-mini"><span class="material-symbols-rounded" translate="no" aria-hidden="true">local_fire_department</span><b id="naraStatStreak">0 hari</b></div>
+                        <div class="stat-mini"><span class="material-symbols-rounded" translate="no" aria-hidden="true">emoji_events</span><b id="naraStatBadgeCount">0</b></div>
+                    </div>
+
+                    <div class="streak-compact">
+                        <div class="streak-compact-head">
+                            <span class="material-symbols-rounded" translate="no" aria-hidden="true">local_fire_department</span>
+                            <span class="streak-compact-title">Streak Belajar — <span id="streakCount">0 <small>hari</small></span></span>
+                        </div>
+                        <p class="streak-compact-sub">Selesaikan 1 aktivitas hari ini untuk mempertahankan streak.</p>
+                        <div class="streak-week-mini" id="naraStreakWeek"></div>
+                    </div>
+                </div>
+
+                <!-- ===== PENCARIAN & FILTER KATEGORI MATERI ===== -->
+                <div class="nara-edu-search-wrap">
+                    <div class="nara-edu-search">
+                        <span class="material-symbols-rounded" translate="no" aria-hidden="true">search</span>
+                        <input type="text" id="naraEduSearch" placeholder="Cari Materi" aria-label="Cari materi edukasi">
+                    </div>
+                    <div class="nara-edu-chips" id="naraEduChips">
+                        <button type="button" class="nara-chip is-active" data-kategori="semua">Semua</button>
+                        <button type="button" class="nara-chip" data-kategori="relasi">Relasi &amp; Pergaulan</button>
+                        <button type="button" class="nara-chip" data-kategori="mental">Kesehatan Mental</button>
+                        <button type="button" class="nara-chip" data-kategori="digital">Keamanan Digital</button>
+                        <button type="button" class="nara-chip" data-kategori="ai">AI &amp; Deepfake</button>
+                        <button type="button" class="nara-chip" data-kategori="ortu">Orang Tua &amp; Remaja</button>
+                        <button type="button" class="nara-chip" data-kategori="tersimpan"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark</span> Tersimpan</button>
+                    </div>
+                    <p id="naraEduEmpty" class="nara-edu-empty" style="display:none;">Materi tidak ditemukan. Coba kata kunci lain.</p>
+                </div>
+
+                <!-- KATEGORI 1 -->
+                <div class="edu-cat-block">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--blue);"></span>
+                        <h3>Materi Edukasi</h3>
+                        <span class="count">5 materi</span>
+                    </div>
+                    <div class="edu-grid">
+                        <div class="edu-card c-blue" data-materi-id="pergaulansehat" data-kategori="relasi" data-title="Pergaulan Sehat" onclick="goTo('pergaulansehat')"><button type="button" class="edu-save-btn" data-save-id="pergaulansehat" aria-label="Simpan materi Pergaulan Sehat" onclick="event.stopPropagation();toggleSavedMateri('pergaulansehat')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button>
+                            <div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/pergaulan_sehat.png" alt="Pergaulan Sehat" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div>
+                            <h4>Pergaulan Sehat</h4>
+                            <span data-materi-status="pergaulansehat"></span>
+                        </div>
+                        <div class="edu-card c-blue" data-materi-id="freesex" data-kategori="relasi" data-title="Free Sex" onclick="goTo('freesex')"><button type="button" class="edu-save-btn" data-save-id="freesex" aria-label="Simpan materi Free Sex" onclick="event.stopPropagation();toggleSavedMateri('freesex')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/free_sex.png" alt="Free Sex" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Free Sex</h4><span data-materi-status="freesex"></span></div>
+                        <div class="edu-card c-blue" data-materi-id="revenge" data-kategori="relasi" data-title="Revenge Porn" onclick="goTo('revenge')"><button type="button" class="edu-save-btn" data-save-id="revenge" aria-label="Simpan materi Revenge Porn" onclick="event.stopPropagation();toggleSavedMateri('revenge')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/revenge_porn.png" alt="Revenge Porn" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Revenge Porn</h4><span data-materi-status="revenge"></span></div>
+                        <div class="edu-card c-blue" data-materi-id="pergaulanbebas" data-kategori="relasi" data-title="Pergaulan Bebas" onclick="goTo('pergaulanbebas')"><button type="button" class="edu-save-btn" data-save-id="pergaulanbebas" aria-label="Simpan materi Pergaulan Bebas" onclick="event.stopPropagation();toggleSavedMateri('pergaulanbebas')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/pergaulan_bebas.png" alt="Pergaulan Bebas" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Pergaulan Bebas</h4><span data-materi-status="pergaulanbebas"></span></div>
+                        <div class="edu-card c-blue" data-materi-id="mental" data-kategori="mental" data-title="Kesehatan Mental" onclick="goTo('mental')"><button type="button" class="edu-save-btn" data-save-id="mental" aria-label="Simpan materi Kesehatan Mental" onclick="event.stopPropagation();toggleSavedMateri('mental')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/kesehatan_mental.png" alt="Kesehatan Mental" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Kesehatan Mental</h4><span data-materi-status="mental"></span></div>
+                    </div>
+                </div>
+
+                <!-- KATEGORI 2 -->
+                <div class="edu-cat-block">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--purple);"></span>
+                        <h3>Edukasi Digital</h3>
+                        <span class="count">2 materi</span>
+                    </div>
+                    <div class="edu-grid">
+                        <div class="edu-card c-purple" data-materi-id="ai" data-kategori="ai" data-title="Literasi AI & Deepfake" onclick="goTo('ai')"><button type="button" class="edu-save-btn" data-save-id="ai" aria-label="Simpan materi Literasi AI & Deepfake" onclick="event.stopPropagation();toggleSavedMateri('ai')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/literasi_ai_deepfake.png" alt="Literasi AI & Deepfake" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Literasi AI &amp; Deepfake</h4><span data-materi-status="ai"></span></div>
+                        <div class="edu-card c-purple" data-materi-id="digital" data-kategori="digital" data-title="Keamanan Digital" onclick="goTo('digital')"><button type="button" class="edu-save-btn" data-save-id="digital" aria-label="Simpan materi Keamanan Digital" onclick="event.stopPropagation();toggleSavedMateri('digital')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/keamanan_digital.png" alt="Keamanan Digital" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Keamanan Digital</h4><span data-materi-status="digital"></span></div>
+                    </div>
+                </div>
+
+                <!-- KATEGORI 3 -->
+                <div class="edu-cat-block">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--teal);"></span>
+                        <h3>Materi untuk Orang Tua</h3>
+                        <span class="count">3 materi</span>
+                    </div>
+                    <div class="edu-grid">
+                        <div class="edu-card c-teal" data-materi-id="ortu" data-kategori="ortu" data-title="Pendampingan Remaja" onclick="goTo('ortu')"><button type="button" class="edu-save-btn" data-save-id="ortu" aria-label="Simpan materi Pendampingan Remaja" onclick="event.stopPropagation();toggleSavedMateri('ortu')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/pendampingan_remaja.png" alt="Pendampingan Remaja" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Pendampingan Remaja</h4><span data-materi-status="ortu"></span></div>
+                        <div class="edu-card c-teal" data-materi-id="ortukomunikasi" data-kategori="ortu" data-title="Komunikasi Orang Tua & Anak" onclick="goTo('ortukomunikasi')"><button type="button" class="edu-save-btn" data-save-id="ortukomunikasi" aria-label="Simpan materi Komunikasi Orang Tua & Anak" onclick="event.stopPropagation();toggleSavedMateri('ortukomunikasi')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/komunikasi_orang_tua_anak.png" alt="Komunikasi Orang Tua & Anak" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Komunikasi Orang Tua &amp; Anak</h4><span data-materi-status="ortukomunikasi"></span></div>
+                        <div class="edu-card c-teal" data-materi-id="ortupengawasan" data-kategori="ortu" data-title="Pengawasan Digital" onclick="goTo('ortupengawasan')"><button type="button" class="edu-save-btn" data-save-id="ortupengawasan" aria-label="Simpan materi Pengawasan Digital" onclick="event.stopPropagation();toggleSavedMateri('ortupengawasan')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">bookmark_border</span></button><div class="ic-wrap ic-img"><img class="nara-icon" src="assets/icons/pengawasan_digital.png" alt="Pengawasan Digital" width="56" height="56" loading="lazy" decoding="async" onerror="naraIconFallback(this)"></div><h4>Pengawasan Digital</h4><span data-materi-status="ortupengawasan"></span></div>
+                    </div>
+                </div>
+
+                <!-- ===== UJI PEMAHAMANMU — GAME VERSION (HORIZONTAL CAROUSEL) ===== -->
+                <div class="edu-cat-block uji-section" id="ujiSectionBlock">
+                    <div class="edu-cat-head">
+                        <span class="dot" style="background:var(--yellow);"></span>
+                        <h3><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Uji Pemahamanmu</h3>
+                        <span class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiLevelBadge">Lv. 1</span></span>
+                        <span class="count" id="ujiCount">7 tantangan</span>
+                    </div>
+
+                    <div class="uji-carousel-wrap">
+                    <div class="uji-grid" id="ujiGrid">
+                        <!-- Cek Hubunganku -->
+                        <div class="game-mission-card" id="ujiHubunganku" onclick="goTo('cek')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #4A9FF5, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#E7F8EF,#B8E6D0);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiHubungankuLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +50 XP</span>
+                                </div>
+                            </div>
+                            <h4>Cek Hubunganku</h4>
+                            <p class="desc">Kenali pola dalam hubunganmu lewat 7 pertanyaan cepat.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="hubungkuProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="hubungkuStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="hubungkuLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="hubungkuReset"></div>
+                            <div id="hubungkuBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Cek Pertemanan Ku -->
+                        <div class="game-mission-card" id="ujiPertemanan" onclick="goTo('pertemanan')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #7C6FEF, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#EFECFE,#D5CDF5);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiPertemananLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +50 XP</span>
+                                </div>
+                            </div>
+                            <h4>Cek Pertemanan Ku</h4>
+                            <p class="desc">Kenali kualitas pertemananmu — sehat atau perlu diperhatikan?</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="pertemananProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="pertemananStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="pertemananLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="pertemananReset"></div>
+                            <div id="pertemananBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Mini Game: Mood Quest (terpisah dari materi Kesehatan Mental Remaja) -->
+                        <div class="game-mission-card" id="ujiMental" onclick="goTo('moodquest')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #B44FD1, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#FCEBEB,#F5D0D0);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">emoji_events</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiMentalLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +100 XP</span>
+                                </div>
+                            </div>
+                            <h4>Mood Quest</h4>
+                            <p class="desc">Uji pemahamanmu lewat 4 situasi emosional &amp; pilih strategi sehat.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="mentalProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="mentalStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="mentalLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="mentalReset"></div>
+                            <div id="mentalBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Latihan Pergaulan Sehat -->
+                        <div class="game-mission-card" id="ujiPergaulan" onclick="goTo('pergaulanuji')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #1FAE6B, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#E7F8EF,#B8E6D0);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiPergaulanLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +100 XP</span>
+                                </div>
+                            </div>
+                            <h4>Latihan Pergaulan Sehat</h4>
+                            <p class="desc">Baca skenario pergaulan dan pilih respons yang paling sehat.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="pergaulanSehatProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="pergaulanSehatStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="pergaulanSehatLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="pergaulanSehatReset"></div>
+                            <div id="pergaulanSehatBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Digital Defender Challenge (dipisah dari materi Keamanan Digital) -->
+                        <div class="game-mission-card" id="ujiDigital" onclick="goTo('digitaluji')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #4A9FF5, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#E7F0FE,#B8D4F5);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiDigitalLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +100 XP</span>
+                                </div>
+                            </div>
+                            <h4>Digital Defender Challenge</h4>
+                            <p class="desc">Pilih tindakan paling aman dalam 4 situasi digital sehari-hari.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="digitalUjiProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="digitalUjiStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="digitalUjiLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="digitalUjiReset"></div>
+                            <div id="digitalUjiBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Mini Game: Pergaulan Bebas (dipisah dari materi Pergaulan Bebas) -->
+                        <div class="game-mission-card" id="ujiPergaulanBebas" onclick="goTo('pergaulanbebasuji')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #FF9F43, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#FFF1E0,#FFD9A8);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiPergaulanBebasLvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +100 XP</span>
+                                </div>
+                            </div>
+                            <h4>Pemahaman Pergaulan Bebas</h4>
+                            <p class="desc">Baca skenario kehidupan remaja, lalu pilih respons yang paling sehat dan aman.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="pergaulanBebasProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="pergaulanBebasStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="pergaulanBebasLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="pergaulanBebasReset"></div>
+                            <div id="pergaulanBebasBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+
+                        <!-- Mini Game: Asli atau Deepfake? (dipisah dari materi Literasi AI & Deepfake) -->
+                        <div class="game-mission-card" id="ujiAI" onclick="goTo('aiuji')">
+                            <div class="card-glow" style="background:radial-gradient(circle, #7C6FEF, transparent);"></div>
+                            <div class="top-row">
+                                <div class="icon-box" style="background:linear-gradient(135deg,#F1ECFE,#D5CDF5);"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_toy</span></div>
+                                <div class="badge-stack">
+                                    <div class="level-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> <span id="ujiAILvl">Lv.1</span></div>
+                                    <span class="xp-badge"><span class="star"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span></span> +100 XP</span>
+                                </div>
+                            </div>
+                            <h4>Asli atau Deepfake?</h4>
+                            <p class="desc">Baca ciri-ciri tiap kasus, lalu tebak apakah kontennya asli atau deepfake.</p>
+                            <div class="progress-section">
+                                <div class="progress-bar"><div id="aiUjiProgress" style="width:0%;"></div></div>
+                                <div class="footer-row">
+                                    <span id="aiUjiStatus"><span class="status-dot pending"></span>Belum dikerjakan</span>
+                                    <span class="link" id="aiUjiLink">Mulai → <span class="arrow">→</span></span>
+                                </div>
+                            </div>
+                            <div class="reset-counter" id="aiUjiReset"></div>
+                            <div id="aiUjiBadge" style="display:none;" class="badge-earned"><span class="material-symbols-rounded" translate="no" aria-hidden="true">military_tech</span> Badge diperoleh!</div>
+                        </div>
+                    </div>
+
+                    <div class="uji-dots" id="ujiDots">
+                        <span class="uji-dot is-active" data-uji-index="0"></span>
+                        <span class="uji-dot" data-uji-index="1"></span>
+                        <span class="uji-dot" data-uji-index="2"></span>
+                        <span class="uji-dot" data-uji-index="3"></span>
+                        <span class="uji-dot" data-uji-index="4"></span>
+                        <span class="uji-dot" data-uji-index="5"></span>
+                        <span class="uji-dot" data-uji-index="6"></span>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== PERGAULAN SEHAT (NEW PAGE) ===== -->
+        <section class="page" id="page-pergaulansehat">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--green-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span></div>
+                    <h2 class="section-title" style="margin:0;">Pergaulan Sehat</h2>
+                </div>
+                <p class="section-sub">Bangun hubungan yang positif, aman, dan saling menghargai.</p>
+                <div class="icon-cards" data-icon-group="sehat-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">check_circle</span></div><h4>Ciri pergaulan sehat</h4><p>Saling menghargai, saling mendukung, dan menjaga batasan pribadi.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lightbulb</span></div><h4>Tips berteman sehat</h4><p>Pilih teman yang memberi pengaruh positif dan berani menolak ajakan yang tidak baik.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Pergaulan Sehat</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Pergaulan sehat adalah hubungan dengan orang lain yang dibangun dengan saling menghargai, menjaga batasan, dan memberi pengaruh positif.</li>
+                    <li><span class="n">2</span>Ciri-cirinya: saling menghargai, saling mendukung, bisa berkata &quot;tidak&quot;, menghargai batasan pribadi, serta tidak memaksa atau merugikan orang lain.</li>
+                    <li><span class="n">3</span>Tips berteman sehat: pilih teman yang memberi pengaruh positif, berani menolak ajakan yang tidak baik, jaga batasan diri, komunikasikan masalah dengan baik, dan jangan takut menjauh dari lingkungan yang merugikan.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Kamu berhak memilih teman dan lingkungan yang membuatmu tumbuh jadi lebih baik.</div>
+                <div class="card mq-crosslink-card" onclick="goTo('pergaulanuji')" role="button" tabindex="0" onkeypress="if(event.key==='Enter')goTo('pergaulanuji')">
+                    <div class="mq-crosslink-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span></div>
+                    <div class="mq-crosslink-body">
+                        <h5>Coba Latihan Pergaulan Sehat</h5>
+                        <p>Latihan skenario interaktif untuk menguji responsmu sehari-hari.</p>
+                    </div>
+                    <span class="material-symbols-rounded mq-crosslink-arrow" translate="no" aria-hidden="true">arrow_forward</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== LATIHAN PERGAULAN SEHAT (GAME VERSION) ===== -->
+        <section class="page uji-page" id="page-pergaulanuji">
+            <div class="wrap section game-page-wrap">
+                <button class="back-link back-link-modern" onclick="goTo('edukasi')"><span class="bl-arrow">←</span> Kembali ke Beranda Edukasi</button>
+
+                <div class="game-hero">
+                    <span class="game-challenge-badge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> GAME CHALLENGE</span>
+                    <h2 class="section-title game-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span> Latihan Pergaulan Sehat</h2>
+                    <p class="game-desc">Baca setiap skenario pergaulan dengan saksama, lalu pilih respons yang paling sehat dan aman untukmu.</p>
+                </div>
+
+                <div id="scenarioPlayArea">
+                <div class="scenario-topbar">
+                    <span class="scenario-step" id="scenarioStepLabel">Skenario 1 dari 4</span>
+                    <div class="scenario-meta-right">
+                        <span class="scenario-xp" id="scenarioXP"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> 0 XP</span>
+                        <span class="scenario-streak" id="scenarioStreakBadge" style="display:none;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">local_fire_department</span> Streak 0</span>
+                    </div>
+                </div>
+                <div class="scenario-progress-track"><div class="scenario-progress-fill" id="scenarioProgressBar" style="width:0%;"></div></div>
+
+                <div class="scenario-box" id="scenarioBox">
+                    <span class="scenario-badge" id="scenarioBadge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">help</span> Skenario 1</span>
+                    <div class="scenario-q"><span id="scenarioText">Teman-temanmu mengajakmu bolos sekolah untuk pergi ke mal. Kamu tahu itu salah dan berisiko, tapi mereka terus mendesak. Apa yang kamu lakukan?</span></div>
+                    <div class="scenario-opts" id="scenarioOpts">
+                        <button onclick="answerScenario(0, this)"><span class="opt-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">group</span></span><span class="opt-text">Ikut saja, biar tidak dianggap cupu</span><span class="opt-check"><span class="material-symbols-rounded" translate="no" aria-hidden="true">check</span></span></button>
+                        <button onclick="answerScenario(1, this)"><span class="opt-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span></span><span class="opt-text">Tolak dengan sopan dan ajak mereka melakukan hal yang lebih positif</span><span class="opt-check"><span class="material-symbols-rounded" translate="no" aria-hidden="true">check</span></span></button>
+                        <button onclick="answerScenario(2, this)"><span class="opt-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">volume_off</span></span><span class="opt-text">Diam saja tapi tetap ikut karena takut kehilangan teman</span><span class="opt-check"><span class="material-symbols-rounded" translate="no" aria-hidden="true">check</span></span></button>
+                    </div>
+                    <div class="scenario-feedback" id="scenarioFeedback"></div>
+                </div>
+                </div>
+
+                <!-- Halaman hasil: tampil permanen setelah latihan selesai, tidak mengulang otomatis -->
+                <div id="scenarioResultView" style="display:none;">
+                    <div class="scenario-box scenario-result-box">
+                        <div class="result-icon"><span class="material-symbols-rounded" translate="no" aria-hidden="true">celebration</span></div>
+                        <h3 class="scenario-result-title">Selamat, Kamu Selesai!</h3>
+                        <p class="scenario-result-sub" id="scenarioResultSub">Kamu telah belajar merespons situasi sosial dengan lebih sehat.</p>
+                        <div class="result-stats">
+                            <div class="result-stat"><div class="rs-label">Skor</div><div class="rs-value" id="scenarioResultScore">0/4</div></div>
+                            <div class="result-stat"><div class="rs-label">Poin</div><div class="rs-value" id="scenarioResultXP"><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> 0 XP</div></div>
+                            <div class="result-stat"><div class="rs-label">Badge</div><div class="rs-value" id="scenarioResultBadge"><span class="material-symbols-rounded" translate="no" aria-hidden="true">eco</span></div></div>
+                        </div>
+                        <div class="scenario-result-actions">
+                            <button class="btn btn-primary" onclick="resetScenarioGame()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sync</span> Kerjakan Ulang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== MODUL FREE SEX ===== -->
+        <section class="page" id="page-freesex">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:#FCEBEB;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span></div>
+                    <h2 class="section-title" style="margin:0;">Memahami Free Sex dan Risikonya</h2>
+                </div>
+                <p class="section-sub">Edukasi tanpa menghakimi — tentang batasan diri, consent, dan pengambilan keputusan yang aman dan bertanggung jawab.</p>
+                <div class="icon-cards" data-icon-group="freesex-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">verified_user</span></div><h4>Consent dan batasan diri</h4><p>Pentingnya persetujuan dan menyampaikan batas pribadi dengan tegas.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">record_voice_over</span></div><h4>Berani berkata tidak</h4><p>Cara menolak dengan percaya diri dan mencari bantuan saat merasa tertekan.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Free Sex dan Risikonya</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Apa yang dimaksud dengan hubungan seksual, dijelaskan secara edukatif dan sesuai usia.</li>
+                    <li><span class="n">2</span>Pentingnya consent / persetujuan dalam setiap bentuk hubungan.</li>
+                    <li><span class="n">3</span>Batasan diri — mengenali dan menyampaikan batas pribadi dengan tegas.</li>
+                    <li><span class="n">4</span>Risiko kehamilan yang tidak direncanakan pada usia remaja.</li>
+                    <li><span class="n">5</span>Risiko infeksi menular seksual dan pentingnya menjaga kesehatan reproduksi.</li>
+                    <li><span class="n">6</span>Dampak psikologis yang mungkin terjadi setelah pengalaman yang tidak diinginkan.</li>
+                    <li><span class="n">7</span>Pengaruh tekanan teman sebaya dalam pengambilan keputusan.</li>
+                    <li><span class="n">8</span>Mengenali manipulasi atau pemaksaan dalam hubungan.</li>
+                    <li><span class="n">9</span>Cara mengatakan "tidak" dengan percaya diri dan jelas.</li>
+                    <li><span class="n">10</span>Cara mencari bantuan ketika merasa tertekan atau tidak nyaman.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Tidak apa-apa untuk bertanya, ragu, atau butuh waktu memahami semua ini. NARA ada untuk membantumu, bukan menghakimi.</div>
+            </div>
+        </section>
+
+        <!-- ===== MODUL REVENGE PORN ===== -->
+        <section class="page" id="page-revenge">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--blue-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smartphone</span></div>
+                    <h2 class="section-title" style="margin:0;">Revenge Porn: Ketika Privasi Disalahgunakan</h2>
+                </div>
+                <p class="section-sub">Memahami penyebaran konten intim tanpa persetujuan, sextortion, dan grooming — serta langkah aman jika hal ini terjadi.</p>
+                <div class="icon-cards" data-icon-group="revenge-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span></div><h4>Jaga privasi digital</h4><p>Berpikir dua kali sebelum mengirim konten pribadi.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">health_and_safety</span></div><h4>Langkah aman jika terjadi</h4><p>Simpan bukti, jangan penuhi tuntutan pelaku, dan ceritakan kepada orang dewasa tepercaya.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Revenge Porn</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Apa itu penyebaran konten intim tanpa persetujuan (NCII) dan mengapa hal ini berbahaya.</li>
+                    <li><span class="n">2</span>Mengenali manipulasi dan ancaman digital, termasuk sextortion dan grooming.</li>
+                    <li><span class="n">3</span>Cara menjaga privasi digital dan berpikir dua kali sebelum mengirim konten pribadi.</li>
+                    <li><span class="n">4</span>Cara mengenali tanda-tanda ancaman sejak dini.</li>
+                    <li><span class="n">5</span>Apa yang harus dilakukan jika konten sudah tersebar, termasuk menyimpan bukti dan melapor.</li>
+                    <li><span class="n">6</span>Pentingnya tidak menyalahkan korban dalam situasi apa pun.</li>
+                </ol>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">checklist</span> Jika Ini Terjadi Padamu</h3>
+                <ol class="steps-list">
+                    <li><span class="n">01</span>Jangan panik — tarik napas dan cari orang dewasa yang kamu percaya.</li>
+                    <li><span class="n">02</span>Jangan memenuhi tuntutan pelaku, termasuk permintaan uang atau konten tambahan.</li>
+                    <li><span class="n">03</span>Jangan menghapus bukti penting seperti chat, screenshot, atau tautan.</li>
+                    <li><span class="n">04</span>Simpan screenshot, URL, dan informasi akun pelaku jika aman untuk dilakukan.</li>
+                    <li><span class="n">05</span>Blokir dan laporkan akun tersebut setelah bukti diamankan.</li>
+                    <li><span class="n">06</span>Ceritakan kepada orang dewasa yang dipercaya — orang tua, guru, atau konselor.</li>
+                    <li><span class="n">07</span>Hubungi pihak yang kompeten untuk mendapatkan bantuan lebih lanjut.</li>
+                    <li><span class="n">08</span>Konsultasikan kondisi psikologismu kepada profesional.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Yang terjadi bukan salahmu. Kamu berhak mendapatkan bantuan.</div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-primary" onclick="quickHelp('Saya mengalami penyebaran konten pribadi')">Saya Mengalami Penyebaran Konten Pribadi</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CEK HUBUNGANKU (GAME VERSION) ===== -->
+        <section class="page uji-page" id="page-cek">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Beranda Edukasi</button>
+                <div class="eyebrow" style="text-align:center;display:flex;justify-content:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Game Challenge</div>
+                <h2 class="section-title" style="text-align:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Cek Hubunganku</h2>
+                <p class="section-sub" style="margin:0 auto 32px;text-align:center;">Jawab 7 pertanyaan untuk mengenali pola dalam hubunganmu. Jawabanmu bersifat pribadi dan tidak disimpan.</p>
+                <div class="card quiz-card" id="quizCardHubunganku">
+                    <!-- diisi JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CEK PERTEMANAN KU (GAME VERSION) ===== -->
+        <section class="page uji-page" id="page-pertemanan">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Beranda Edukasi</button>
+                <div class="eyebrow" style="text-align:center;display:flex;justify-content:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Game Challenge</div>
+                <h2 class="section-title" style="text-align:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span> Cek Pertemanan Ku</h2>
+                <p class="section-sub" style="margin:0 auto 32px;text-align:center;">Jawab 7 pertanyaan untuk mengenali kualitas pertemananmu. Jawabanmu bersifat pribadi dan tidak disimpan.</p>
+                <div class="card quiz-card" id="quizCardPertemanan">
+                    <!-- diisi JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== KEAMANAN DIGITAL ===== -->
+        <section class="page" id="page-digital">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--blue-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span></div>
+                    <h2 class="section-title" style="margin:0;">Keamanan Digital untuk Remaja</h2>
+                </div>
+                <p class="section-sub">Materi tentang menjaga akun, data pribadi, dan bersikap waspada saat beraktivitas online.</p>
+                <div class="icon-cards" data-icon-group="digital-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">encrypted</span></div><h4>Jaga akun dan data pribadi</h4><p>Password kuat dan tidak sembarangan membagikan data pribadi.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">campaign</span></div><h4>Waspada penipuan online</h4><p>Kenali phishing, tautan mencurigakan, dan akun palsu.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Keamanan Digital</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Menjaga password dan akun agar tidak mudah diretas.</li>
+                    <li><span class="n">2</span>Melindungi data pribadi — nama lengkap, alamat, lokasi, dan foto.</li>
+                    <li><span class="n">3</span>Mengenali penipuan online, termasuk phishing dan tautan mencurigakan.</li>
+                    <li><span class="n">4</span>Menghadapi cyberbullying dengan aman dan tahu ke mana melapor.</li>
+                    <li><span class="n">5</span>Mengenali manipulasi di internet, termasuk akun palsu dan grooming.</li>
+                    <li><span class="n">6</span>Cara menggunakan media sosial dengan aman dan bertanggung jawab.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Tidak apa-apa untuk bertanya jika kamu ragu sebuah situasi online aman atau tidak. RANA siap membantu.</div>
+                <div class="card mq-crosslink-card" onclick="goTo('digitaluji')" role="button" tabindex="0" onkeypress="if(event.key==='Enter')goTo('digitaluji')">
+                    <div class="mq-crosslink-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span></div>
+                    <div class="mq-crosslink-body">
+                        <h5>Coba Digital Defender Challenge</h5>
+                        <p>Mini game terpisah untuk menguji kewaspadaan digitalmu lewat 4 situasi sehari-hari.</p>
+                    </div>
+                    <span class="material-symbols-rounded mq-crosslink-arrow" translate="no" aria-hidden="true">arrow_forward</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DIGITAL DEFENDER CHALLENGE (MINI GAME TERPISAH — BUKAN BAGIAN MATERI) ===== -->
+        <section class="page uji-page" id="page-digitaluji">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Beranda Edukasi</button>
+                <div class="eyebrow" style="text-align:center;display:flex;justify-content:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Game Challenge</div>
+                <h2 class="section-title" style="text-align:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span> Digital Defender Challenge</h2>
+                <p class="section-sub" style="margin:0 auto 32px;text-align:center;">Pilih tindakan paling aman dalam 4 situasi digital sehari-hari.</p>
+                <div class="card game-card" id="digitalGameCard">
+                    <span class="game-tag">Digital Defender Challenge</span>
+                    <div class="game-progress" id="digitalProgress">Situasi 1 dari 4</div>
+                    <div class="game-situation" id="digitalSituation"></div>
+                    <div class="game-opts" id="digitalOpts"></div>
+                    <div class="game-feedback" id="digitalFeedback" style="display:none;"></div>
+                </div>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Tidak apa-apa untuk bertanya jika kamu ragu sebuah situasi online aman atau tidak. RANA siap membantu.</div>
+            </div>
+        </section>
+
+        <!-- ===== KESEHATAN MENTAL REMAJA (MATERI EDUKASI — TANPA MINI GAME) ===== -->
+        <section class="page" id="page-mental">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:#FCEBEB;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span></div>
+                    <h2 class="section-title" style="margin:0;">Kesehatan Mental Remaja</h2>
+                </div>
+                <p class="section-sub">Materi tentang mengenali emosi, mengelola stres, dan tahu kapan perlu mencari bantuan.</p>
+                <div class="icon-cards" data-icon-group="mental-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sentiment_satisfied</span></div><h4>Kenali dan kelola emosi</h4><p>Menghadapi stres sekolah dan kehidupan sehari-hari.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span></div><h4>Bicara dengan orang tepercaya</h4><p>Tahu kapan perlu mencari bantuan orang dewasa atau tenaga profesional.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Kesehatan Mental Remaja</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Mengenali dan mengelola emosi sehari-hari.</li>
+                    <li><span class="n">2</span>Menghadapi stres sekolah dan kehidupan sehari-hari.</li>
+                    <li><span class="n">3</span>Pentingnya berbicara dengan orang tepercaya.</li>
+                    <li><span class="n">4</span>Membangun kebiasaan sehat untuk menjaga kesejahteraan diri.</li>
+                    <li><span class="n">5</span>Cara mendukung teman dengan baik tanpa menghakimi.</li>
+                    <li><span class="n">6</span>Kapan perlu mencari bantuan dari orang dewasa atau tenaga profesional.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Perasaanmu valid. Jika beban terasa berat, bicara dengan orang tepercaya atau psikolog kami adalah langkah yang baik.</div>
+                <div class="card mq-crosslink-card" onclick="goTo('moodquest')" role="button" tabindex="0" onkeypress="if(event.key==='Enter')goTo('moodquest')">
+                    <div class="mq-crosslink-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span></div>
+                    <div class="mq-crosslink-body">
+                        <h5>Coba Mood Quest</h5>
+                        <p>Mini game terpisah untuk mengenali suasana hatimu lewat situasi sehari-hari.</p>
+                    </div>
+                    <span class="material-symbols-rounded mq-crosslink-arrow" translate="no" aria-hidden="true">arrow_forward</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MOOD QUEST (MINI GAME TERPISAH — BUKAN BAGIAN MATERI) ===== -->
+        <section class="page uji-page" id="page-moodquest">
+            <div class="wrap section mq-container">
+                <button class="back-link mq-back" onclick="goTo('edukasi')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">arrow_back</span> Kembali ke Edukasi</button>
+                <div class="mq-hero">
+                    <div class="mq-hero-emoji-row" aria-hidden="true">
+                        <span class="mq-float mq-float-1">😌</span>
+                        <span class="mq-float mq-float-2">🙂</span>
+                        <span class="mq-float mq-float-3">😔</span>
+                    </div>
+                    <div class="eyebrow mq-eyebrow"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Mini Game</div>
+                    <h2 class="section-title mq-title">Mood Quest</h2>
+                    <p class="section-sub mq-desc">Hadapi 4 situasi sehari-hari, kenali emosimu, lalu pilih strategi coping yang paling sehat. Santai saja, ini bukan tes benar-salah!</p>
+                </div>
+                <div class="card game-card mq-game-card" id="moodGameCard">
+                    <div class="mq-topbar">
+                        <span class="mq-chip"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span> Mood Quest</span>
+                        <div class="mq-stats">
+                            <span><span class="material-symbols-rounded" translate="no" aria-hidden="true">star</span> Skor 0</span>
+                            <span class="mq-dot"></span>
+                            <span id="moodProgress">Situasi 1/4</span>
+                        </div>
+                    </div>
+                    <div class="mq-progress-track"><div class="mq-progress-fill" style="width:0%;"></div></div>
+                    <div class="mq-situation" id="moodSituation"></div>
+                    <div class="mq-opts" id="moodOpts"></div>
+                    <div class="mq-feedback" id="moodFeedback" style="display:none;"></div>
+                </div>
+                <div class="empathy-note mq-empathy"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Perasaanmu valid. Jika beban terasa berat, bicara dengan orang tepercaya atau psikolog kami adalah langkah yang baik.</div>
+            </div>
+        </section>
+
+        <!-- ===== PERGAULAN BEBAS (GAME VERSION) ===== -->
+        <section class="page" id="page-pergaulanbebas">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:#FFF1E0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span></div>
+                    <h2 class="section-title" style="margin:0;">Pergaulan Bebas</h2>
+                </div>
+                <p class="section-sub">Kenali risiko pergaulan bebas dan latih dirimu memilih tindakan yang sehat dan aman.</p>
+                <div class="icon-cards" data-icon-group="pergaulanbebas-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">groups</span></div><h4>Kenali pengaruh teman</h4><p>Tekanan teman sebaya dan cara mengatakan "tidak".</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">explore</span></div><h4>Ambil keputusan yang aman</h4><p>Menjaga batasan diri dan mengenali situasi berisiko sejak awal.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Pergaulan Bebas</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Mengenali pengaruh lingkungan pertemanan.</li>
+                    <li><span class="n">2</span>Tekanan dari teman sebaya dan cara mengatakan "tidak".</li>
+                    <li><span class="n">3</span>Menjaga batasan diri dalam pergaulan.</li>
+                    <li><span class="n">4</span>Mengambil keputusan yang aman.</li>
+                    <li><span class="n">5</span>Mengenali situasi berisiko sejak awal.</li>
+                    <li><span class="n">6</span>Mencari bantuan dari orang yang dipercaya.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Kamu berhak menolak dan menentukan sendiri apa yang aman dan nyaman untukmu. Jika butuh bantuan, tim konsultasi kami selalu terbuka.</div>
+                <div class="card mq-crosslink-card" onclick="goTo('pergaulanbebasuji')" role="button" tabindex="0" onkeypress="if(event.key==='Enter')goTo('pergaulanbebasuji')">
+                    <div class="mq-crosslink-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span></div>
+                    <div class="mq-crosslink-body">
+                        <h5>Coba Mini Game Pemahaman Pergaulan Bebas</h5>
+                        <p>Mini game terpisah untuk melatih responsmu lewat skenario kehidupan remaja.</p>
+                    </div>
+                    <span class="material-symbols-rounded mq-crosslink-arrow" translate="no" aria-hidden="true">arrow_forward</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MINI GAME PERGAULAN BEBAS (MINI GAME TERPISAH — BUKAN BAGIAN MATERI) ===== -->
+        <section class="page uji-page" id="page-pergaulanbebasuji">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Beranda Edukasi</button>
+                <div class="eyebrow" style="text-align:center;display:flex;justify-content:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Game Challenge</div>
+                <h2 class="section-title" style="text-align:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span> Pemahaman Pergaulan Bebas</h2>
+                <p class="section-sub" style="margin:0 auto 32px;text-align:center;">Baca skenario kehidupan remaja, lalu pilih respons yang paling sehat dan aman.</p>
+                <div class="card game-card" id="pergaulanBebasGameCard">
+                    <span class="game-tag">Pemahaman Pergaulan Bebas</span>
+                    <div class="game-progress" id="pergaulanBebasGameProgress">Situasi 1 dari 5</div>
+                    <div class="game-situation" id="pergaulanBebasSituation"></div>
+                    <div class="game-opts" id="pergaulanBebasOpts"></div>
+                    <div class="game-feedback" id="pergaulanBebasFeedback" style="display:none;"></div>
+                </div>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Kamu berhak menolak dan menentukan sendiri apa yang aman dan nyaman untukmu. Jika butuh bantuan, tim konsultasi kami selalu terbuka.</div>
+            </div>
+        </section>
+
+        <!-- ===== LITERASI AI & DEEPFAKE ===== -->
+        <section class="page" id="page-ai">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:#EFECFE;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_toy</span></div>
+                    <h2 class="section-title" style="margin:0;">Literasi AI &amp; Deepfake</h2>
+                </div>
+                <p class="section-sub">Kenali cara kerja AI generatif, risiko deepfake, dan etika penggunaannya agar kamu tidak mudah tertipu atau menjadi korban.</p>
+                <div class="icon-cards" data-icon-group="ai-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">visibility</span></div><h4>Kenali ciri deepfake</h4><p>Gerakan wajah kaku, kedipan mata tidak wajar, dan pencahayaan tidak konsisten.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span></div><h4>Langkah aman jika jadi korban</h4><p>Simpan bukti, jangan sebarkan, dan laporkan.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Literasi AI &amp; Deepfake</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Apa itu kecerdasan buatan (AI) dan bagaimana AI dapat membuat gambar, suara, atau video.</li>
+                    <li><span class="n">2</span>Apa itu deepfake — konten wajah atau suara palsu yang dibuat menyerupai seseorang tanpa izin.</li>
+                    <li><span class="n">3</span>Ciri-ciri umum konten deepfake: gerakan wajah kaku, kedipan mata tidak wajar, pencahayaan tidak konsisten, dan suara yang terdengar datar.</li>
+                    <li><span class="n">4</span>Risiko deepfake bagi remaja, termasuk pencemaran nama baik dan penipuan identitas.</li>
+                    <li><span class="n">5</span>Etika penggunaan AI — tidak menyalahgunakan teknologi untuk memalsukan atau merugikan orang lain.</li>
+                    <li><span class="n">6</span>Langkah aman jika menemukan atau menjadi korban konten deepfake: simpan bukti, jangan sebarkan, dan laporkan.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Ragu suatu konten asli atau palsu? Tidak apa-apa untuk bertanya ke RANA AI atau orang dewasa terpercaya sebelum memercayainya.</div>
+                <div class="card mq-crosslink-card" onclick="goTo('aiuji')" role="button" tabindex="0" onkeypress="if(event.key==='Enter')goTo('aiuji')">
+                    <div class="mq-crosslink-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span></div>
+                    <div class="mq-crosslink-body">
+                        <h5>Coba Asli atau Deepfake?</h5>
+                        <p>Mini game terpisah untuk menguji kejelianmu mengenali konten deepfake lewat 4 kasus.</p>
+                    </div>
+                    <span class="material-symbols-rounded mq-crosslink-arrow" translate="no" aria-hidden="true">arrow_forward</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ASLI ATAU DEEPFAKE? (MINI GAME TERPISAH — BUKAN BAGIAN MATERI) ===== -->
+        <section class="page uji-page" id="page-aiuji">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Beranda Edukasi</button>
+                <div class="eyebrow" style="text-align:center;display:flex;justify-content:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sports_esports</span> Game Challenge</div>
+                <h2 class="section-title" style="text-align:center;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_toy</span> Asli atau Deepfake?</h2>
+                <p class="section-sub" style="margin:0 auto 32px;text-align:center;">Baca ciri-ciri pada tiap kasus, lalu tebak apakah konten tersebut asli atau deepfake.</p>
+                <div class="card game-card" id="aiGameCard">
+                    <span class="game-tag">Asli atau Deepfake?</span>
+                    <div class="game-progress" id="aiProgress">Kasus 1 dari 4</div>
+                    <div class="game-situation" id="aiSituation"></div>
+                    <div class="game-opts" id="aiOpts"></div>
+                    <div class="game-feedback" id="aiFeedback" style="display:none;"></div>
+                </div>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Ragu suatu konten asli atau palsu? Tidak apa-apa untuk bertanya ke RANA AI atau orang dewasa terpercaya sebelum memercayainya.</div>
+            </div>
+        </section>
+
+        <!-- ===== ORTU: PENDAMPINGAN REMAJA ===== -->
+        <section class="page" id="page-ortu">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--green-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">diversity_3</span></div>
+                    <h2 class="section-title" style="margin:0;">Pendampingan Remaja untuk Orang Tua</h2>
+                </div>
+                <p class="section-sub">Panduan bagi orang tua untuk hadir dan mendampingi remaja secara emosional saat menghadapi masa sulit.</p>
+                <div class="icon-cards" data-icon-group="ortu-utama">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">flag</span></div><h4>Mengenali tanda anak butuh perhatian</h4><p>Perubahan perilaku yang perlu diperhatikan orang tua.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">volunteer_activism</span></div><h4>Menjadi pendamping yang tenang</h4><p>Cara bersikap saat anak sedang menghadapi masa sulit.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Pendampingan Remaja</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Peran orang tua sebagai pendamping, bukan penghakim, saat anak menghadapi masalah apa pun.</li>
+                    <li><span class="n">2</span>Mengenali tanda perubahan perilaku — menarik diri, murung, cemas berlebihan, atau perubahan pola tidur dan makan.</li>
+                    <li><span class="n">3</span>Cara tetap tenang dan tidak panik saat anak pertama kali bercerita tentang masalah yang dialaminya.</li>
+                    <li><span class="n">4</span>Memberi rasa aman terlebih dahulu sebelum bertanya detail kejadian yang dialami anak.</li>
+                    <li><span class="n">5</span>Mendampingi anak mencari bantuan profesional yang sesuai, seperti psikolog atau konselor sekolah.</li>
+                    <li><span class="n">6</span>Menjaga kestabilan emosi diri sendiri sebagai orang tua agar bisa terus hadir secara konsisten untuk anak.</li>
+                    <li><span class="n">7</span>Kapan orang tua sendiri perlu mencari dukungan atau konsultasi profesional.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Tidak ada orang tua yang sempurna. Yang terpenting adalah tetap hadir, mau belajar, dan menjadi tempat aman pertama bagi anak.</div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-primary" onclick="goTo('konsultasi')">Konsultasi Khusus Orang Tua</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ORTU: KOMUNIKASI ===== -->
+        <section class="page" id="page-ortukomunikasi">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--green-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span></div>
+                    <h2 class="section-title" style="margin:0;">Komunikasi Orang Tua &amp; Anak</h2>
+                </div>
+                <p class="section-sub">Panduan membangun kebiasaan komunikasi terbuka dan mendengarkan aktif sehari-hari dengan remaja.</p>
+                <div class="icon-cards" data-icon-group="ortu-komunikasi">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">record_voice_over</span></div><h4>Membuka percakapan</h4><p>Cara memulai obrolan tanpa membuat anak merasa diinterogasi.</p></div>
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">hearing</span></div><h4>Mendengarkan aktif</h4><p>Memberi perhatian penuh saat anak sedang bercerita.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Komunikasi Orang Tua &amp; Anak</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Cara membuka percakapan tentang topik sensitif tanpa membuat anak merasa diinterogasi.</li>
+                    <li><span class="n">2</span>Menggunakan bahasa yang sesuai usia anak agar pesan tersampaikan dengan jelas.</li>
+                    <li><span class="n">3</span>Mendengarkan secara aktif — memberi perhatian penuh tanpa memotong atau langsung menghakimi.</li>
+                    <li><span class="n">4</span>Menghindari reaksi berlebihan seperti marah, panik, atau menyalahkan saat anak bercerita hal sulit.</li>
+                    <li><span class="n">5</span>Memilih waktu dan suasana yang tepat agar anak merasa nyaman untuk terbuka.</li>
+                    <li><span class="n">6</span>Menjadikan komunikasi terbuka sebagai kebiasaan rutin sehari-hari, bukan percakapan sekali waktu.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Tidak ada orang tua yang sempurna. Yang terpenting adalah tetap hadir, mau belajar, dan menjadi tempat aman pertama bagi anak.</div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-primary" onclick="goTo('konsultasi')">Konsultasi Khusus Orang Tua</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ORTU: PENGAWASAN DIGITAL ===== -->
+        <section class="page" id="page-ortupengawasan">
+            <div class="wrap section">
+                <button class="back-link" onclick="goTo('edukasi')">← Kembali ke Edukasi</button>
+                <div class="module-hero">
+                    <div style="width:52px;height:52px;background:var(--green-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">visibility</span></div>
+                    <h2 class="section-title" style="margin:0;">Pengawasan Digital</h2>
+                </div>
+                <p class="section-sub">Panduan keamanan digital keluarga dan cara mengenali risiko digital yang dihadapi anak.</p>
+                <div class="icon-cards" data-icon-group="ortu-pengawasan">
+                    <div class="card icon-card"><div class="ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span></div><h4>Cyber safety keluarga</h4><p>Keamanan digital yang bisa diterapkan bersama di rumah.</p></div>
+                </div>
+                <h3 class="subsection-title"><span class="material-symbols-rounded" translate="no" aria-hidden="true">auto_stories</span> Materi Pengawasan Digital</h3>
+                <ol class="content-list">
+                    <li><span class="n">1</span>Menetapkan aturan penggunaan gawai dan media sosial secara bersama, bukan sepihak.</li>
+                    <li><span class="n">2</span>Mengenali risiko digital pada anak: grooming, sextortion, dan penyebaran konten pribadi tanpa izin.</li>
+                    <li><span class="n">3</span>Memantau aktivitas digital anak secara wajar tanpa melanggar rasa percaya yang sudah dibangun.</li>
+                    <li><span class="n">4</span>Mengenali tanda anak mengalami masalah digital, seperti menarik diri saat memakai gawai atau menyembunyikan layar.</li>
+                    <li><span class="n">5</span>Mengaktifkan pengaturan privasi, kata sandi kuat, dan verifikasi dua langkah pada akun anak.</li>
+                    <li><span class="n">6</span>Mengenalkan fitur laporkan dan blokir di aplikasi yang digunakan anak sehari-hari.</li>
+                </ol>
+                <div class="empathy-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Tidak ada orang tua yang sempurna. Yang terpenting adalah tetap hadir, mau belajar, dan menjadi tempat aman pertama bagi anak.</div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-primary" onclick="goTo('konsultasi')">Konsultasi Khusus Orang Tua</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== KONSULTASI ===== -->
+        <section class="page" id="page-konsultasi">
+            <div class="wrap section">
+                <div class="konsul-hero">
+                    <div class="konsul-hero-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span></div>
+                    <div class="eyebrow" style="justify-content:center;">Konsultasi</div>
+                    <h2 class="section-title">Ruang Konsultasi NARA</h2>
+                    <p class="section-sub" style="margin-left:auto;margin-right:auto;max-width:640px;">Pilih pendamping yang tepat: Guru BK untuk bantuan langsung di sekolah, atau Layanan Psikologis untuk konsultasi profesional. Semua sesi rahasia dan bisa pakai nama samaran.</p>
+                    <div class="konsul-hero-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Kamu tidak sendirian — pilih pendamping sesuai kebutuhanmu.</div>
+                </div>
+
+                <div class="category-cards">
+                    <div class="card category-card" onclick="openCounselorSelect('gurubk')">
+                        <div class="category-card-top">
+                            <div class="category-card-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">school</span></div>
+                            <span class="category-card-flag">Pendampingan Cepat</span>
+                        </div>
+                        <h4>Guru BK</h4>
+                        <div class="category-card-tag">Konseling &amp; Pendampingan Sekolah</div>
+                        <p class="category-card-desc">Dapatkan bantuan terkait masalah sekolah, belajar, pertemanan, dan konflik.</p>
+                        <ul class="category-card-list">
+                            <li>Masalah di lingkungan sekolah</li>
+                            <li>Kesulitan belajar</li>
+                            <li>Pergaulan dan pertemanan</li>
+                            <li>Konflik yang butuh pendampingan sekolah</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline category-card-btn" onclick="event.stopPropagation();openCounselorSelect('gurubk')">Pilih Guru BK →</button>
+                    </div>
+                    <div class="card category-card" onclick="openHealingChoice()">
+                        <div class="category-card-top">
+                            <div class="category-card-ic category-card-ic-alt"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span></div>
+                            <span class="category-card-flag">Privasi Dijaga</span>
+                        </div>
+                        <h4>Layanan Psikologis</h4>
+                        <div class="category-card-tag">Dukungan Psikologis Healing119</div>
+                        <p class="category-card-desc">Bicarakan perasaan, stres, dan masalah pribadi bersama layanan psikologis secara rahasia.</p>
+                        <ul class="category-card-list">
+                            <li>Perasaan dan kondisi yang mengganggu aktivitas</li>
+                            <li>Arahan profesional yang tepat</li>
+                            <li>Konsultasi masalah pribadi lebih mendalam</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline category-card-btn" onclick="event.stopPropagation();openHealingChoice()">Pilih Layanan Psikologis →</button>
+                    </div>
+                </div>
+
+                <div class="card privacy-card">
+                    <div class="privacy-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span></div>
+                    <div>
+                        <h4>Privasi dan Kenyamananmu Penting</h4>
+                        <p>NARA dirancang untuk membantu kamu menemukan akses pendampingan dan informasi yang tepat. Bagikan informasi pribadi seperlunya dan gunakan layanan konsultasi secara bertanggung jawab.</p>
+                        <div class="privacy-tags"><span><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span> Privasi</span><span><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span> Keamanan</span><span><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span> Pendampingan</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== RANA AI ===== -->
+        <section class="page" id="page-rana">
+            <div class="wrap section">
+                <div class="eyebrow">Teman belajar aman</div>
+                <h2 class="section-title">Tanya RANA AI</h2>
+                <p class="section-sub">RANA membantu menjelaskan materi dan menjawab pertanyaan umum — tanpa menghakimi, dan selalu mengarahkanmu ke bantuan profesional bila diperlukan.</p>
+                <div class="privacy-note">
+                    <span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span> Percakapan ini tersimpan sementara di layar perangkatmu selama sesi berlangsung dan akan hilang saat kamu menutup/refresh halaman. RANA AI bukan psikolog, konselor, atau layanan darurat — jangan masukkan informasi pribadi yang tidak perlu (nama lengkap, alamat, kontak orang lain).
+                </div>
+                <div class="rana-cta-wrap">
+                    <button class="btn btn-primary" onclick="goTo('konsultasi')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span> Konsultasi dengan Layanan Psikologis</button>
+                </div>
+
+                <div class="chat-shell">
+                    <div class="card chat-side" id="ranaSidebar">
+                        <h5>Contoh pertanyaan cepat</h5>
+                        <button class="qs" onclick="askRana('Apa yang dimaksud pergaulan bebas?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Apa yang dimaksud pergaulan bebas?</button>
+                        <button class="qs" onclick="askRana('Bagaimana cara menjaga batasan dalam hubungan?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">favorite</span> Cara menjaga batasan dalam hubungan?</button>
+                        <button class="qs" onclick="askRana('Bagaimana menjaga privasi di media sosial?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span> Menjaga privasi di media sosial?</button>
+                        <button class="qs" onclick="askRana('Bagaimana jika ada yang memaksa saya?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">warning</span> Jika ada yang memaksa saya?</button>
+                        <button class="qs" onclick="askRana('Apa itu hubungan yang tidak sehat?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span> Apa itu hubungan tidak sehat?</button>
+                        <button class="qs" onclick="askRana('Bagaimana menghadapi tekanan dari teman?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">group</span> Menghadapi tekanan dari teman?</button>
+                        <button class="qs" onclick="askRana('Saya mengalami penyebaran konten pribadi')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sos</span> Konten pribadiku disebarkan</button>
+                        <button class="qs" onclick="askRana('Saya sering dibully teman-teman')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">sentiment_very_dissatisfied</span> Saya sering dibully</button>
+                        <button class="qs" onclick="askRana('Saya merasa cemas dan sedih terus')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble_outline</span> Merasa cemas/sedih terus</button>
+                        <button class="qs" onclick="askRana('Saya kecanduan gadget dan susah lepas hp')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smartphone</span> Kecanduan gadget</button>
+                        <button class="qs" onclick="askRana('Saya sedang ada masalah keluarga dengan orang tua')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">home</span> Masalah dengan orang tua</button>
+                        <button class="qs" onclick="askRana('Saya stres karena tugas sekolah menumpuk')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">menu_book</span> Stres tugas sekolah</button>
+                        <button class="qs" onclick="askRana('Bagaimana cara mendukung teman yang sedang depresi?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span> Mendukung teman depresi</button>
+                        <button class="qs" onclick="askRana('Apa itu consent dalam hubungan?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span> Apa itu consent?</button>
+                        <button class="qs" onclick="askRana('Bagaimana cara mengatasi rasa kesepian?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">volunteer_activism</span> Mengatasi kesepian</button>
+                        <button class="qs" onclick="askRana('Saya baru putus cinta dan sedih banget')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">heart_broken</span> Baru putus cinta</button>
+                        <button class="qs" onclick="askRana('Apa itu sextortion?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">encrypted</span> Apa itu sextortion?</button>
+                        <button class="qs" onclick="askRana('Bagaimana cara melindungi diri dari grooming online?')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span> Melindungi diri dari grooming</button>
+                        <button class="qs" onclick="askRana('Saya sering membandingkan diri dengan orang lain di medsos')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smartphone</span> Medsos bikin insecure</button>
+                        <button class="qs" onclick="askRana('Orang tua saya sering bertengkar, saya bingung')"><span class="material-symbols-rounded" translate="no" aria-hidden="true">home</span> Orang tua bertengkar</button>
+                    </div>
+
+                    <div class="card chat-window">
+                        <div class="chat-head">
+                            <div class="bot"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_toy</span></div>
+                            <div><h5>RANA AI</h5><span>● Teman Belajar Aman</span></div>
+                        </div>
+                        <div class="chat-body" id="chatBody">
+                            <div class="msg bot">Halo, aku RANA! <span class="material-symbols-rounded" translate="no" aria-hidden="true">waving_hand</span> Teman belajar amanmu. Kamu bisa bertanya tentang pergaulan bebas, hubungan sehat, consent, keamanan digital, atau masalah yang sedang kamu hadapi.</div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="Ketik pertanyaanmu..." onkeydown="if(event.key==='Enter')sendChat()">
+                            <button onclick="sendChat()" aria-label="Kirim"><span class="material-symbols-rounded" translate="no" aria-hidden="true">send</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DATA ===== -->
+        <section class="page" id="page-data">
+            <div class="wrap section">
+
+                <!-- ===== DATA DK 2025-2026 ===== -->
+                <div class="dk-section" id="dataDKSection">
+                    <div class="dk-divider"><span>Data Dispensasi Nikah 2025–2026</span></div>
+
+                    <!-- HEADER (diisi oleh initDataDK() dari config/dataDK.js) -->
+                    <div class="dk-header" id="dataDKHeader"></div>
+
+                    <!-- PEMILIH TAHUN -->
+                    <div id="dataDKYearTabs"></div>
+
+                    <!-- RINGKASAN + STATUS PERKARA + GRAFIK (berubah sesuai tahun terpilih) -->
+                    <div id="dataDKPanel"></div>
+
+                    <!-- PERBANDINGAN TAHUN 2025 vs 2026 (statis, tidak mengikuti tab tahun) -->
+                    <div id="dataDKCompare"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== TIM & KONTAK ===== -->
+        <section class="page" id="page-tim">
+            <div class="wrap section">
+                <div class="section-head" style="text-align:center;display:flex;flex-direction:column;align-items:center;">
+                    <div class="eyebrow" style="justify-content:center;">Tentang NARA</div>
+                    <h2 class="section-title">Tim Pengembang &amp; Kontak</h2>
+                    <p class="section-sub" style="margin-left:auto;margin-right:auto;">Kenali tim di balik NARA dan cara menghubungi kami, terpisah dari informasi hak cipta platform.</p>
+                </div>
+
+                <div class="card about-card">
+                    <h4><span class="material-symbols-rounded" translate="no" aria-hidden="true">group</span> Tim Pengembang</h4>
+                    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin:14px 0 4px;">Penata Program</div>
+                    <div class="team-row"><div class="team-avatar"><span class="material-symbols-rounded" translate="no" aria-hidden="true">computer</span></div><div><div style="font-weight:700;font-size:.9rem;">Adnan Al Mukhashofah</div><div class="role">Pengembangan sistem dan fitur NARA</div></div></div>
+                    <div class="team-row"><div class="team-avatar"><span class="material-symbols-rounded" translate="no" aria-hidden="true">computer</span></div><div><div style="font-weight:700;font-size:.9rem;">Alvin Candrawinata</div><div class="role">Pengembangan sistem dan fitur NARA</div></div></div>
+                    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin:14px 0 4px;">Penata Grafis</div>
+                    <div class="team-row"><div class="team-avatar"><span class="material-symbols-rounded" translate="no" aria-hidden="true">palette</span></div><div><div style="font-weight:700;font-size:.9rem;">Jimmy Putra Isnandar</div><div class="role">Desain visual dan pengalaman pengguna</div></div></div>
+                    <div class="team-row"><div class="team-avatar"><span class="material-symbols-rounded" translate="no" aria-hidden="true">palette</span></div><div><div style="font-weight:700;font-size:.9rem;">Krisna Ardy Valentino</div><div class="role">Desain visual dan pengalaman pengguna</div></div></div>
+                </div>
+
+                <div class="card mentor-card">
+                    <div class="mentor-icon"><span class="material-symbols-rounded" translate="no" aria-hidden="true">explore</span></div>
+                    <div>
+                        <div class="mentor-heading">Pembimbing</div>
+                        <h3 class="mentor-name">Dewi Sholekah, S.Kom.</h3>
+                        <p class="mentor-subtitle">Pendampingan konten dan arahan proyek</p>
+                    </div>
+                </div>
+
+                <div class="card about-card">
+                    <h4><span class="material-symbols-rounded" translate="no" aria-hidden="true">call</span> Kontak Pengembang NARA</h4>
+                    <div class="contact-card-grid">
+                        <a class="contact-card" href="mailto:supportnaraa@gmail.com">
+                            <div class="contact-card-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">mail</span></div>
+                            <div class="contact-card-body">
+                                <div class="contact-card-title">Email</div>
+                                <div class="contact-card-sub">supportnaraa@gmail.com</div>
+                            </div>
+                            <div class="contact-card-arrow">Hubungi →</div>
+                        </a>
+                        <a class="contact-card" href="https://instagram.com/ruangedunara.id" target="_blank" rel="noopener">
+                            <div class="contact-card-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">photo_camera</span></div>
+                            <div class="contact-card-body">
+                                <div class="contact-card-title">Instagram</div>
+                                <div class="contact-card-sub">@ruangedunara.id</div>
+                            </div>
+                            <div class="contact-card-arrow">Hubungi →</div>
+                        </a>
+                        <a class="contact-card" href="https://youtube.com/@nara-edukasii?si=5H8xKIUN-EKtViW4" target="_blank" rel="noopener">
+                            <div class="contact-card-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_display</span></div>
+                            <div class="contact-card-body">
+                                <div class="contact-card-title">YouTube</div>
+                                <div class="contact-card-sub">NARA — Navigasi Aman Remaja</div>
+                            </div>
+                            <div class="contact-card-arrow">Hubungi →</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ===== HAK CIPTA (ABOUT) =====
+                     Elemen ini WAJIB ada karena diisi otomatis oleh
+                     enforceNaraCopyright() di script.js (mencari id
+                     "hakCiptaText"). Sebelumnya elemen ini tidak pernah
+                     ditambahkan ke HTML sehingga teks hak cipta di halaman
+                     About tidak pernah muncul. -->
+                <div class="about-page-footer" id="hakCiptaText"></div>
+
+            </div>
+        </section>
+
+        <!-- ===== KRITIK & SARAN ===== -->
+        <section class="page" id="page-lapor">
+            <div class="wrap section lapor-wrap">
+
+                <div class="lapor-hero">
+                    <div class="lapor-hero-ic"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lightbulb</span></div>
+                    <h2 class="section-title" style="text-align:center;">Kritik &amp; Saran</h2>
+                    <p class="section-sub" style="text-align:center;margin-left:auto;margin-right:auto;max-width:480px;">Punya kritik atau saran untuk NARA? Sampaikan kepada tim developer agar NARA dapat terus berkembang menjadi lebih baik.</p>
+                </div>
+
+                <div class="card lapor-form-card">
+                    <div class="form-field">
+                        <label for="laporIsi">Kritik atau Saran</label>
+                        <textarea id="laporIsi" rows="6" maxlength="2000" placeholder="Tulis kritik atau saran kamu di sini..."></textarea>
+                        <div class="lapor-field-error" id="laporIsiError" style="display:none;">Silakan tuliskan kritik atau saran terlebih dahulu.</div>
+                    </div>
+                    <button type="button" class="btn btn-primary lapor-submit-btn" id="laporSubmitBtn" onclick="submitLaporReport()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">mail</span> Kirim Kritik &amp; Saran</button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER (Beranda, Dashboard & About) ===== -->
+    <footer>
+        <div class="wrap" style="text-align:center;">
+            <div class="logo" style="justify-content:center;">
+                <div class="mark">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="white" stroke-width="1.4"/><path class="needle" d="M12 6.5L14 12L12 17.5L10 12L12 6.5Z" fill="white"/></svg>
+                </div>
+                <div data-brand-name>NARA</div>
+            </div>
+            <p class="tagline" style="margin-left:auto;margin-right:auto;">NARA adalah navigasi aman untuk masa depan remaja.</p>
+            <div class="disclaimer">NARA adalah platform edukasi dan akses bantuan. Informasi di dalam platform bukan pengganti diagnosis atau layanan profesional. Untuk kondisi yang membutuhkan penanganan segera, hubungi bantuan profesional atau layanan darurat yang sesuai.</div>
+            <div class="footer-bottom">
+                <span id="footerCopyright" data-locked="true"></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheets()"></div>
+    <div class="nav-sheet" id="sheet-bantuan">
+        <div class="nav-sheet-handle"></div>
+        <div class="nav-sheet-title"><span class="nav-sheet-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.17 0-2.29-.19-3.34-.55L4 21l1.62-3.87A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg></span>Bantuan</div>
+        <button data-page="rana" onclick="goTo('rana')"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v3"/><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M9 13v1"/><path d="M15 13v1"/><path d="M4 14H2.5"/><path d="M21.5 14H20"/><path d="M9.5 18h5"/></svg></span><span class="menu-label">Tanya RANA AI</span></button>
+        <button data-page="konsultasi" onclick="goTo('konsultasi')"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v6.5a5 5 0 0 0 10 0V3"/><path d="M5 3H3.5"/><path d="M15 3h-1.5"/><path d="M10 14.5a6 6 0 0 0 11-3.5V10"/><circle cx="19.5" cy="16" r="2"/></svg></span><span class="menu-label">Konsultasi Guru BK &amp; Layanan Psikologis</span></button>
+        <button data-page="lapor" onclick="goTo('lapor')"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.6 1 1.4 1 2.3V16h6v-.2c0-.9.3-1.7 1-2.3A6 6 0 0 0 12 3Z"/></svg></span><span class="menu-label">Kritik &amp; Saran</span></button>
+    </div>
+
+    <nav class="bottom-nav" id="bottomNav" aria-label="Navigasi utama">
+        <button class="bottom-nav-btn active" aria-current="page" data-group="beranda" onclick="goTo('beranda')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V10"/><path d="M9.5 20v-5.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V20"/></svg></span>Beranda</button>
+        <button class="bottom-nav-btn" data-group="edukasi" onclick="goTo('edukasi')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c1.8-1 4-1.3 6-.8 1 .25 1.7.7 2 1V19c-.3-.3-1-.75-2-1-2-.5-4.2-.2-6 .8Z"/><path d="M21 5.5c-1.8-1-4-1.3-6-.8-1 .25-1.7.7-2 1V19c.3-.3 1-.75 2-1 2-.5 4.2-.2 6 .8Z"/></svg></span>Edukasi</button>
+        <button class="bottom-nav-btn" data-group="bantuan" onclick="toggleSheet('bantuan')" aria-label="Buka menu Bantuan: RANA AI, Konsultasi, dan Kritik & Saran" title="Bantuan"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.17 0-2.29-.19-3.34-.55L4 21l1.62-3.87A8.44 8.44 0 0 1 3.5 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg></span>Bantuan</button>
+        <button class="bottom-nav-btn" data-group="data" onclick="goTo('data')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V10"/><path d="M12 21V4"/><path d="M19 21v-7"/></svg></span>Data</button>
+        <button class="bottom-nav-btn" data-group="about" onclick="goTo('tim')"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.01"/></svg></span>About</button>
+    </nav>
+
+    <!-- ===== MODAL BOOKING ===== -->
+    <div class="modal-overlay" id="bookingModal" onclick="if(event.target===this)closeBooking()">
+        <div class="modal-box modal-box-lg">
+            <button class="modal-close" onclick="closeBooking()" aria-label="Tutup"><span class="material-symbols-rounded" translate="no" aria-hidden="true">close</span></button>
+            <h3 id="bookingPsyName">Booking Konsultasi</h3>
+            <div class="psy-name" id="bookingPsySpec"></div>
+
+            <!-- STEP 1: Pilih jenis pengguna -->
+            <div id="bookingUserTypeStep" class="usertype-step">
+                <div class="usertype-step-title">Siapa yang ingin melakukan konsultasi?</div>
+                <div class="usertype-grid">
+                    <button type="button" class="usertype-card" id="usertypeCardStudent" onclick="selectBookingUserType('student')">
+                        <span class="usertype-check material-symbols-rounded" aria-hidden="true">check_circle</span>
+                        <span class="usertype-ic material-symbols-rounded" aria-hidden="true">person</span>
+                        <span class="usertype-name">Saya Siswa</span>
+                        <span class="usertype-desc">Konsultasi pribadi dengan Guru BK atau Layanan Psikologis.</span>
+                    </button>
+                    <button type="button" class="usertype-card" id="usertypeCardParent" onclick="selectBookingUserType('parent')">
+                        <span class="usertype-check material-symbols-rounded" aria-hidden="true">check_circle</span>
+                        <span class="usertype-ic material-symbols-rounded" aria-hidden="true">family_restroom</span>
+                        <span class="usertype-name">Orang Tua / Wali</span>
+                        <span class="usertype-desc">Konsultasi mengenai kondisi, perkembangan, atau permasalahan anak.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Form booking (muncul setelah jenis pengguna dipilih) -->
+            <div id="bookingFormArea" style="display:none;">
+                <div class="booking-form-header">
+                    <button type="button" class="usertype-change-btn" onclick="backToBookingUserType()" aria-label="Ganti jenis pengguna"><span class="material-symbols-rounded" aria-hidden="true">arrow_back</span></button>
+                    <div class="booking-form-header-title" id="bookingTypeLabel">Booking Konsultasi Siswa</div>
+                </div>
+
+                <!-- FORM SISWA -->
+                <div id="studentBookingForm">
+                    <div class="modal-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span> <span>Untuk menjaga privasimu, NARA telah membuat nama samaran untuk konsultasi ini (<b id="bookingAlias"></b>). Kamu tidak wajib memberikan nama asli.</span></div>
+                    <div class="booking-form">
+                        <div class="form-field">
+                            <label>Identitas saat konsultasi</label>
+                            <div class="identity-toggle">
+                                <label class="identity-option"><input type="radio" name="bookIdentityMode" value="alias" checked onchange="selectIdentityMode('alias')"> Gunakan nama samaran</label>
+                                <label class="identity-option"><input type="radio" name="bookIdentityMode" value="real" onchange="selectIdentityMode('real')"> Gunakan nama asli</label>
+                            </div>
+                        </div>
+                        <div class="form-field" id="bookNamaField">
+                            <label for="bookNama">Nama Asli — Opsional</label>
+                            <input type="text" id="bookNama" placeholder="Kosongkan jika ingin menggunakan nama samaran">
+                            <div class="field-hint">Nama asli tidak wajib diisi.</div>
+                        </div>
+                        <div class="form-field"><label for="bookKelas">Kelas</label><input type="text" id="bookKelas" placeholder="Contoh: XI TKJ"></div>
+                        <div class="form-field"><label for="bookTopik">Topik yang ingin dikonsultasikan</label><input type="text" id="bookTopik" placeholder="Contoh: Masalah pertemanan"></div>
+                    </div>
+                </div>
+
+                <!-- FORM ORANG TUA / WALI -->
+                <div id="parentBookingForm" style="display:none;">
+                    <div class="modal-note"><span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span> <span>Informasi konsultasi digunakan seperlunya untuk membantu proses pendampingan. Hindari memasukkan data pribadi anak yang tidak diperlukan.</span></div>
+                    <div class="booking-form">
+                        <div class="form-field">
+                            <label for="bookParentNama">Nama Orang Tua / Wali</label>
+                            <input type="text" id="bookParentNama" placeholder="Masukkan nama orang tua / wali">
+                            <div class="lapor-field-error" id="bookParentNamaError" style="display:none;">Nama orang tua/wali perlu diisi.</div>
+                        </div>
+                        <div class="form-field">
+                            <label for="bookParentHubungan">Hubungan dengan Anak</label>
+                            <select id="bookParentHubungan">
+                                <option value="">Pilih hubungan</option>
+                                <option value="Ayah">Ayah</option>
+                                <option value="Ibu">Ibu</option>
+                                <option value="Wali">Wali</option>
+                                <option value="Kakak">Kakak</option>
+                                <option value="Keluarga">Keluarga</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                            <div class="lapor-field-error" id="bookParentHubunganError" style="display:none;">Hubungan dengan anak perlu diisi.</div>
+                        </div>
+                        <div class="form-field">
+                            <label for="bookParentAnakNama">Nama Anak — Opsional</label>
+                            <input type="text" id="bookParentAnakNama" placeholder="Nama anak">
+                            <div class="field-hint">Kosongkan jika ingin menjaga identitas anak.</div>
+                        </div>
+                        <div class="form-field"><label for="bookParentAnakKelas">Kelas Anak</label><input type="text" id="bookParentAnakKelas" placeholder="Contoh: XI TKJ"></div>
+                        <div class="form-field"><label for="bookParentTopik">Topik Konsultasi</label><input type="text" id="bookParentTopik" placeholder="Contoh: Perubahan perilaku anak, masalah pergaulan, penggunaan media sosial, kesehatan mental, dll."></div>
+                        <div class="form-field">
+                            <label>Kategori Permasalahan — Opsional</label>
+                            <div class="kategori-chip-row">
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Pergaulan', this)">Pergaulan</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Masalah sekolah', this)">Masalah sekolah</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Kesehatan mental', this)">Kesehatan mental</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Perilaku anak', this)">Perilaku anak</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Hubungan orang tua & anak', this)">Hubungan orang tua &amp; anak</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Keamanan digital', this)">Keamanan digital</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Revenge porn / penyalahgunaan konten pribadi', this)">Revenge porn / penyalahgunaan konten pribadi</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Masalah hubungan / pacaran', this)">Masalah hubungan / pacaran</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Bullying', this)">Bullying</button>
+                                <button type="button" class="chip kategori-chip" onclick="toggleParentKategori('Lainnya', this)">Lainnya</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FIELD BERSAMA: jadwal, metode, cerita/pesan -->
+                <div class="booking-form">
+                    <div class="form-row-2">
+                        <div class="form-field"><label for="bookTanggal"><span class="material-symbols-rounded field-label-ic" aria-hidden="true">calendar_month</span>Tanggal</label><input type="date" id="bookTanggal" onchange="clearBookingDateError()"></div>
+                        <div class="form-field"><label for="bookWaktu"><span class="material-symbols-rounded field-label-ic" aria-hidden="true">schedule</span>Waktu</label><input type="time" id="bookWaktu" onchange="clearBookingDateError()"></div>
+                    </div>
+                    <div class="lapor-field-error" id="bookTanggalError" style="display:none;">Tanggal &amp; waktu konsultasi tidak boleh sebelum hari dan jam sekarang. Silakan pilih jadwal yang belum lewat.</div>
+                    <div class="form-field">
+                        <label>Metode Konsultasi</label>
+                        <div class="method-toggle">
+                            <button type="button" class="method-btn active" data-method="Langsung" onclick="selectBookingMethod('Langsung', this)"><span class="material-symbols-rounded" aria-hidden="true">person_pin_circle</span>Langsung</button>
+                            <button type="button" class="method-btn" data-method="Online" onclick="selectBookingMethod('Online', this)"><span class="material-symbols-rounded" aria-hidden="true">videocam</span>Online</button>
+                        </div>
+                    </div>
+                    <div class="form-field"><label for="bookPesan" id="bookPesanLabel">Pesan tambahan (opsional)</label><textarea id="bookPesan" rows="3" placeholder="Ceritakan sedikit tentang yang ingin kamu bicarakan..."></textarea></div>
+                </div>
+
+                <div class="modal-note" style="margin-top:2px;"><span class="material-symbols-rounded" translate="no" aria-hidden="true">info</span> <span>Konsultasi via WhatsApp akan terhubung ke <b>WhatsApp Center resmi BK SMK Negeri 2 Magetan</b>, lalu diteruskan ke guru BK yang kamu pilih. Konsultasi via email tetap dikirim seperti biasa.</span></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-whatsapp" id="bookingWaBtn" onclick="sendBookingWa()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span> Konsultasi via WhatsApp Center BK</button>
+                    <button type="button" class="btn btn-outline" id="bookingEmailBtn" onclick="sendBookingEmail()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">mail</span> Booking via Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL PEMILIHAN KONSELOR ===== -->
+    <div class="modal-overlay" id="counselorModal" onclick="if(event.target===this)closeCounselorSelect()">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeCounselorSelect()" aria-label="Tutup"><span class="material-symbols-rounded" translate="no" aria-hidden="true">close</span></button>
+            <h3 id="counselorModalTitle">Pilih Konselor</h3>
+            <div class="psy-name" id="counselorModalSub"></div>
+            <div class="counselor-list" id="counselorList"></div>
+            <div class="counselor-info-panel" id="counselorInfoPanel" style="display:none;">
+                <div class="counselor-info-card">
+                    <div class="counselor-info-avatar" id="counselorInfoAvatar"><span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span></div>
+                    <div>
+                        <h5 id="counselorInfoName"></h5>
+                        <p id="counselorInfoRole"></p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="backToCounselorList()">← Ganti Pilihan</button>
+                    <button class="btn btn-primary" id="counselorBookBtn" onclick="confirmCounselorBooking()">Booking Konsultasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL LAYANAN PSIKOLOGIS (Healing119/SEJIWA) =====
+         Alur: tombol "Layanan Psikologis" -> STEP 1: pilih kategori
+         (Siswa / Orang Tua / Umum) -> STEP 2: halaman layanan/form sesuai
+         kategori terpilih, dengan tombol "Kembali" ke STEP 1.
+         Tidak ada pemilihan psikolog dan tidak ada form booking manual di
+         sini — kategori hanya menentukan pesan WhatsApp otomatis yang
+         dikirim ke Healing119/SEJIWA. -->
+    <div class="modal-overlay" id="healingModal" onclick="if(event.target===this)closeHealingChoice()">
+        <div class="modal-box modal-box-lg healing-modal-box">
+            <button class="modal-close" onclick="closeHealingChoice()" aria-label="Tutup"><span class="material-symbols-rounded" translate="no" aria-hidden="true">close</span></button>
+
+            <!-- STEP 1: PILIH KATEGORI PENGGUNA -->
+            <div class="healing-step" id="healingStep1">
+                <h3>Layanan Psikologis</h3>
+                <div class="psy-name">Dukungan Psikologis Healing119</div>
+
+                <div class="usertype-step">
+                    <div class="usertype-step-title">Kamu mengakses layanan ini sebagai?</div>
+                    <div class="healing-category-grid">
+                        <button type="button" class="healing-category-card" onclick="selectHealingCategory('student')">
+                            <span class="healing-category-ic-wrap"><span class="healing-category-ic material-symbols-rounded" aria-hidden="true">person</span></span>
+                            <span class="healing-category-name">Siswa</span>
+                            <span class="healing-category-desc">Curhat soal sekolah, pertemanan, atau perasaanmu secara rahasia.</span>
+                        </button>
+                        <button type="button" class="healing-category-card" onclick="selectHealingCategory('parent')">
+                            <span class="healing-category-ic-wrap"><span class="healing-category-ic material-symbols-rounded" aria-hidden="true">family_restroom</span></span>
+                            <span class="healing-category-name">Orang Tua</span>
+                            <span class="healing-category-desc">Pendampingan dalam menghadapi & mendukung kondisi anak.</span>
+                        </button>
+                        <button type="button" class="healing-category-card" onclick="selectHealingCategory('general')">
+                            <span class="healing-category-ic-wrap"><span class="healing-category-ic material-symbols-rounded" aria-hidden="true">groups</span></span>
+                            <span class="healing-category-name">Umum</span>
+                            <span class="healing-category-desc">Layanan dukungan psikologis terbuka untuk siapa saja.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <p style="margin-top:14px;font-size:0.78rem;color:var(--text-muted);">NARA membantu mengarahkan pengguna ke layanan Healing119/SEJIWA. NARA bukan penyelenggara layanan tersebut.</p>
+            </div>
+
+            <!-- STEP 2: LAYANAN/FORM SESUAI KATEGORI TERPILIH -->
+            <div class="healing-step healing-step-hidden" id="healingStep2">
+                <div class="booking-form-header">
+                    <div class="booking-form-header-title" id="healingStepTitle">Layanan Psikologis</div>
+                </div>
+
+                <div class="healing-service-card">
+                    <span class="healing-service-ic"><span class="material-symbols-rounded" id="healingServiceIcon" aria-hidden="true">person</span></span>
+                    <p class="healing-service-desc" id="healingServiceDesc"></p>
+                </div>
+
+                <div class="modal-note">
+                    <span class="material-symbols-rounded" translate="no" aria-hidden="true">lock</span>
+                    <span>Percakapan bersifat rahasia dan boleh memakai nama samaran. Dalam kondisi darurat yang mengancam keselamatan, segera hubungi <b>112</b>.</span>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-whatsapp" onclick="proceedHealingWhatsApp()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">chat</span> Lanjut ke WhatsApp Healing119</button>
+                    <button type="button" class="btn btn-outline" onclick="backToHealingChoice()"><span class="material-symbols-rounded" translate="no" aria-hidden="true">arrow_back</span> Kembali</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="config/applyConfig.js?v=20260920icon1"></script>
+    <script src="config/dataDK.js?v=20260905fix1"></script>
+    <script src="config/materiList.js?v=20260905fix1"></script>
+    <script src="config/naraIcons.js?v=20260905fix1"></script>
+    <script src="config/naraState.js?v=20260920daily1b"></script>
+    <script src="script.js?v=20260920daily4auto"></script>
+    <script src="config/naraHome.js?v=20260920daily2"></script>
+    <script src="config/naraCarousel.js?v=20260905fix1"></script>
+    <script src="config/renderDataDK.js?v=20260905fix1"></script>
+    <script src="config/renderCards.js?v=20260905fix1"></script>
+    <script src="config/footerLock.js?v=20260905fix1"></script>
+    <!-- Lapisan penyempurnaan visual: animasi masuk halus (aditif, tidak mengubah script.js) -->
+    <script src="config/nara-v2.js?v=20260905fix1"></script>
+    <!-- Liquid Glass navbar: deteksi swipe & auto-scroll tab aktif (aditif, tidak mengubah goTo/toggleSheet) -->
+    <script src="config/nara-navbar-glass.js?v=20260911fix1"></script>
+    <!-- Navbar redesign final: toggle .is-scrolled pada .navbar-inner (menggantikan nara-header-floating.js v13) -->
+    <script src="config/nara-navbar-redesign.js?v=20260912fix3"></script>
+    <script src="config/nara-navbar-fixed-offset.js?v=20260914fix1"></script>
+    <script>
+        // Menentukan tinggi navbar aktual agar setiap halaman memiliki viewport scroll sendiri.
+        (function () {
+            function syncNaraPageViewport() {
+                var bar = document.querySelector('.navbar');
+                var h = bar ? bar.getBoundingClientRect().height : 80;
+                document.documentElement.style.setProperty('--nara-topbar-height', Math.max(0, Math.ceil(h)) + 'px');
+            }
+            window.addEventListener('load', syncNaraPageViewport, { passive: true });
+            window.addEventListener('resize', syncNaraPageViewport, { passive: true });
+            window.addEventListener('orientationchange', function () { setTimeout(syncNaraPageViewport, 100); }, { passive: true });
+            syncNaraPageViewport();
+        })();
+    </script>
+
+</body>
+</html>

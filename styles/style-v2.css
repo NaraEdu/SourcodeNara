@@ -1,0 +1,347 @@
+/* =========================================================================
+   NARA — MODERN 3D REDESIGN LAYER (style-v2.css)
+   Lapisan penyempurnaan visual di atas style.css.
+   Tidak mengubah struktur HTML, nama/urutan navigasi, atau logika JS —
+   murni memperkaya tampilan: depth, glassmorphism, gradient, tipografi,
+   dan micro-interaction yang ringan.
+   ========================================================================= */
+
+:root {
+    /* --- Elevation scale (soft 3D, bukan neumorphism berat) --- */
+    --e1: 0 1px 2px rgba(15, 27, 51, .04), 0 2px 6px -2px rgba(15, 27, 51, .06);
+    --e2: 0 4px 10px -4px rgba(15, 27, 51, .10), 0 10px 24px -12px rgba(15, 27, 51, .14);
+    --e3: 0 10px 24px -10px rgba(15, 27, 51, .18), 0 22px 44px -18px rgba(15, 27, 51, .20);
+    --e4: 0 18px 40px -16px rgba(15, 27, 51, .26), 0 30px 60px -24px rgba(15, 27, 51, .24);
+    --e-press: inset 0 1px 2px rgba(15, 27, 51, .12), inset 0 -1px 0 rgba(255, 255, 255, .5);
+
+    /* --- Gradients bertema navigasi remaja: navy → biru → teal --- */
+    --grad-brand: linear-gradient(135deg, var(--navy-2) 0%, var(--blue) 100%);
+    --grad-brand-deep: linear-gradient(160deg, #0c1730 0%, var(--navy-2) 46%, var(--blue) 130%);
+    --grad-accent: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+    --grad-sheen: linear-gradient(120deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 40%);
+
+    /* --- Glass --- */
+    --glass-bg: rgba(255, 255, 255, .72);
+    --glass-border: rgba(255, 255, 255, .55);
+    --glass-blur: saturate(180%) blur(20px);
+
+    --ease-spring: cubic-bezier(.22, 1.1, .36, 1);
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
+
+    --radius-xl: 28px;
+}
+
+/* ---------------------------------------------------------------------
+   0. GLOBAL — tipografi & permukaan dasar
+   --------------------------------------------------------------------- */
+body {
+    background:
+        radial-gradient(1100px 480px at 84% -8%, rgba(74, 159, 245, .10), transparent 60%),
+        radial-gradient(900px 420px at -10% 8%, rgba(23, 163, 152, .08), transparent 55%),
+        var(--bg);
+}
+h1, h2, h3, h4 { letter-spacing: -0.015em; }
+::selection { background: var(--blue); color: #fff; }
+
+.section-title {
+    background: var(--grad-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------------------
+   1. NAVBAR ATAS — glass lebih dalam + garis aksen gradient
+   --------------------------------------------------------------------- */
+.navbar {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid rgba(19, 34, 66, .06);
+    box-shadow: var(--e2);
+}
+.navbar::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 2px;
+    background: var(--grad-accent);
+    opacity: .55;
+}
+.navbar { position: sticky; }
+.logo .mark {
+    background: var(--grad-brand-deep);
+    box-shadow: var(--e2), 0 0 0 1px rgba(255, 255, 255, .18) inset;
+    position: relative;
+    overflow: hidden;
+}
+.logo .mark::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--grad-sheen);
+    mix-blend-mode: overlay;
+}
+
+/* ---------------------------------------------------------------------
+   2. SIDEBAR DESKTOP — rail modern dengan indikator aktif melayang
+   --------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+    .sidebar {
+        background: var(--glass-bg);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-right: 1px solid rgba(19, 34, 66, .06);
+        box-shadow: var(--e2);
+    }
+    .sidebar .sidebar-nav-btn {
+        border-radius: 16px;
+        transition: background .25s var(--ease-spring), color .2s ease, transform .18s var(--ease-out), box-shadow .25s ease;
+    }
+    .sidebar .sidebar-nav-btn:hover {
+        background: rgba(74, 159, 245, .08);
+        transform: translateX(2px);
+    }
+    .sidebar .sidebar-nav-btn.active {
+        background: var(--grad-brand);
+        color: #fff !important;
+        box-shadow: var(--e2), 0 0 0 1px rgba(255, 255, 255, .12) inset;
+    }
+    .sidebar .sidebar-nav-btn.active .icon svg {
+        stroke: #fff !important;
+        opacity: 1 !important;
+    }
+    .sidebar .sidebar-nav-btn.active .sidebar-label { color: #fff; }
+}
+
+/* ---------------------------------------------------------------------
+   3. BOTTOM NAV MOBILE — kapsul glass melayang, depth pada item aktif
+   --------------------------------------------------------------------- */
+.bottom-nav {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-top: 1px solid rgba(19, 34, 66, .05);
+    box-shadow: 0 -4px 16px -8px rgba(15, 27, 51, .10), var(--e3);
+}
+@media (min-width: 760px) {
+    .bottom-nav {
+        border: 1px solid rgba(19, 34, 66, .06);
+        box-shadow: var(--e3);
+    }
+}
+.bottom-nav-btn {
+    transition: color .2s ease, background .3s var(--ease-spring), transform .18s var(--ease-spring), box-shadow .25s ease;
+}
+.bottom-nav-btn.active {
+    background: linear-gradient(180deg, rgba(74, 159, 245, .16), rgba(74, 159, 245, .07));
+    box-shadow: var(--e1), 0 0 0 1px rgba(74, 159, 245, .12) inset;
+    transform: translateY(-2px);
+}
+.bottom-nav-btn[data-group="bantuan"] .icon {
+    background: var(--grad-accent);
+    box-shadow: var(--e2), 0 0 0 1px rgba(255, 255, 255, .25) inset;
+}
+
+/* ---------------------------------------------------------------------
+   4. TOMBOL — soft 3D: highlight atas, shadow depth, press-in nyata
+   --------------------------------------------------------------------- */
+.btn {
+    position: relative;
+    box-shadow: var(--e2), inset 0 1px 0 rgba(255, 255, 255, .18);
+    transition: transform .16s var(--ease-spring), box-shadow .2s var(--ease-out), background .2s ease, filter .2s ease;
+}
+.btn:hover { filter: brightness(1.03); transform: translateY(-1px); }
+.btn:active {
+    transform: translateY(1px) scale(.98);
+    box-shadow: var(--e-press);
+}
+.btn-primary { background: var(--grad-brand); }
+.btn-accent { background: var(--grad-accent); }
+.btn-outline { box-shadow: var(--e1); background: rgba(255, 255, 255, .9); }
+.btn-outline:hover { box-shadow: var(--e2); }
+.btn-whatsapp { box-shadow: var(--e2), inset 0 1px 0 rgba(255, 255, 255, .2); }
+
+/* ---------------------------------------------------------------------
+   5. KARTU — depth berlapis, sheen tipis, hover terangkat
+   --------------------------------------------------------------------- */
+.card {
+    border: 1px solid rgba(19, 34, 66, .06);
+    box-shadow: var(--e2);
+    position: relative;
+    isolation: isolate;
+}
+.card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 32%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: .8;
+    z-index: -1;
+}
+.card:hover {
+    box-shadow: var(--e3);
+    transform: translateY(-3px);
+}
+.progress-card {
+    background: linear-gradient(165deg, #fff 0%, var(--blue-softer) 130%);
+}
+
+.edu-card {
+    border: 1px solid rgba(19, 34, 66, .06);
+    box-shadow: var(--e2);
+    transition: transform .22s var(--ease-spring), box-shadow .25s var(--ease-out);
+}
+.edu-card:hover {
+    box-shadow: var(--e3);
+    transform: translateY(-4px) scale(1.01);
+}
+.edu-card:active {
+    transform: translateY(-1px) scale(.99);
+    box-shadow: var(--e1);
+}
+.edu-card .ic-wrap {
+    box-shadow: var(--e1), 0 0 0 1px rgba(255, 255, 255, .3) inset;
+}
+
+.game-mission-card {
+    box-shadow: var(--e2);
+    transition: transform .22s var(--ease-spring), box-shadow .25s var(--ease-out);
+}
+.game-mission-card:hover {
+    box-shadow: var(--e3);
+    transform: translateY(-4px);
+}
+.game-mission-card .icon-box {
+    box-shadow: var(--e1), 0 0 0 1px rgba(255, 255, 255, .4) inset;
+}
+.game-mission-card .level-badge {
+    box-shadow: var(--e1);
+}
+
+.dk-card, .dk-stat-card {
+    box-shadow: var(--e2);
+    border: 1px solid rgba(19, 34, 66, .06);
+    transition: transform .2s var(--ease-spring), box-shadow .2s ease;
+}
+.dk-stat-card:hover, .dk-card:hover {
+    box-shadow: var(--e3);
+    transform: translateY(-3px);
+}
+
+.about-card, .mentor-card {
+    box-shadow: var(--e2);
+    border: 1px solid rgba(19, 34, 66, .06);
+}
+.mentor-card {
+    background: linear-gradient(160deg, #fff, var(--blue-softer) 140%);
+}
+.team-avatar {
+    box-shadow: var(--e1), 0 0 0 1px rgba(255, 255, 255, .3) inset;
+}
+.contact-card {
+    border: 1px solid rgba(19, 34, 66, .06);
+    box-shadow: var(--e1);
+    transition: transform .2s var(--ease-spring), box-shadow .2s ease, border-color .2s ease;
+}
+.contact-card:hover {
+    box-shadow: var(--e2);
+    transform: translateY(-2px);
+    border-color: rgba(74, 159, 245, .35);
+}
+.contact-card-ic {
+    box-shadow: var(--e1);
+}
+
+/* ---------------------------------------------------------------------
+   6. BANNER / CAROUSEL — depth lebih kaya, tepi lebih lembut
+   --------------------------------------------------------------------- */
+.nara-carousel-slide {
+    box-shadow: var(--e3);
+}
+.nara-carousel { border-radius: var(--radius-xl); }
+
+/* ---------------------------------------------------------------------
+   7. MODAL & FORM — rounded lebih lembut, fokus bercahaya, aman keyboard
+   --------------------------------------------------------------------- */
+.modal-box, .modal-box-lg {
+    box-shadow: var(--e4);
+    border: 1px solid rgba(19, 34, 66, .06);
+    border-radius: var(--radius-xl);
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+    transition: border-color .2s ease, box-shadow .2s ease, transform .1s ease;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: var(--blue) !important;
+    box-shadow: 0 0 0 4px rgba(74, 159, 245, .16);
+    outline: none;
+}
+/* Cegah keyboard Android menutupi input aktif di dalam modal */
+.modal-overlay {
+    align-items: flex-end;
+}
+@media (min-width: 640px) {
+    .modal-overlay { align-items: center; }
+}
+.modal-box, .modal-box-lg {
+    max-height: min(88dvh, 88vh);
+    overflow-y: auto;
+    scroll-padding-bottom: 24px;
+}
+
+/* ---------------------------------------------------------------------
+   8. TABEL / KONTEN LEBAR — scroll horizontal hanya pada area itu
+   --------------------------------------------------------------------- */
+table { border-collapse: collapse; width: 100%; }
+.table-wrap, .dk-bar-chart, .counselor-list {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ---------------------------------------------------------------------
+   9. MICRO-INTERACTION — reveal saat elemen masuk viewport
+   DINONAKTIFKAN (fix perilaku scroll): efek fade+translateY berbasis
+   scroll ini membuat card terlihat "memudar/bergeser" saat discroll,
+   yang tidak diinginkan. nara-v2.js masih menandai elemen dengan
+   [data-reveal] & menambah class "is-visible" (tidak dihapus, tidak
+   ada fitur yang hilang) — di sini efek visualnya saja dibuat no-op
+   agar card langsung tampil normal & scroll terasa natural, sama
+   seperti penanganan #page-edukasi yang sudah ada sebelumnya.
+   --------------------------------------------------------------------- */
+[data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+[data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---------------------------------------------------------------------
+   10. RESPONSIVE FINE-TUNE — 320 / 360 / 375 / 390 / 412 / 430
+   --------------------------------------------------------------------- */
+@media (max-width: 359px) {
+    .wrap { padding-left: 14px; padding-right: 14px; }
+    .card { padding: 16px; }
+    .section-title { font-size: clamp(1.15rem, 6vw, 1.4rem); }
+    .btn { padding: 10px 16px; font-size: .85rem; }
+}
+@media (min-width: 360px) and (max-width: 430px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+    .edu-grid, .uji-grid { gap: 16px; }
+}
+
+/* Pastikan tidak ada overflow horizontal tak sengaja pada layar sempit */
+html, body { overflow-x: hidden; max-width: 100%; }

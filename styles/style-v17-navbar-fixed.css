@@ -1,0 +1,46 @@
+/* =========================================================================
+   NARA — NAVBAR FIXED (v17)
+   -------------------------------------------------------------------------
+   Permintaan: header (.navbar) harus benar-benar DIAM di tempat saat
+   halaman discroll — tidak boleh ikut bergerak sedikit pun.
+
+   Sebelumnya .navbar pakai position:sticky (diatur di
+   style-v15-navbar-redesign.css). Sticky sudah cukup baik, tapi posisinya
+   masih "menempel" relatif terhadap ancestor scroll-container terdekat —
+   pada sebagian browser/WebView (terutama saat ada gesture momentum-scroll
+   di Android/iOS) itu bisa terasa sedikit "mengambang"/lag saat scroll
+   cepat. `position: fixed` mengunci .navbar langsung ke viewport, di luar
+   flow dokumen sepenuhnya, sehingga posisinya 100% tidak berubah oleh
+   scroll apa pun.
+
+   Konsekuensi dari fixed: .navbar keluar dari flow dokumen, jadi konten
+   setelahnya (main) perlu diberi padding-top setinggi navbar supaya tidak
+   tertutup. Tinggi navbar itu sendiri dinamis (safe-area-inset-top di
+   notch device, ukuran font, dsb), jadi dihitung otomatis lewat JS
+   (nara-navbar-fixed-offset.js) yang menulis custom property --navbar-h.
+   File CSS ini hanya memakai variabel tsb dengan fallback aman.
+
+   File ini dimuat PALING TERAKHIR (setelah style-v15/v16) supaya menang
+   di cascade tanpa perlu !important dan tanpa mengubah file-file lama.
+   ========================================================================= */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+}
+
+/* Konten utama digeser turun sebesar tinggi navbar asli (dihitung JS).
+   Fallback 84px dipakai sesaat sebelum JS sempat mengukur (mis. render
+   pertama / JS lambat load) supaya tidak ada "lompatan" konten. */
+main {
+    padding-top: var(--navbar-h, 84px);
+}
+
+/* Desktop (sidebar aktif, ≥1024px): navbar digeser ke kanan lewat
+   margin-left (tetap dipertahankan dari style.css), tinggi header sedikit
+   berbeda (padding lebih lega) jadi --navbar-h akan otomatis menyesuaikan
+   lewat JS saat breakpoint berubah / resize. Tidak perlu override manual
+   di sini. */

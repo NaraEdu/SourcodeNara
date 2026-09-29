@@ -1,0 +1,742 @@
+/* =========================================================================
+   NARA — HALAMAN UJI PEMAHAMANMU GAYA APLIKASI ANDROID (v19)
+   -------------------------------------------------------------------------
+   Berlaku untuk 7 halaman tantangan (semua ber-class .uji-page):
+   Latihan Pergaulan Sehat, Cek Hubunganku, Cek Pertemanan Ku, Mood Quest,
+   Digital Defender Challenge, Pemahaman Pergaulan Bebas, Asli atau Deepfake?
+
+   Lapisan CSS murni — tidak ada teks, elemen, id, onclick, atau logika JS
+   yang diubah/ditambah. Yang diubah hanya tampilan:
+
+   - Hero (badge + judul + deskripsi) tidak lagi berupa kotak kaca putih
+     bersudut tajam (efek samping v16 yang menempelkan latar kaca ke
+     .game-hero tanpa radius/padding). Sekarang polos di atas latar halaman.
+   - Kartu soal (.quiz-card / .game-card / .mq-game-card / .scenario-box)
+     tidak lagi berbentuk kotak: soal dan pilihan langsung mengalir di atas
+     latar halaman seperti layar aplikasi native.
+   - Pilihan jawaban jadi baris penuh selebar layar (tinggi sentuh >= 56px),
+     progres berupa bar tipis, tombol hasil penuh selebar layar.
+   - Semua halaman memakai satu kolom sempit (maks. 480px) di tengah.
+
+   Dimuat PALING TERAKHIR. Semua selector diberi prefix .uji-page supaya
+   tidak menyentuh halaman lain (Beranda, Edukasi, materi, Konsultasi, dst.).
+   Tidak menyentuh overflow / position / scroll (lihat catatan di
+   style-edukasi-scroll-final.css).
+   ========================================================================= */
+
+.uji-page {
+    --uji-navy: #132242;
+    --uji-blue: #4A9FF5;
+    --uji-blue-ink: #1F6BC9;          /* teks di atas latar biru muda (kontras >= 4.5:1) */
+    --uji-outline: #DCE4F0;
+    --uji-outline-strong: #C3CCDD;
+    --uji-surface: #FFFFFF;
+    --uji-shadow: 0 1px 2px rgba(19, 34, 66, 0.05);
+}
+
+/* =========================================================================
+   1. KOLOM UTAMA — satu kolom sempit di tengah, seperti layar ponsel
+   ========================================================================= */
+.uji-page > .wrap,
+#page-moodquest.uji-page .mq-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 12px clamp(18px, 5vw, 24px) 28px !important;
+}
+
+/* =========================================================================
+   2. TOMBOL KEMBALI — text button ala app bar, bukan pil berlatar
+   ========================================================================= */
+.uji-page .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin: 0 0 6px -8px;
+    padding: 8px 14px 8px 8px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent !important;
+    color: var(--uji-blue-ink) !important;
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    transform: none;
+    transition: background-color .15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.uji-page .back-link:active {
+    background: rgba(74, 159, 245, 0.14) !important;
+    transform: none;
+}
+.uji-page .back-link .bl-arrow {
+    font-size: 1.2rem;
+    transform: none !important;
+}
+.uji-page .back-link .material-symbols-rounded {
+    font-size: 1.25rem;
+}
+
+/* =========================================================================
+   3. HERO — tanpa kotak: badge kecil, judul, deskripsi (rata kiri)
+   ========================================================================= */
+.uji-page .game-hero,
+.uji-page .mq-hero {
+    position: static;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    text-align: left !important;
+    overflow: visible;
+}
+/* Emoji melayang khusus Mood Quest disembunyikan agar semua halaman seragam */
+.uji-page .mq-hero-emoji-row {
+    display: none;
+}
+
+/* Badge "GAME CHALLENGE" / "MINI GAME" */
+.uji-page .eyebrow,
+.uji-page .game-challenge-badge,
+.uji-page .mq-eyebrow {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 6px;
+    width: fit-content;
+    margin: 0 0 12px !important;
+    padding: 6px 12px 6px 10px;
+    border-radius: 999px;
+    background: var(--blue-light) !important;
+    box-shadow: none;
+    color: var(--uji-blue-ink) !important;
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-align: left !important;
+    text-transform: uppercase;
+}
+.uji-page .eyebrow::before {
+    display: none;
+}
+.uji-page .eyebrow .material-symbols-rounded,
+.uji-page .game-challenge-badge .material-symbols-rounded {
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+/* Judul halaman: solid navy (bukan teks gradient), ikon dalam tile tonal */
+.uji-page .section-title {
+    position: static;
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    background: none !important;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: var(--uji-navy) !important;
+    color: var(--uji-navy);
+    font-family: var(--font-d);
+    font-size: clamp(1.45rem, 5.6vw, 1.7rem) !important;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-align: left !important;
+}
+.uji-page .section-title::after {
+    display: none !important;
+}
+.uji-page .section-title > .material-symbols-rounded {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--blue-light);
+    color: var(--uji-blue);
+    -webkit-text-fill-color: currentColor !important;
+    font-size: 1.5rem;
+    vertical-align: baseline;
+}
+
+/* Deskripsi */
+.uji-page .section-sub,
+.uji-page .game-desc,
+.uji-page .mq-desc {
+    max-width: none !important;
+    margin: 0 0 20px !important;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-align: left !important;
+}
+.uji-page .game-hero .game-desc,
+.uji-page .mq-hero .mq-desc {
+    margin: 0 !important;
+}
+
+/* =========================================================================
+   4. PERMUKAAN SOAL — bukan kotak: konten mengalir di atas latar halaman
+   ========================================================================= */
+.uji-page .quiz-card,
+.uji-page .game-card,
+.uji-page .mq-game-card,
+.uji-page .scenario-box {
+    position: relative;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    overflow: visible;
+    transform: none !important;
+}
+.uji-page .quiz-card:hover,
+.uji-page .game-card:hover,
+.uji-page .mq-game-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* =========================================================================
+   5. BARIS ATAS & PROGRES
+   ========================================================================= */
+.uji-page .scenario-topbar,
+.uji-page .game-header,
+.uji-page .mq-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 10px;
+    margin: 0 0 12px !important;
+}
+.uji-page .scenario-step {
+    color: var(--uji-navy);
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+.uji-page .scenario-meta-right,
+.uji-page .game-header .game-stats,
+.uji-page .mq-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Chip skor / XP / streak / langkah */
+.uji-page .scenario-xp,
+.uji-page .scenario-streak,
+.uji-page .game-header .game-stats > span,
+.uji-page .mq-stats > span:not(.mq-dot) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border: 1px solid var(--uji-outline);
+    border-radius: 999px;
+    background: var(--uji-surface);
+    color: var(--uji-navy);
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1;
+}
+.uji-page .mq-dot {
+    display: none;
+}
+.uji-page .scenario-xp .material-symbols-rounded,
+.uji-page .scenario-streak .material-symbols-rounded,
+.uji-page .game-header .game-stats .material-symbols-rounded,
+.uji-page .mq-stats .material-symbols-rounded {
+    font-size: 1rem;
+    color: var(--uji-blue);
+    vertical-align: middle;
+}
+.uji-page .scenario-xp .material-symbols-rounded,
+.uji-page .game-header .game-stats > span:first-child .material-symbols-rounded,
+.uji-page .mq-stats > span:first-child .material-symbols-rounded {
+    color: #F5A623;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.uji-page .scenario-streak .material-symbols-rounded {
+    color: #E2701A;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Ikon di kiri baris atas kuis (Cek Hubunganku, Cek Pertemanan Ku, dst.) */
+.uji-page .game-header .game-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--uji-blue);
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+/* Bar progres tipis, ujung membulat */
+.uji-page .scenario-progress-track,
+.uji-page .quiz-progress-bar,
+.uji-page .mq-progress-track {
+    height: 6px;
+    margin: 0 0 22px;
+    border-radius: 999px;
+    background: rgba(74, 159, 245, 0.16);
+    overflow: hidden;
+}
+.uji-page .scenario-progress-fill,
+.uji-page .quiz-progress-bar > div,
+.uji-page .mq-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--uji-blue);
+}
+
+/* Label langkah ("Situasi 1 dari 4", "Pertanyaan 1") */
+.uji-page .game-progress,
+.uji-page .quiz-progress {
+    margin: 0 0 10px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* Chip kecil: tag game, "Skenario n", "Soal n", chip Mood Quest */
+.uji-page .game-card .game-tag,
+.uji-page .scenario-box .scenario-badge,
+.uji-page .quiz-q .q-num,
+.uji-page .mq-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 0 12px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--blue-light);
+    color: var(--uji-blue-ink);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.02em;
+}
+.uji-page .mq-chip {
+    margin: 0;
+}
+.uji-page .game-card .game-tag .material-symbols-rounded,
+.uji-page .scenario-box .scenario-badge .material-symbols-rounded,
+.uji-page .mq-chip .material-symbols-rounded {
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+.uji-page .quiz-q .q-num {
+    display: flex;
+    width: fit-content;
+}
+.uji-page .quiz-q br {
+    display: none;
+}
+
+/* =========================================================================
+   6. TEKS SOAL
+   ========================================================================= */
+.uji-page .scenario-box .scenario-q,
+.uji-page .quiz-q,
+.uji-page .game-situation,
+.uji-page .mq-situation {
+    min-height: 0;
+    margin: 0 0 20px;
+    color: var(--uji-navy);
+    font-family: var(--font-d);
+    font-size: clamp(1.08rem, 4.4vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+}
+
+/* =========================================================================
+   7. PILIHAN JAWABAN — baris penuh, tinggi sentuh nyaman
+   ========================================================================= */
+.uji-page .scenario-box .scenario-opts,
+.uji-page .game-opts,
+.uji-page .mq-opts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+}
+
+.uji-page .scenario-box .scenario-opts button,
+.uji-page .game-opts button,
+.uji-page .mq-opt-btn,
+.uji-page .quiz-opts button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    min-height: 58px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--uji-outline);
+    border-radius: 16px;
+    background: var(--uji-surface);
+    box-shadow: var(--uji-shadow);
+    color: var(--text);
+    font-family: var(--font-b);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.45;
+    text-align: left;
+    cursor: pointer;
+    transform: none;
+    transition: background-color .15s ease, border-color .15s ease, opacity .15s ease, transform .1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Sentuh / hover: tanpa efek "terangkat" — cukup warna berubah */
+.uji-page .scenario-box .scenario-opts button:hover:not(:disabled),
+.uji-page .game-opts button:hover:not(:disabled),
+.uji-page .mq-opt-btn:hover:not(:disabled),
+.uji-page .quiz-opts button:hover:not(:disabled) {
+    border-color: var(--uji-blue);
+    background: var(--blue-softer);
+    box-shadow: var(--uji-shadow);
+    transform: none;
+}
+.uji-page .scenario-box .scenario-opts button:active:not(:disabled),
+.uji-page .game-opts button:active:not(:disabled),
+.uji-page .mq-opt-btn:active:not(:disabled),
+.uji-page .quiz-opts button:active:not(:disabled) {
+    border-color: var(--uji-blue);
+    background: var(--blue-light);
+    transform: scale(0.985);
+}
+
+/* Setelah dijawab: yang tidak terpilih diredupkan, hasil tetap jelas */
+.uji-page .scenario-box .scenario-opts button:disabled,
+.uji-page .game-opts button:disabled,
+.uji-page .mq-opt-btn:disabled,
+.uji-page .quiz-opts button:disabled {
+    cursor: default;
+    opacity: 1;
+}
+.uji-page .scenario-box .scenario-opts button:disabled:not(.correct):not(.wrong):not(.selected),
+.uji-page .game-opts button:disabled:not(.correct):not(.wrong),
+.uji-page .mq-opt-btn:disabled:not(.correct):not(.wrong),
+.uji-page .quiz-opts button:disabled:not(.selected) {
+    opacity: 0.55;
+}
+
+.uji-page .scenario-box .scenario-opts button.selected {
+    border-width: 1.5px;
+}
+.uji-page .scenario-box .scenario-opts button.correct,
+.uji-page .game-opts button.correct,
+.uji-page .mq-opt-btn.correct {
+    border-color: var(--green);
+    background: var(--green-light);
+    box-shadow: 0 0 0 1px var(--green);
+    color: #14603D;
+}
+.uji-page .scenario-box .scenario-opts button.wrong,
+.uji-page .game-opts button.wrong,
+.uji-page .mq-opt-btn.wrong {
+    border-color: var(--red);
+    background: var(--red-light);
+    box-shadow: 0 0 0 1px var(--red);
+    color: #9B2C2C;
+    opacity: 1;
+}
+
+/* Penanda bulat di kiri pilihan bertipe teks saja (radio -> centang / silang) */
+.uji-page .game-opts button::before,
+.uji-page .mq-opt-btn::before {
+    content: '';
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--uji-outline-strong);
+    border-radius: 50%;
+    background: var(--uji-surface);
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.uji-page .game-opts button.correct::before,
+.uji-page .mq-opt-btn.correct::before {
+    border-color: var(--green);
+    background: var(--green);
+}
+.uji-page .game-opts button.wrong::before,
+.uji-page .mq-opt-btn.wrong::before {
+    border-color: var(--red);
+    background: var(--red);
+}
+/* Centang digambar dengan border (tidak bergantung font ikon) */
+.uji-page .game-opts button.correct::after,
+.uji-page .mq-opt-btn.correct::after {
+    content: '';
+    position: absolute;
+    left: 23.5px;
+    top: 50%;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: translateY(-8.5px) rotate(45deg);
+}
+.uji-page .game-opts button.wrong::after,
+.uji-page .mq-opt-btn.wrong::after {
+    content: '\00D7';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 21px;
+    text-align: center;
+}
+
+/* Pilihan bergambar ikon (Latihan Pergaulan Sehat) */
+.uji-page .scenario-box .scenario-opts .opt-ic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--uji-blue);
+    font-size: 1.1rem;
+}
+.uji-page .scenario-box .scenario-opts button.correct .opt-ic {
+    background: rgba(31, 174, 107, 0.18);
+    color: var(--green);
+}
+.uji-page .scenario-box .scenario-opts .opt-check {
+    width: 24px;
+    height: 24px;
+    font-size: 0.85rem;
+}
+
+/* Kuesioner Ya / Tidak (Cek Hubunganku, Cek Pertemanan Ku): dua tombol sejajar */
+.uji-page .quiz-opts {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+}
+.uji-page .quiz-opts button {
+    flex: 1 1 0;
+    justify-content: center;
+    min-height: 60px;
+    font-weight: 700;
+    text-align: center;
+}
+.uji-page .quiz-opts button .material-symbols-rounded {
+    font-size: 1.25rem;
+}
+
+/* =========================================================================
+   8. UMPAN BALIK — panel tonal membulat
+   ========================================================================= */
+.uji-page .scenario-box .scenario-feedback,
+.uji-page .game-feedback,
+.uji-page .mq-feedback {
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border: 1px solid rgba(74, 159, 245, 0.22);
+    border-radius: 16px;
+    background: var(--blue-softer);
+    color: #4A5470;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+.uji-page .scenario-box .scenario-feedback.fb-correct {
+    border-color: rgba(31, 174, 107, 0.3);
+    background: var(--green-light);
+}
+.uji-page .scenario-box .scenario-feedback.fb-wrong {
+    border-color: rgba(245, 166, 35, 0.4);
+    background: var(--yellow-light);
+}
+.uji-page .scenario-box .scenario-feedback .fb-title {
+    margin-bottom: 4px;
+    color: var(--uji-navy);
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+.uji-page .scenario-box .scenario-feedback .fb-title-warn {
+    color: #8a5b00;
+}
+
+/* =========================================================================
+   9. CATATAN EMPATI DI BAWAH HALAMAN
+   ========================================================================= */
+.uji-page .empathy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 22px 0 0 !important;
+    padding: 14px 16px;
+    border-radius: 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.55;
+}
+.uji-page .empathy-note > .material-symbols-rounded {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    font-size: 1.2rem;
+}
+
+/* =========================================================================
+   10. LAYAR HASIL — ikon lingkaran, statistik, hadiah, tombol penuh
+   ========================================================================= */
+.uji-page .game-result,
+.uji-page .quiz-result,
+.uji-page .mq-result,
+.uji-page .scenario-result-box {
+    text-align: center;
+}
+
+.uji-page .badge-icon,
+.uji-page .mq-result-badge,
+.uji-page .scenario-result-box .result-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    margin: 4px auto 16px;
+    border-radius: 50%;
+    box-shadow: 0 12px 24px -12px rgba(19, 34, 66, 0.45);
+    color: #fff;
+    font-size: 2.4rem;
+}
+.uji-page .scenario-result-box .result-icon {
+    background: linear-gradient(135deg, var(--blue), var(--navy-2));
+}
+.uji-page .badge-icon .material-symbols-rounded,
+.uji-page .mq-result-badge .material-symbols-rounded,
+.uji-page .scenario-result-box .result-icon .material-symbols-rounded {
+    font-size: 2.4rem;
+    vertical-align: middle;
+}
+
+.uji-page .game-result h4,
+.uji-page .mq-result-title,
+.uji-page .scenario-result-title {
+    margin: 0 0 6px !important;
+    color: var(--uji-navy);
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+.uji-page .mq-result-sub,
+.uji-page .scenario-result-sub {
+    margin: 0 auto 16px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Cincin skor (Cek Hubunganku, Cek Pertemanan Ku) */
+.uji-page .result-score-ring {
+    margin-bottom: 34px;
+}
+.uji-page .result-badge {
+    max-width: 100%;
+    font-size: 0.98rem;
+}
+
+/* Kartu statistik (Latihan Pergaulan Sehat) */
+.uji-page .result-stats {
+    gap: 10px;
+    max-width: none;
+    margin: 0 0 20px;
+}
+.uji-page .result-stat {
+    padding: 14px 8px;
+    border: 1px solid var(--uji-outline);
+    border-radius: 16px;
+    background: var(--uji-surface);
+}
+.uji-page .result-stat .rs-value {
+    font-size: 1rem;
+}
+
+/* Kartu hadiah / badge */
+.uji-page .reward-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 18px !important;
+    padding: 14px 16px !important;
+    border: 1px solid #c7ecd8 !important;
+    border-radius: 18px !important;
+    background: var(--green-light) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    text-align: left;
+}
+.uji-page .reward-card .ic {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+    border-radius: 14px;
+}
+
+/* Tombol aksi: penuh selebar layar, bertumpuk */
+.uji-page .game-result .btn,
+.uji-page .quiz-result .btn,
+.uji-page .mq-result .btn,
+.uji-page .scenario-result-actions .btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    margin: 10px 0 0 !important;
+    font-size: 0.95rem;
+}
+/* pembungkus tombol tanpa class (memakai style inline margin-top) */
+.uji-page .game-result > div:not([class]),
+.uji-page .quiz-result > div:not([class]) {
+    margin-top: 0 !important;
+}
+.uji-page .mq-result-actions,
+.uji-page .scenario-result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+.uji-page .mq-result-actions .btn,
+.uji-page .scenario-result-actions .btn {
+    margin: 0 !important;
+}
+.uji-page .mq-result-status {
+    margin: 0 0 16px;
+    font-size: 0.85rem;
+}

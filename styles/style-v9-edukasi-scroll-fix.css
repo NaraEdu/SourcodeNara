@@ -1,0 +1,75 @@
+/* =========================================================================
+   NARA — FINAL FIX SCROLL EDUKASI ANDROID
+   Tujuan: menghilangkan nested scroll/gesture conflict tanpa mengubah desain.
+   Body tetap menjadi satu-satunya scroll vertikal; carousel tetap horizontal.
+   ========================================================================= */
+
+/* Jangan izinkan halaman Edukasi menjadi scroll container tersendiri. */
+#page-edukasi,
+#page-edukasi.active {
+    overflow: visible !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior-y: auto;
+}
+
+/* Scroll vertikal utama selalu milik dokumen/body. */
+html {
+    overflow-y: auto;
+    overscroll-behavior-y: auto;
+}
+body {
+    overflow-y: visible;
+    min-height: 100%;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior-y: auto;
+}
+
+/* Semua strip horizontal tetap bisa digeser, tetapi swipe vertikal tidak dikunci. */
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-grid,
+#page-edukasi .uji-grid,
+#page-edukasi .nara-edu-chips {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x pan-y pinch-zoom !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
+    scroll-behavior: auto;
+}
+
+/* Android/WebView: hindari layer/containment agresif yang dapat menunda repaint
+   saat gesture berubah dari turun ke naik atau sebaliknya. */
+@media (max-width: 767px), (pointer: coarse) {
+    #page-edukasi .edu-cat-block,
+    #page-edukasi .edu-card,
+    #page-edukasi .game-mission-card {
+        contain: none !important;
+        content-visibility: visible !important;
+        contain-intrinsic-size: none !important;
+    }
+
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-grid,
+    #page-edukasi .uji-grid {
+        transform: none !important;
+        will-change: auto !important;
+    }
+
+    /* Hindari animasi halaman aktif menahan compositor saat user langsung swipe. */
+    #page-edukasi.page.active {
+        animation: none !important;
+    }
+}
+
+/* Fallback browser lama yang belum mendukung overflow: clip. */
+@supports not (overflow: clip) {
+    #page-edukasi,
+    #page-edukasi.active {
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+    }
+}

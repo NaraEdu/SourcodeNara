@@ -1,0 +1,192 @@
+/* =========================================================================
+   NARA — NAVBAR REDESIGN FINAL (v15)
+   Menggantikan pendekatan v13 (collapsing toolbar 1:1 mengikuti jari) dan
+   v14 (pill kompak) dengan desain yang lebih clean & minimal sesuai brief:
+
+   - Mobile-first, ukuran nyaman disentuh (min-height 56px, standar Android
+     top app bar), TIDAK berubah ukuran saat discroll — hanya background,
+     blur, dan shadow yang berubah (state machine 2 kondisi: top vs scrolled),
+     dianimasikan lewat CSS transition 260ms, bukan lagi di-drive per-frame
+     oleh scroll position. Ini juga lebih ringan untuk performa.
+   - Bentuk pill/card dengan sudut sangat halus, shadow sangat soft.
+     Di posisi paling atas (top) navbar putih solid seperti desain awal;
+     begitu discroll, background bertransisi halus (260ms) menjadi
+     semi-transparan + backdrop blur (glassmorphism), lalu kembali solid
+     saat posisi kembali ke paling atas.
+   - Tidak ada gradient warna-warni, border tebal, atau garis aksen dekoratif
+     — semuanya dimatikan di sini (lihat bagian "Matikan dekorasi lama").
+   - Logo & teks (NARA / Navigasi Aman Remaja) TIDAK diubah — hanya spacing,
+     ukuran, dan tipografinya dirapikan.
+
+   File ini dimuat PALING TERAKHIR agar menang atas semua style lama
+   (beberapa di antaranya memakai !important pada .navbar).
+   HTML tidak diubah sama sekali.
+   ========================================================================= */
+
+:root {
+    --nvb-radius: 22px;
+    --nvb-margin-x: 12px;
+    --nvb-margin-top: 10px;
+    --nvb-pad-y: 10px;
+    --nvb-pad-x: 14px;
+    --nvb-minh: 56px;
+    --nvb-gap: 10px;
+
+    --nvb-logo-size: 32px;
+    --nvb-title-size: 1rem;
+    --nvb-sub-size: 0.7rem;
+
+    /* State "top" (posisi paling atas / belum discroll) — putih solid,
+       tanpa blur, persis seperti desain navbar yang sudah ada. */
+    --nvb-bg-top: #ffffff;
+    --nvb-blur-top: 0px;
+    --nvb-border-top: rgba(15, 23, 42, 0.06);
+    --nvb-shadow-top: 0 2px 14px rgba(15, 23, 42, 0.07);
+
+    /* State "scrolled" (setelah user mulai scroll ke bawah) — dibuat cukup
+       transparan supaya konten yang discroll di baliknya benar-benar
+       kelihatan, dengan blur secukupnya (bukan sangat tebal) agar teks
+       navbar sendiri tetap terbaca. */
+    --nvb-bg-scrolled: rgba(255, 255, 255, 0.32);
+    --nvb-blur-scrolled: 14px;
+    --nvb-border-scrolled: rgba(255, 255, 255, 0.4);
+    --nvb-shadow-scrolled: 0 4px 18px rgba(15, 23, 42, 0.08);
+
+    --nvb-transition: 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 380px) {
+    :root {
+        --nvb-margin-x: 10px;
+        --nvb-pad-x: 12px;
+        --nvb-minh: 52px;
+        --nvb-logo-size: 30px;
+        --nvb-title-size: 0.94rem;
+        --nvb-sub-size: 0.66rem;
+    }
+}
+
+@media (min-width: 760px) {
+    :root {
+        --nvb-margin-x: 20px;
+        --nvb-margin-top: 14px;
+        --nvb-pad-x: 20px;
+        --nvb-minh: 60px;
+        --nvb-radius: 24px;
+        --nvb-logo-size: 36px;
+        --nvb-title-size: 1.08rem;
+        --nvb-sub-size: 0.74rem;
+    }
+}
+
+/* ---- Matikan dekorasi lama (gradient/garis aksen/border tebal/shadow
+   tebal dari style.css, style-v2.css, style-v3.css, style-v6-perf.css) ----
+   Dimuat terakhir supaya menang atas rule lama yang memakai !important. */
+.navbar {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+.navbar::after {
+    display: none !important;
+}
+
+/* ---- Wrapper luar: hanya untuk positioning sticky + safe-area ---- */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top);
+}
+
+/* ---- Kartu/pill navbar: satu-satunya elemen yang punya visual ---- */
+.navbar-inner {
+    max-width: 720px;
+    width: auto;
+    margin: var(--nvb-margin-top) var(--nvb-margin-x) 0;
+    padding: var(--nvb-pad-y) var(--nvb-pad-x);
+    min-height: var(--nvb-minh);
+    border-radius: var(--nvb-radius);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nvb-gap);
+
+    background: var(--nvb-bg-top);
+    border: 1px solid var(--nvb-border-top);
+    box-shadow: var(--nvb-shadow-top);
+    -webkit-backdrop-filter: saturate(140%) blur(var(--nvb-blur-top));
+    backdrop-filter: saturate(140%) blur(var(--nvb-blur-top));
+
+    transition:
+        background var(--nvb-transition),
+        border-color var(--nvb-transition),
+        box-shadow var(--nvb-transition),
+        backdrop-filter var(--nvb-transition);
+}
+
+@media (min-width: 760px) {
+    .navbar-inner { margin-left: auto; margin-right: auto; }
+}
+
+/* ---- State: sedang discroll (di luar posisi paling atas) ----
+   Class .is-scrolled ditambahkan/dihapus oleh nara-navbar-redesign.js. */
+.navbar-inner.is-scrolled {
+    background: var(--nvb-bg-scrolled);
+    border-color: var(--nvb-border-scrolled);
+    box-shadow: var(--nvb-shadow-scrolled);
+    -webkit-backdrop-filter: saturate(160%) blur(var(--nvb-blur-scrolled));
+    backdrop-filter: saturate(160%) blur(var(--nvb-blur-scrolled));
+}
+
+/* Fallback kalau browser tidak dukung backdrop-filter sama sekali:
+   pakai warna lebih solid supaya teks tetap terbaca tanpa efek buram. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .navbar-inner { background: rgba(255, 255, 255, 0.97); }
+    .navbar-inner.is-scrolled { background: rgba(255, 255, 255, 0.94); }
+}
+
+/* ---- Logo mark: proporsional, shadow sangat tipis, tanpa ring dekoratif ---- */
+.logo .mark {
+    width: var(--nvb-logo-size);
+    height: var(--nvb-logo-size);
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(19, 34, 66, 0.16);
+    flex-shrink: 0;
+}
+
+/* ---- Tipografi brand: NARA tegas & jelas, subtitle kecil & halus ---- */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--nvb-gap);
+}
+.logo [data-brand-name] {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-d);
+    font-weight: 800;
+    font-size: var(--nvb-title-size);
+    line-height: 1.15;
+    color: var(--navy, #132242);
+    letter-spacing: -0.01em;
+}
+.logo .sub {
+    font-family: var(--font-b);
+    font-weight: 500;
+    font-size: var(--nvb-sub-size);
+    color: var(--text-muted, #69728A);
+    letter-spacing: 0;
+    opacity: 0.85;
+    margin-top: 2px;
+}
+
+/* ---- Konten halaman: jarak kecil karena navbar kini mengambang ---- */
+main { padding-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar-inner { transition: none !important; }
+}

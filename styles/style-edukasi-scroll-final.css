@@ -1,0 +1,173 @@
+/* =========================================================================
+   NARA — SCROLL HALAMAN PENUH (native document scroll)
+   -------------------------------------------------------------------------
+   PERUBAHAN DARI VERSI SEBELUMNYA (yang membuat tiap .page jadi "kotak
+   scroll" sendiri dengan tinggi dikunci di bawah navbar): sekarang
+   html/body-lah yang discroll, persis seperti halaman web biasa. Card naik
+   turun mengikuti jari, keluar dari layar secara normal, tidak lagi
+   terpotong tepat di garis bawah navbar (yang sebelumnya terlihat seperti
+   "masuk/tenggelam" ke navbar).
+
+   .navbar tetap position:sticky (tidak diubah sama sekali — filenya ada di
+   style-v15-navbar-redesign.css) dan sekarang benar-benar berfungsi sebagai
+   sticky header karena ada scroll dokumen sungguhan untuk ditempeli.
+   .bottom-nav & .sidebar tetap position:fixed (style.css, tidak diubah) —
+   keduanya sudah independen dari model scroll sejak awal.
+
+   CATATAN UNTUK PENGEMBANG SELANJUTNYA (dari riset scroll Edukasi
+   sebelumnya, style-v8/v9 project ini): jangan pernah set salah satu axis
+   overflow pada #page-edukasi tanpa axis lainnya — browser akan diam-diam
+   mengubah axis yang tidak diset dari "visible" jadi "auto" dan
+   #page-edukasi kembali jadi scroll container tersembunyi yang bentrok
+   dengan body saat gesture di Android/WebView. Makanya di bawah ini selalu
+   dideklarasikan overflow-x DAN overflow-y bersamaan.
+
+   v20260913fix3: aturan yang sama ternyata berlaku juga untuk <body>, dan
+   di situlah bug "header ikut ke-scroll" berasal — lihat komentar di blok
+   `body { ... }` di bawah untuk detail lengkapnya beserta perbaikannya.
+   ========================================================================= */
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* BUG UTAMA (penyebab header ikut ke-scroll & risiko scroll ganda) ada di
+   sini: style.css & style-v2.css men-set overflow-x:hidden pada <body>
+   tanpa ikut men-set overflow-y. Begitu salah satu sumbu overflow non-
+   'visible' sementara sumbu lain 'visible', spec CSS overflow diam-diam
+   MEMPROMOSIKAN yang 'visible' jadi 'auto' -- <body> pun ikut jadi
+   "scroll container" bayangan di samping <html>. Karena scroll asli
+   terjadi di <html> (overflow-y:auto di atas) dan <body> sendiri tidak
+   pernah benar-benar overflow (tingginya selalu otomatis pas dengan
+   isinya), .navbar yang position:sticky mengambil <body> itu sebagai
+   acuan (ancestor scroll-container TERDEKAT) alih-alih <html> --
+   akibatnya header ikut naik/hilang saat discroll alih-alih diam di
+   tempat, dan berpotensi memicu gesture scroll ganda di Android/iOS.
+
+   Perbaikan: pakai trik yang SAMA seperti sudah diterapkan di atas untuk
+   #page-edukasi -- overflow-x: clip (bukan hidden). 'clip' dikecualikan
+   dari aturan promosi 'visible'->'auto' tadi, jadi overflow-y bisa tetap
+   'visible' sungguhan dan <body> tidak pernah jadi scroll container.
+   <html> saja yang jadi satu-satunya scroll container asli, sehingga
+   .navbar yang sticky nempel ke situ dan benar-benar diam di tempat. */
+body {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+@supports not (overflow: clip) {
+  body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}
+
+/* Main hanya frame biasa yang mengalir mengikuti tinggi konten halaman
+   aktif — bukan lagi kotak setinggi layar. */
+main {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+/* Hanya satu .page yang dirender (display:block via .active, diatur di
+   style.css / script.js — tidak diubah). Di sini dipastikan .page mengalir
+   normal di dokumen, bukan kotak scroll terpisah. */
+main > .page {
+  position: static;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow-x: visible;
+  overflow-y: visible;
+  touch-action: auto;
+}
+
+main > .page > .wrap,
+main > .page .wrap,
+main > .page .section {
+  overflow: visible;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}
+
+/* Rail kartu/chips horizontal (khusus Edukasi) tetap hanya bisa digeser ke
+   samping — swipe vertikal tetap diteruskan ke scroll dokumen. */
+#page-edukasi .edu-grid,
+#page-edukasi .uji-grid,
+#page-edukasi .nara-edu-chips {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+/* #page-edukasi sendiri: overflow-x:clip (BUKAN hidden) supaya tidak
+   diam-diam menjadi scroll container vertikal tersendiri (lihat catatan di
+   atas). Fallback ke hidden untuk browser lama tanpa dukungan `clip`. */
+#page-edukasi {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+@supports not (overflow: clip) {
+  #page-edukasi {
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+}
+
+#page-edukasi,
+#page-edukasi * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#page-edukasi .edu-card,
+#page-edukasi .game-mission-card,
+#page-edukasi [data-reveal] {
+  content-visibility: visible;
+  contain: none;
+}
+
+/* Android/iOS: cegah overscroll glow/rubber-band di ujung halaman Edukasi
+   merambat aneh ke elemen lain saat arah gesture dibalik. */
+@supports selector(:has(*)) {
+  body:has(#page-edukasi.active) {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* Desktop: main tetap di sebelah sidebar (nilai sama seperti style.css,
+   sekadar melengkapi width agar konsisten dengan margin-left-nya). */
+@media (min-width: 1024px) {
+  main {
+    margin-left: 248px;
+    width: calc(100% - 248px);
+  }
+}
+@media (min-width: 1440px) {
+  main {
+    margin-left: 264px;
+    width: calc(100% - 264px);
+  }
+}
+@media (max-width: 1023px) {
+  main {
+    margin-left: 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,103 @@
+/* =========================================================================
+   NARA — OPTIMASI SCROLL TAHAP 2 (style-v7-edukasi-scrollperf.css)
+   Lapisan aditif PALING AKHIR, di atas style.css s/d style-v6-edukasi-perf.css.
+   TIDAK mengubah HTML struktural, TIDAK mengubah nama/atribut yang dipakai
+   JS (onclick, id, data-*), TIDAK menghapus/mengubah materi, warna, navigasi,
+   atau fungsi apa pun — murni menutup sisa celah performa scroll & rendering
+   di halaman Edukasi yang belum disentuh style-v5/v6.
+
+   CATATAN AUDIT (kenapa perubahan di file ini seperti ini):
+   - Scroll VERTIKAL halaman Edukasi memakai scroll native <body> (bukan
+     container custom dengan overflow-y JS), jadi jalur tercepat yang ada
+     di browser sudah otomatis dipakai — sengaja TIDAK ditambah listener
+     scroll vertikal apa pun di sini (menambah listener scroll vertikal
+     hanya akan menambah beban, bukan mengurangi).
+   - Satu-satunya listener scroll yang sudah ada (indikator titik carousel
+     "Uji Pemahamanmu" di script.js) sudah passive + dibungkus
+     requestAnimationFrame, jadi tidak disentuh.
+   - Bagian yang benar-benar masih bisa dioptimalkan murni lewat CSS:
+     konsistensi touch-action di semua strip horizontal, isolasi reflow
+     saat filter/pencarian materi jalan, dan render tertunda untuk kategori
+     yang letaknya jauh di bawah layar.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. KONSISTENSI TOUCH-ACTION DI SEMUA STRIP HORIZONTAL
+   .edu-grid & .uji-grid sudah punya touch-action: pan-x (v5 & style.css)
+   supaya gesture vertikal langsung diteruskan ke scroll halaman tanpa
+   browser perlu "menebak" arah swipe dulu. Strip chip kategori
+   (.nara-edu-chips) belum punya deklarasi ini — ditambahkan di sini agar
+   ketiga strip horizontal di halaman Edukasi konsisten dan swipe vertikal
+   di atasnya tidak terasa "nyangkut" sepersekian detik sebelum diteruskan.
+   ------------------------------------------------------------------------- */
+#page-edukasi .nara-edu-chips {
+    /* PERBAIKAN (menggantikan versi "pan-x" saja): "pan-x" tunggal
+       mematikan pan-y sepenuhnya di titik sentuh (irisan aksi yang
+       diizinkan sesuai spesifikasi Touch Action), bukan meneruskannya ke
+       body — inilah yang membuat scroll vertikal halaman Edukasi
+       terkunci saat swipe dimulai di atas chip. "pan-x pan-y" tetap
+       membiarkan browser menangani horizontal & vertikal sesuai arah
+       swipe (native direction-locking), tanpa mengunci scroll halaman. */
+    touch-action: pan-x pan-y;
+}
+
+/* -------------------------------------------------------------------------
+   2. ISOLASI REFLOW SAAT PENCARIAN / FILTER KATEGORI
+   applyEduFilter() (config/naraHome.js) menyalakan/mematikan banyak kartu
+   sekaligus lewat style.display setiap kali mengetik di kolom pencarian
+   atau menekan chip kategori. Tanpa containment, browser bisa saja
+   menghitung ulang layout blok lain yang tidak berubah. `contain: layout
+   style` pada tiap blok kategori mengunci dampak reflow itu ke dalam
+   bloknya sendiri, sehingga blok lain (dan scroll position halaman) tidak
+   ikut terpengaruh — hanya meringankan proses filter, TIDAK mengubah hasil
+   atau tampilan filter itu sendiri.
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-cat-block {
+    contain: layout style;
+}
+
+/* -------------------------------------------------------------------------
+   3. RENDER TERTUNDA UNTUK KATEGORI YANG JAUH DI BAWAH LAYAR
+   Kategori pertama ("Materi Edukasi") sengaja TIDAK disentuh karena posisinya
+   biasanya sudah langsung terlihat/nyaris terlihat saat halaman Edukasi
+   dibuka, jadi menunda render di situ justru berisiko membuat kartu
+   "muncul telat". Tiga blok berikutnya ("Edukasi Digital", "Materi untuk
+   Orang Tua", "Uji Pemahamanmu") letaknya jauh di bawah layar pada
+   kebanyakan HP — content-visibility:auto membuat browser melewati kerja
+   layout & paint untuk blok ini selama masih di luar layar, lalu
+   merendernya normal begitu blok mendekati viewport saat digeser.
+   contain-intrinsic-size memakai kata kunci "auto" supaya tinggi asli blok
+   "diingat" setelah render pertama — jadi tidak ada lompatan/blank berulang
+   tiap kali blok yang sama keluar-masuk viewport karena filter pencarian.
+   Angka pxnya hanya perkiraan awal (sebelum blok pernah dirender), diambil
+   dari tinggi kartu + judul kategori supaya area kosong sebelum render
+   pertama sudah mendekati ukuran asli.
+   Tidak berpengaruh pada carousel horizontal di dalamnya — begitu blok
+   masuk viewport, scroll horizontalnya berfungsi seperti biasa.
+   ------------------------------------------------------------------------- */
+@supports (content-visibility: auto) {
+    /* ":not(.uji-section) ~ :not(.uji-section)" sengaja dipakai (bukan
+       nth-of-type) karena elemen kakak-beradik di .wrap.section semuanya
+       <div> — nth-of-type akan ikut menghitung .edu-summary-compact &
+       .nara-edu-search-wrap dan salah sasaran. Selector di bawah ini
+       murni berarti "setiap .edu-cat-block non-uji yang punya .edu-cat-block
+       non-uji lain sebelumnya", yaitu kategori ke-2 dan seterusnya —
+       kategori pertama otomatis tidak kena karena tidak ada pendahulunya. */
+    #page-edukasi .edu-cat-block:not(.uji-section) ~ .edu-cat-block:not(.uji-section) {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 230px;
+    }
+    #page-edukasi .edu-cat-block.uji-section {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 340px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   4. HORMATI PREFERENSI REDUCED MOTION (selaras dengan v6)
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    #page-edukasi .edu-cat-block {
+        contain: layout style;
+    }
+}

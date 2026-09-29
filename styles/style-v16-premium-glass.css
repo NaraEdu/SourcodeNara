@@ -1,0 +1,298 @@
+/* =========================================================================
+   NARA — PREMIUM GLASSMORPHISM LAYER (v16)
+   =========================================================================
+   Lapisan aditif murni — TIDAK mengubah style.css / v2..v15, TIDAK mengubah
+   index.html struktur, TIDAK mengubah script.js / logika apapun.
+   Semua aturan di sini hanya menyentuh: background, border, shadow, radius,
+   blur, gradient, dan transisi/animasi ringan (opacity + transform, yang
+   murah secara GPU). Tidak ada properti yang mempengaruhi layout, ukuran
+   sentuh, urutan DOM, overflow, atau perilaku scroll horizontal Edukasi
+   (area itu sudah dituning khusus di v5–v9 untuk performa Android, jadi
+   sengaja tidak disentuh blur/animasi berat di sini).
+
+   Dimuat PALING TERAKHIR agar menang atas semua layer visual sebelumnya.
+   ========================================================================= */
+
+:root {
+    /* --- Token warna kaca, diturunkan dari palet brand NARA yang sudah ada --- */
+    --pg-glass: rgba(255, 255, 255, 0.62);
+    --pg-glass-strong: rgba(255, 255, 255, 0.82);
+    --pg-glass-soft: rgba(255, 255, 255, 0.40);
+    --pg-glass-border: rgba(255, 255, 255, 0.55);
+    --pg-glass-border-soft: rgba(19, 34, 66, 0.07);
+    --pg-glass-blur: 20px;
+    --pg-glass-blur-sm: 10px;
+
+    --pg-shadow-sm: 0 2px 10px -4px rgba(19, 34, 66, 0.10);
+    --pg-shadow-md: 0 10px 28px -10px rgba(19, 34, 66, 0.16), 0 2px 8px -2px rgba(19, 34, 66, 0.06);
+    --pg-shadow-lg: 0 20px 48px -16px rgba(19, 34, 66, 0.22), 0 4px 14px -4px rgba(19, 34, 66, 0.08);
+    --pg-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+    --pg-radius-xl: 26px;
+    --pg-radius-lg: 20px;
+    --pg-radius-md: 15px;
+    --pg-radius-sm: 12px;
+
+    --pg-gradient-brand: linear-gradient(135deg, var(--blue, #4A9FF5) 0%, var(--purple, #7C6FEF) 100%);
+    --pg-gradient-soft: linear-gradient(160deg, rgba(74, 159, 245, 0.10), rgba(124, 111, 239, 0.05) 60%, rgba(23, 163, 152, 0.05));
+    --pg-gradient-line: linear-gradient(90deg, rgba(74, 159, 245, 0.55), rgba(124, 111, 239, 0.55));
+
+    --pg-ease: cubic-bezier(0.22, 0.9, 0.32, 1.05);
+    --pg-fast: 160ms;
+    --pg-med: 260ms;
+}
+
+/* ---- Reset animasi di perangkat yang minta gerak minimal ---- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* =========================================================================
+   1. AMBIENCE — gradient lembut mengambang di belakang konten
+   Fixed + blurred sekali (bukan per-scroll), jadi tidak membebani repaint.
+   ========================================================================= */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(560px 420px at 8% -6%, rgba(74, 159, 245, 0.14), transparent 60%),
+        radial-gradient(520px 420px at 108% 12%, rgba(124, 111, 239, 0.12), transparent 60%),
+        radial-gradient(600px 480px at 50% 118%, rgba(23, 163, 152, 0.10), transparent 60%);
+}
+
+/* =========================================================================
+   2. NAVBAR ATAS (mobile) — tambah kilau tipis di atas floating pill v15
+   ========================================================================= */
+.navbar-inner {
+    box-shadow: var(--pg-shadow-md), var(--pg-shadow-inset) !important;
+}
+.navbar-inner.is-scrolled {
+    background: var(--pg-glass-soft) !important;
+    -webkit-backdrop-filter: saturate(160%) blur(var(--pg-glass-blur)) !important;
+    backdrop-filter: saturate(160%) blur(var(--pg-glass-blur)) !important;
+}
+.navbar-inner::after {
+    content: "";
+    position: absolute;
+    left: 14%;
+    right: 14%;
+    top: 0;
+    height: 1px;
+    background: var(--pg-gradient-line);
+    opacity: 0.55;
+    border-radius: 2px;
+}
+.navbar-inner { position: relative; }
+
+/* =========================================================================
+   3. SIDEBAR (desktop/tablet lebar) — panel kaca mengambang
+   ========================================================================= */
+@media (min-width: 1024px) {
+    .sidebar {
+        background: var(--pg-glass-strong) !important;
+        border: 1px solid var(--pg-glass-border-soft) !important;
+        -webkit-backdrop-filter: saturate(160%) blur(var(--pg-glass-blur)) !important;
+        backdrop-filter: saturate(160%) blur(var(--pg-glass-blur)) !important;
+        box-shadow: var(--pg-shadow-lg) !important;
+        border-radius: 0 var(--pg-radius-xl) var(--pg-radius-xl) 0;
+    }
+    .sidebar-nav-btn {
+        border-radius: var(--pg-radius-sm) !important;
+        transition: background var(--pg-fast) var(--pg-ease), transform var(--pg-fast) var(--pg-ease), color var(--pg-fast) var(--pg-ease) !important;
+    }
+    .sidebar-nav-btn:hover {
+        background: rgba(74, 159, 245, 0.10) !important;
+        transform: translateX(2px);
+    }
+    .sidebar-nav-btn.active {
+        background: var(--pg-gradient-brand) !important;
+        color: #fff !important;
+        box-shadow: var(--pg-shadow-sm);
+    }
+    .sidebar-nav-btn.active .icon svg { stroke: #fff; }
+}
+
+/* =========================================================================
+   4. BOTTOM NAV (mobile) — floating glass pill lebih premium
+   ========================================================================= */
+@media (max-width: 1023px) {
+    .bottom-nav {
+        background: var(--pg-glass-strong) !important;
+        border: 1px solid var(--pg-glass-border-soft) !important;
+        -webkit-backdrop-filter: saturate(180%) blur(var(--pg-glass-blur)) !important;
+        backdrop-filter: saturate(180%) blur(var(--pg-glass-blur)) !important;
+        box-shadow: var(--pg-shadow-lg), var(--pg-shadow-inset) !important;
+    }
+    .bottom-nav-btn {
+        transition: transform var(--pg-fast) var(--pg-ease), color var(--pg-fast) var(--pg-ease) !important;
+    }
+    .bottom-nav-btn.active {
+        color: var(--blue, #4A9FF5);
+    }
+    .bottom-nav-btn.active .icon {
+        transform: translateY(-1px) scale(1.06);
+    }
+    .bottom-nav-btn:active {
+        transform: scale(0.92);
+    }
+}
+
+/* =========================================================================
+   5. KARTU (glass surfaces) — .card dan varian sejenis yang sudah kaku
+   di style.css sebagai kartu putih solid. Di sini diberi lapisan kaca
+   ringan + border tipis + shadow berlapis + micro-interaction saat
+   hover/tap. Properti layout (padding/grid/width) TIDAK disentuh.
+   ========================================================================= */
+.card,
+.modal-box,
+.nav-sheet,
+.module-hero,
+.sehat-hero,
+.game-hero,
+.mq-hero,
+.konsul-hero,
+.sehat-tip-card {
+    background: linear-gradient(180deg, var(--pg-glass-strong), rgba(255, 255, 255, 0.68)) !important;
+    border: 1px solid var(--pg-glass-border-soft) !important;
+    -webkit-backdrop-filter: blur(var(--pg-glass-blur-sm)) saturate(140%);
+    backdrop-filter: blur(var(--pg-glass-blur-sm)) saturate(140%);
+    box-shadow: var(--pg-shadow-md), var(--pg-shadow-inset) !important;
+    transition: transform var(--pg-med) var(--pg-ease), box-shadow var(--pg-med) var(--pg-ease) !important;
+}
+.card { border-radius: var(--pg-radius-lg) !important; }
+.modal-box { border-radius: var(--pg-radius-xl) !important; }
+.nav-sheet { -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%); background: var(--pg-glass-strong) !important; }
+
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--pg-shadow-lg), var(--pg-shadow-inset) !important;
+    }
+}
+.card:active { transform: scale(0.985); }
+
+/* Overlay modal & sheet: blur latar belakang, bukan hanya menggelapkan */
+.modal-overlay {
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+.sheet-overlay {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+/* Kartu game/misi & progres: pertahankan gradasi warna aslinya, tambah kaca */
+.game-mission-card,
+.progress-card,
+.nara-challenge-card {
+    border-radius: var(--pg-radius-lg);
+    border: 1px solid var(--pg-glass-border-soft);
+    box-shadow: var(--pg-shadow-md);
+    transition: transform var(--pg-med) var(--pg-ease), box-shadow var(--pg-med) var(--pg-ease);
+}
+@media (hover: hover) {
+    .game-mission-card:hover { transform: translateY(-3px); box-shadow: var(--pg-shadow-lg); }
+}
+.game-mission-card:active { transform: scale(0.985); }
+
+/* Kategori & kartu ikon: sentuhan kaca ringan tanpa mengubah grid/ukuran */
+.category-card,
+.icon-card {
+    border-radius: var(--pg-radius-md) !important;
+    transition: transform var(--pg-fast) var(--pg-ease), box-shadow var(--pg-fast) var(--pg-ease) !important;
+}
+.category-card:active,
+.icon-card:active { transform: scale(0.97); }
+
+/* =========================================================================
+   6. KARTU EDUKASI (edu-card) — SENGAJA TIDAK diberi backdrop-filter agar
+   performa scroll horizontal Android/iOS yang sudah dituning (v5–v9) tidak
+   terganggu. Hanya sentuhan visual murah: border, radius, shadow, gradasi
+   tipis di dalam kartu, dan feedback tap.
+   ========================================================================= */
+.edu-card {
+    border-radius: var(--pg-radius-md) !important;
+    border: 1px solid var(--pg-glass-border-soft) !important;
+    box-shadow: var(--pg-shadow-sm) !important;
+    transition: box-shadow var(--pg-fast) var(--pg-ease), transform var(--pg-fast) var(--pg-ease) !important;
+}
+.edu-card:active { transform: scale(0.96); }
+
+/* =========================================================================
+   6b. JAWABAN REFLEKSI DIRI (Cek Hubunganku / Cek Pertemanan) — kuesioner
+   ini TIDAK punya jawaban benar/salah, jadi dipakai penanda netral "dipilih"
+   (biru, sama seperti warna brand) alih-alih hijau "benar" / merah "salah"
+   supaya pengguna tidak bingung dikira jawabannya soal hidupnya sendiri
+   dinilai salah.
+   ========================================================================= */
+.quiz-opts button.selected {
+    border-color: var(--blue, #4A9FF5) !important;
+    background: var(--blue-light, #EAF3FE) !important;
+    color: var(--navy, #132242) !important;
+}
+
+/* =========================================================================
+   7. TOMBOL & CTA — gradient brand halus + feedback tap konsisten
+   ========================================================================= */
+.btn {
+    transition: transform var(--pg-fast) var(--pg-ease), box-shadow var(--pg-fast) var(--pg-ease), filter var(--pg-fast) var(--pg-ease);
+}
+.btn:active { transform: scale(0.96); }
+
+.back-link-modern {
+    border-radius: 999px;
+}
+
+/* =========================================================================
+   8. TIPOGRAFI & SPACING RESPONSIF — clamp() agar mengalir mulus dari HP
+   kecil ke tablet/desktop tanpa mengubah struktur breakpoint yang ada.
+   ========================================================================= */
+.wrap {
+    padding-left: clamp(14px, 4vw, 32px) !important;
+    padding-right: clamp(14px, 4vw, 32px) !important;
+}
+h1, .hero h1, .konsul-hero h1, .module-hero h1 {
+    font-size: clamp(1.3rem, 1.05rem + 1.4vw, 2rem);
+}
+
+/* =========================================================================
+   9. AKSESIBILITAS SENTUH & FOKUS
+   ========================================================================= */
+button, a, .bottom-nav-btn, .sidebar-nav-btn, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+    outline: 2px solid var(--blue, #4A9FF5);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+/* =========================================================================
+   10. FALLBACK — browser tanpa dukungan backdrop-filter
+   ========================================================================= */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .card, .modal-box, .nav-sheet, .module-hero, .sehat-hero, .game-hero,
+    .mq-hero, .konsul-hero, .sehat-tip-card, .bottom-nav, .sidebar {
+        background: rgba(255, 255, 255, 0.96) !important;
+    }
+}
+
+/* =========================================================================
+   11. LAYAR SANGAT KECIL (<360px) — pastikan padding kartu tidak sesak
+   ========================================================================= */
+@media (max-width: 359px) {
+    .card { padding: 16px !important; }
+}
+
+/* =========================================================================
+   12. LAYAR LEBAR (desktop besar) — kartu tidak melar berlebihan
+   ========================================================================= */
+@media (min-width: 1440px) {
+    .wrap { max-width: 1360px; }
+}

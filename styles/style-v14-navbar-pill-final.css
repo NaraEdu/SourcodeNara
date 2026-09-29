@@ -1,0 +1,126 @@
+/* =========================================================================
+   NARA — NAVBAR JADI "PILL BUTTON" MENGAMBANG + TRANSPARAN SAAT SCROLL (v14)
+   Lapisan ADITIF paling terakhir, menimpa nilai variabel & sebagian aturan
+   dari style-v13-header-floating.css TANPA mengubah file itu maupun
+   nara-header-floating.js (JS tetap sama: hanya menulis --nara-scroll &
+   --nara-elev + toggle class .has-glass — semua dipakai ulang di sini).
+
+   Perubahan dari v13:
+   1) Kondisi AWAL (belum discroll) sekarang SUDAH berbentuk kapsul/pill
+      kompak yang mengambang dengan margin kiri-kanan, sudut membulat, dan
+      ukuran sekecil "tombol navbar" — bukan lagi bar putih kotak penuh.
+   2) Kondisi SAAT DISCROLL: alpha background diturunkan (agak transparan,
+      bukan hilang total) + backdrop-blur dinaikkan supaya tetap terbaca —
+      persis pola collapsing/glass app bar di aplikasi Android modern
+      (Gmail, Google Photos, Play Store).
+   ========================================================================= */
+
+:root {
+    /* Ukuran & bentuk pill — konstan (tidak lagi berubah drastis dari
+       "bar besar" ke "pill kecil" seperti v13, karena sudah pill sejak awal) */
+    --pill-minh-start: 50px;   --pill-minh-end: 44px;
+    --pill-pad-y-start: 8px;   --pill-pad-y-end: 6px;
+    --pill-pad-x-start: 14px;  --pill-pad-x-end: 12px;
+    --pill-margin-x-start: 12px; --pill-margin-x-end: 8px;
+    --pill-margin-top-start: 8px; --pill-margin-top-end: 6px;
+    --pill-radius-start: 20px; --pill-radius-end: 24px;
+
+    --pill-logo-start: 30px;  --pill-logo-end: 26px;
+    --pill-font-start: 0.94rem; --pill-font-end: 0.86rem;
+    --pill-sub-start: .58rem; --pill-sub-end: .52rem;
+
+    /* Transparansi — "agak transparan" saat discroll, bukan tembus total */
+    --pill-alpha-start: 0.95;  --pill-alpha-end: 0.62;
+    --pill-blur-start: 12px;   --pill-blur-end: 20px;
+    --pill-border-alpha-start: 0.55; --pill-border-alpha-end: 0.30;
+}
+
+@media (max-width: 480px) {
+    :root {
+        --pill-minh-start: 46px;  --pill-minh-end: 42px;
+        --pill-pad-x-start: 12px; --pill-pad-x-end: 10px;
+        --pill-margin-x-start: 10px; --pill-margin-x-end: 6px;
+        --pill-logo-start: 28px; --pill-logo-end: 24px;
+        --pill-font-start: 0.9rem; --pill-font-end: 0.82rem;
+        --pill-radius-start: 18px; --pill-radius-end: 22px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --pill-margin-x-start: 20px; --pill-margin-x-end: 16px;
+        --pill-radius-start: 22px; --pill-radius-end: 26px;
+    }
+}
+
+/* ---- Wrapper luar (.navbar): tidak lagi punya background/garis sendiri —
+   biar cuma pill di dalamnya yang mengambang & terlihat. ---- */
+.navbar {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    padding-top: env(safe-area-inset-top);
+}
+
+/* ---- Pill/button navbar-inner: bentuk & ukuran kompak sejak awal,
+   lalu makin transparan + blur naik mengikuti --nara-scroll (0..1) yang
+   sudah ditulis oleh nara-header-floating.js. ---- */
+.navbar-inner {
+    max-width: none;
+    width: auto;
+    margin: calc(var(--pill-margin-top-start) - var(--nara-scroll) * (var(--pill-margin-top-start) - var(--pill-margin-top-end)))
+            calc(var(--pill-margin-x-start) - var(--nara-scroll) * (var(--pill-margin-x-start) - var(--pill-margin-x-end)))
+            0;
+
+    padding: calc(var(--pill-pad-y-start) - var(--nara-scroll) * (var(--pill-pad-y-start) - var(--pill-pad-y-end)))
+             calc(var(--pill-pad-x-start) - var(--nara-scroll) * (var(--pill-pad-x-start) - var(--pill-pad-x-end)));
+
+    min-height: calc(var(--pill-minh-start) - var(--nara-scroll) * (var(--pill-minh-start) - var(--pill-minh-end)));
+    border-radius: calc(var(--pill-radius-start) - var(--nara-scroll) * (var(--pill-radius-start) - var(--pill-radius-end)));
+
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, calc(var(--pill-alpha-start) - var(--nara-scroll) * (var(--pill-alpha-start) - var(--pill-alpha-end)))),
+        rgba(240, 246, 255, calc((var(--pill-alpha-start) - var(--nara-scroll) * (var(--pill-alpha-start) - var(--pill-alpha-end))) * 0.9)));
+
+    border: 1px solid rgba(255, 255, 255, calc(var(--pill-border-alpha-start) - var(--nara-scroll) * (var(--pill-border-alpha-start) - var(--pill-border-alpha-end))));
+
+    -webkit-backdrop-filter: saturate(160%) blur(calc(var(--pill-blur-start) + var(--nara-scroll) * (var(--pill-blur-end) - var(--pill-blur-start))));
+    backdrop-filter: saturate(160%) blur(calc(var(--pill-blur-start) + var(--nara-scroll) * (var(--pill-blur-end) - var(--pill-blur-start))));
+
+    box-shadow:
+        0 calc(3px + var(--nara-elev) * 6px) calc(14px + var(--nara-elev) * 16px) calc(-8px - var(--nara-elev) * 4px) rgba(19, 34, 66, calc(0.18 + var(--nara-elev) * 0.14)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(0.5 + var(--nara-elev) * 0.2));
+}
+
+/* Fallback jika browser tidak dukung backdrop-filter: pakai alpha lebih
+   solid supaya teks tetap terbaca tanpa efek buram. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .navbar-inner {
+        background: rgba(255, 255, 255, 0.96) !important;
+    }
+}
+
+/* Logo & teks brand ikut mengecil sedikit mengikuti bentuk pill kompak. */
+.logo {
+    font-size: calc(var(--pill-font-start) - var(--nara-scroll) * (var(--pill-font-start) - var(--pill-font-end)));
+    gap: calc(8px - var(--nara-scroll) * 2px);
+}
+.logo .mark {
+    --logo-size: calc(var(--pill-logo-start) - var(--nara-scroll) * (var(--pill-logo-start) - var(--pill-logo-end)));
+}
+.logo .sub {
+    font-size: calc(var(--pill-sub-start) - var(--nara-scroll) * (var(--pill-sub-start) - var(--pill-sub-end)));
+    opacity: calc(1 - var(--nara-scroll) * 0.18);
+}
+
+/* Konten halaman diberi sedikit jarak tambahan di atas karena navbar kini
+   mengambang (bukan menempel penuh) — supaya tidak ketiban pill. */
+main {
+    padding-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar-inner, .logo, .logo .sub, .logo .mark {
+        transition: none !important;
+    }
+}

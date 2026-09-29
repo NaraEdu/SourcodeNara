@@ -1,0 +1,107 @@
+/* =========================================================================
+   NARA — LIQUID GLASS FLOATING NAVBAR (v12)
+   Lapisan aditif PALING TERAKHIR, dimuat setelah style-v11-bottomnav-float.css.
+   Hanya menata ulang tampilan & posisi .bottom-nav, .bottom-nav-btn,
+   #sheet-bantuan, dan .sheet-overlay pada mobile (<760px).
+
+   TIDAK mengubah HTML, TIDAK mengubah onclick/route/data-group,
+   TIDAK menghapus/menimpa file lama (style.css, style-v2.css .. v11).
+
+   PERBAIKAN UTAMA:
+   style-v11-bottomnav-float.css menaikkan z-index .bottom-nav menjadi 300,
+   melebihi .nav-sheet (199) dan .sheet-overlay (198) di style.css.
+   Akibatnya sheet "Bantuan" (RANA AI / Konsultasi / Kritik & Saran) tampil
+   DI BELAKANG navbar yang sekarang mengambang. Bagian ini menata ulang
+   urutan z-index supaya sheet & overlay selalu tampil DI ATAS navbar.
+   ========================================================================= */
+
+@media (max-width: 759px) {
+
+    /* ---- 1) PERBAIKAN Z-INDEX: sheet Bantuan wajib di atas navbar ---- */
+    .bottom-nav {
+        z-index: 340;
+    }
+    .sheet-overlay {
+        z-index: 350;
+    }
+    .nav-sheet {
+        z-index: 360;
+    }
+
+    /* Ruang aman ekstra di bawah konten halaman, mengikuti tinggi navbar
+       liquid glass + safe-area-inset-bottom perangkat (notch/home indicator). */
+    body {
+        padding-bottom: calc(114px + env(safe-area-inset-bottom));
+    }
+
+    /* Jarak sheet Bantuan ke navbar tetap konsisten & aman, tidak lagi
+       mengandalkan angka lama (78px) yang dihitung untuk navbar non-floating. */
+    #sheet-bantuan {
+        bottom: calc(86px + env(safe-area-inset-bottom));
+    }
+
+    /* ---- 2) LIQUID GLASS SHELL ---- */
+    .bottom-nav {
+        background: linear-gradient(180deg, rgba(255, 255, 255, .60), rgba(255, 255, 255, .40));
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+        border: 1px solid rgba(255, 255, 255, .55);
+        border-radius: 26px;
+        box-shadow:
+            0 14px 34px -14px rgba(19, 34, 66, .30),
+            0 2px 10px -4px rgba(19, 34, 66, .14),
+            inset 0 1px 0 rgba(255, 255, 255, .65);
+
+        /* Wadah swipe horizontal — hanya aktif secara visual bila konten
+           melebihi lebar navbar (lihat .is-scrollable di bawah). */
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .bottom-nav::-webkit-scrollbar {
+        display: none;
+        height: 0;
+    }
+
+    /* Fallback bila backdrop-filter tidak didukung (beberapa WebView lama) */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .bottom-nav {
+            background: rgba(255, 255, 255, .97);
+        }
+    }
+
+    .bottom-nav-btn {
+        flex: 1 1 0;
+        min-width: 56px;
+        border-radius: 18px;
+        transition:
+            color .2s ease,
+            background .3s cubic-bezier(.34, 1.56, .64, 1),
+            transform .18s cubic-bezier(.34, 1.56, .64, 1),
+            box-shadow .2s ease;
+    }
+
+    .bottom-nav-btn.active {
+        background: rgba(74, 159, 245, .16);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55);
+    }
+
+    .bottom-nav-btn:active {
+        transform: scale(.93);
+    }
+
+    /* Saat navbar tidak cukup lebar (layar sangat sempit / teks diperbesar
+       pengguna) dan butuh digeser, tombol tidak lagi diregangkan supaya
+       gesture swipe terasa alami, bukan "melompat". */
+    .bottom-nav.is-scrollable {
+        justify-content: flex-start;
+    }
+    .bottom-nav.is-scrollable .bottom-nav-btn {
+        flex: 0 0 auto;
+        width: 66px;
+    }
+}

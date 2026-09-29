@@ -1,0 +1,13 @@
+/* Daftar materi edukasi NARA — jangan hapus id, dipakai NaraState untuk menghitung progres global */
+window.NARA_MATERI_LIST = [
+    { id: 'pergaulansehat',   pageId: 'page-pergaulansehat',   title: 'Pergaulan Sehat',            icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span>', kategori: 'relasi',  level: 1, waktu: '5 menit', xp: 30 },
+    { id: 'freesex',          pageId: 'page-freesex',          title: 'Free Sex',                   icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">menu_book</span>', kategori: 'relasi',  level: 2, waktu: '6 menit', xp: 30 },
+    { id: 'revenge',          pageId: 'page-revenge',          title: 'Revenge Porn',               icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span>', kategori: 'relasi',  level: 2, waktu: '6 menit', xp: 30 },
+    { id: 'pergaulanbebas',   pageId: 'page-pergaulanbebas',   title: 'Pergaulan Bebas',            icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">handshake</span>', kategori: 'relasi',  level: 2, waktu: '6 menit', xp: 30 },
+    { id: 'mental',           pageId: 'page-mental',           title: 'Kesehatan Mental',           icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">psychology</span>', kategori: 'mental',  level: 1, waktu: '6 menit', xp: 30 },
+    { id: 'digital',          pageId: 'page-digital',          title: 'Keamanan Digital',           icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">shield</span>', kategori: 'digital', level: 2, waktu: '5 menit', xp: 30 },
+    { id: 'ai',               pageId: 'page-ai',               title: 'Literasi AI & Deepfake',     icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">smart_toy</span>', kategori: 'ai', level: 3, waktu: '7 menit', xp: 30 },
+    { id: 'ortu',             pageId: 'page-ortu',             title: 'Pendampingan Remaja',         icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">diversity_3</span>', kategori: 'ortu', level: 1, waktu: '5 menit', xp: 30 },
+    { id: 'ortukomunikasi',   pageId: 'page-ortukomunikasi',   title: 'Komunikasi Orang Tua & Anak',icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">chat_bubble</span>', kategori: 'ortu',    level: 1, waktu: '5 menit', xp: 30 },
+    { id: 'ortupengawasan',   pageId: 'page-ortupengawasan',   title: 'Pengawasan Digital',          icon: '<span class="material-symbols-rounded" translate="no" aria-hidden="true">visibility</span>', kategori: 'ortu',    level: 2, waktu: '5 menit', xp: 30 }
+];

@@ -1,0 +1,155 @@
+/* =========================================================================
+   NARA — HEADER SCROLL ANIMATION ala Android Collapsing App Bar (v13)
+   Lapisan ADITIF paling terakhir. Tidak mengubah HTML, tidak menimpa file
+   lama (style.css .. v12).
+
+   PENDEKATAN (beda dari versi sebelumnya):
+   Alih-alih toggle satu class biner di satu titik (lalu diberi transition
+   berdurasi tetap) — yang terasa "meloncat" dan kurang natural — versi ini
+   MENGIKUTI POSISI SCROLL SECARA LANGSUNG, 1:1, seperti Collapsing Toolbar
+   di aplikasi Android modern (Gmail, Google Photos, dsb.):
+
+   - nara-header-floating.js menghitung progres scroll 0..1 di dalam jarak
+     collapse (COLLAPSE_RANGE) dan menuliskannya sebagai CSS custom
+     property `--nara-scroll` pada elemen .navbar, di-update setiap frame
+     (rAF) SELAMA jari/scroll bergerak — jadi ukuran, padding, radius,
+     margin, dan opacity mengikuti jari secara instan, bukan animasi
+     terjadwal.
+   - Saat scroll berhenti di posisi tanggung (sebagian collapse), header
+     otomatis "snap" ke posisi penuh terbuka atau penuh collapse — persis
+     seperti app bar Android dengan flag snap — memakai easing standar
+     Material (approx. easeOutCubic).
+   - Elevation (shadow) memakai kurva sendiri (`--nara-elev`) yang naik
+     lebih cepat di awal scroll, meniru bagaimana elevation muncul cepat
+     di Material Design lalu ukuran bar terus menyusut mengikuti sisa
+     jarak scroll.
+   - `backdrop-filter: blur()` TIDAK dianimasikan per-frame (mahal secara
+     performa di WebView low-end) — hanya di-toggle on/off lewat class
+     `.has-glass` begitu elevation mulai muncul. Semua elemen lain tetap
+     kontinu.
+   ========================================================================= */
+
+:root {
+    --nara-scroll: 0;   /* 0 = posisi awal (top), 1 = posisi collapse penuh */
+    --nara-elev: 0;      /* 0..1, naik lebih cepat dari --nara-scroll (untuk shadow) */
+
+    --pad-y-start: 12px;  --pad-y-end: 9px;
+    --pad-x-start: 20px;  --pad-x-end: 16px;
+    --minh-start: 56px;   --minh-end: 48px;
+    --logo-start: 36px;   --logo-end: 30px;
+    --font-start: 1.05rem; --font-end: 0.92rem;
+    --sub-start: .64rem;  --sub-end: .56rem;
+    --sub-opacity-end: .82;
+    --radius-end: 18px;
+    --margin-end: 16px;
+    --gap-end: 10px;
+}
+
+@media (max-width: 480px) {
+    :root {
+        --pad-y-end: 8px;
+        --pad-x-end: 14px;
+        --minh-end: 44px;
+        --logo-end: 28px;
+        --font-end: .88rem;
+        --radius-end: 16px;
+        --margin-end: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --pad-x-end: 22px;
+        --radius-end: 20px;
+        --margin-end: 20px;
+        --gap-end: 12px;
+    }
+}
+
+/* ---- Safety-net transition kecil (~90ms) ----
+   Bukan pemicu utama animasi (itu tugas rAF di JS), hanya menghaluskan
+   antar-sample scroll event yang kadang tidak sehalus 60fps di sejumlah
+   WebView Android. Durasi sengaja sangat singkat supaya tetap terasa
+   "mengikuti jari", bukan "menyusul dengan jeda".
+   Catatan: transition opacity milik splash-screen (style.css) disertakan
+   ulang di sini supaya tidak tertimpa shorthand `transition`. */
+.navbar {
+    transition: opacity .6s ease .08s, background 90ms linear, box-shadow 90ms linear, border-color 90ms linear, padding-top 90ms linear;
+}
+.navbar-inner {
+    transition: max-width 90ms linear, margin 90ms linear, padding 90ms linear,
+        min-height 90ms linear, border-radius 90ms linear, background 90ms linear,
+        border-color 90ms linear, box-shadow 90ms linear;
+}
+.logo, .logo .sub { transition: font-size 90ms linear, gap 90ms linear, margin-top 90ms linear, opacity 90ms linear; }
+.logo .mark { transition: width 90ms linear, height 90ms linear, box-shadow 90ms linear; }
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar, .navbar-inner, .logo, .logo .sub, .logo .mark { transition: none !important; }
+}
+
+/* =========================================================================
+   INTERPOLASI KONTINU — mengikuti --nara-scroll (0..1) & --nara-elev (0..1)
+   ========================================================================= */
+.navbar {
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, calc(0.97 - var(--nara-scroll) * 0.97)),
+        rgba(234, 243, 254, calc(0.9 - var(--nara-scroll) * 0.9)));
+    border-bottom: 1px solid rgba(228, 233, 243, calc(1 - var(--nara-scroll)));
+    box-shadow:
+        0 1px 0 rgba(19, 34, 66, calc(0.02 * (1 - var(--nara-scroll)))),
+        0 12px 24px -20px rgba(19, 34, 66, calc(0.35 * (1 - var(--nara-scroll))));
+    padding-top: calc(env(safe-area-inset-top) + var(--nara-scroll) * var(--gap-end));
+}
+
+.navbar-inner {
+    max-width: calc(1280px - var(--nara-scroll) * 2 * var(--margin-end));
+    margin: calc(var(--nara-scroll) * var(--gap-end)) auto 0;
+    padding: calc(var(--pad-y-start) - var(--nara-scroll) * (var(--pad-y-start) - var(--pad-y-end)))
+             calc(var(--pad-x-start) - var(--nara-scroll) * (var(--pad-x-start) - var(--pad-x-end)));
+    min-height: calc(var(--minh-start) - var(--nara-scroll) * (var(--minh-start) - var(--minh-end)));
+    border-radius: calc(var(--nara-scroll) * var(--radius-end));
+
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, calc(var(--nara-scroll) * .82)),
+        rgba(255, 255, 255, calc(var(--nara-scroll) * .68)));
+    border: 1px solid rgba(255, 255, 255, calc(var(--nara-scroll) * .55));
+
+    box-shadow:
+        0 calc(var(--nara-elev) * 14px) calc(var(--nara-elev) * 32px) calc(var(--nara-elev) * -14px) rgba(74, 159, 245, calc(var(--nara-elev) * .28)),
+        0 calc(var(--nara-elev) * 10px) calc(var(--nara-elev) * 26px) calc(var(--nara-elev) * -16px) rgba(19, 34, 66, calc(var(--nara-elev) * .30)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(var(--nara-elev) * .7));
+}
+
+/* Blur di-toggle sebagai satu langkah murah (bukan diinterpolasi per-frame) */
+.navbar-inner.has-glass {
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .navbar-inner.has-glass { background: rgba(255, 255, 255, .96); }
+}
+
+.logo {
+    font-size: calc(var(--font-start) - var(--nara-scroll) * (var(--font-start) - var(--font-end)));
+    gap: calc(10px - var(--nara-scroll) * 2px);
+}
+.logo .mark {
+    --logo-size: calc(var(--logo-start) - var(--nara-scroll) * (var(--logo-start) - var(--logo-end)));
+    box-shadow: 0 calc(6px - var(--nara-elev) * 2px) calc(16px - var(--nara-elev) * 4px) calc(-6px + var(--nara-elev) * -1px) rgba(74, 159, 245, calc(.55 - var(--nara-elev) * .05));
+}
+.logo .sub {
+    font-size: calc(var(--sub-start) - var(--nara-scroll) * (var(--sub-start) - var(--sub-end)));
+    margin-top: calc(2px - var(--nara-scroll) * 1px);
+    opacity: calc(1 - var(--nara-scroll) * (1 - var(--sub-opacity-end)));
+}
+
+/* Saat header bergerak sendiri (snap) tanpa input scroll langsung dari
+   jari, beri easing halus supaya gerakannya terasa "sengaja", bukan patah. */
+.navbar.is-snapping,
+.navbar.is-snapping .navbar-inner,
+.navbar.is-snapping .logo,
+.navbar.is-snapping .logo .sub,
+.navbar.is-snapping .logo .mark {
+    transition-duration: 0ms; /* JS men-drive setiap frame selama snap, transisi CSS dimatikan supaya tidak dobel-easing */
+}

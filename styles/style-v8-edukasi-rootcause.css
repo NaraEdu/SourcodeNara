@@ -1,0 +1,75 @@
+/* =========================================================================
+   NARA — OPTIMASI SCROLL TAHAP 3: PERBAIKAN AKAR MASALAH
+   (style-v8-edukasi-rootcause.css)
+   Lapisan aditif PALING AKHIR, di atas style.css s/d style-v7-edukasi-scrollperf.css.
+   TIDAK mengubah HTML struktural, TIDAK mengubah nama/atribut yang dipakai JS
+   (onclick, id, data-*), TIDAK menghapus/mengubah materi, warna, navigasi,
+   atau fungsi apa pun.
+
+   HASIL AUDIT MENYELURUH SEBELUM FILE INI DIBUAT:
+   Hampir seluruh penyebab umum scroll lag pada daftar permintaan sudah
+   ditangani dengan benar oleh style-v6-edukasi-perf.css dan
+   style-v7-edukasi-scrollperf.css:
+   - Scroll vertikal memakai native scroll <body> (bukan JS), tidak ada
+     listener scroll vertikal sama sekali.
+   - Satu-satunya scroll listener (indikator titik carousel "Uji
+     Pemahamanmu" di script.js) sudah passive + requestAnimationFrame.
+   - backdrop-filter (blur) pada navbar & bottom-nav sudah dinetralkan di
+     mobile (v6) — ini penyebab paling umum "jeda saat scroll dibalik".
+   - Animasi reveal per-kartu (nara-v2.js + IntersectionObserver) sudah
+     dimatikan khusus di halaman Edukasi (v6).
+   - touch-action sudah konsisten di ketiga strip horizontal (v6+v7).
+   - contain: layout style sudah dipasang untuk mengisolasi reflow filter/
+     pencarian (v7) dan repaint kartu (v6).
+   - Gambar ikon sudah lazy-loaded, punya width/height eksplisit (tidak ada
+     layout shift), dan ukurannya sudah kecil (rata-rata ~25KB, 168px).
+
+   YANG BELUM TERSENTUH DAN DIPERBAIKI DI FILE INI:
+
+   1. NESTED SCROLL CONTAINER TERSEMBUNYI PADA #page-edukasi
+      style-v5-edukasi.css menulis:
+          #page-edukasi { overflow-x: hidden; }
+      tanpa mendeklarasikan overflow-y. Berdasarkan spesifikasi CSS Overflow,
+      ketika salah satu sumbu diberi nilai selain "visible", browser
+      MENGUBAH sumbu lain yang bernilai "visible" menjadi "auto" secara
+      otomatis. Artinya #page-edukasi diam-diam menjadi elemen scroll
+      container tersendiri (overflow-y: auto) — persis "container Edukasi
+      berebut kontrol scroll dengan body" yang diminta untuk diperiksa pada
+      instruksi bagian 4. Karena tingginya mengikuti konten (tidak ada
+      overflow internal yang terlihat), dampaknya tidak selalu tampak
+      sebagai scrollbar, tapi elemen ini tetap terdaftar sebagai kandidat
+      scroll container oleh browser/WebView Android — pada sebagian
+      WebView/browser Android, ini bisa memperlambat penentuan elemen mana
+      yang berhak menerima gesture scroll saat jari mulai bergerak
+      (terutama saat arah dibalik), yang terasa sebagai "delay setelah
+      swipe" atau "perlu beberapa kali swipe".
+      Perbaikan: ganti ke `overflow-x: clip`, nilai khusus yang memang
+      dirancang untuk memotong satu sumbu TANPA memicu konversi otomatis di
+      atas, sehingga #page-edukasi kembali murni non-scrolling dan body
+      tetap satu-satunya pemilik scroll vertikal. Dibungkus @supports
+      dengan fallback ke perilaku lama (overflow-x: hidden) untuk browser
+      lama yang belum mendukung `overflow: clip`.
+
+   2. GESTURE SCROLL VERTIKAL TERSANGKUT DI TEPI CAROUSEL HORIZONTAL
+      overscroll-behavior-x: contain (v6) sudah mencegah swipe horizontal
+      di ujung carousel memicu gesture "back" browser. Bagian ini
+      melengkapi dengan overscroll-behavior-y: contain KHUSUS saat halaman
+      Edukasi aktif, supaya efek overscroll/glow bawaan Android Chrome saat
+      mencapai batas atas/bawah halaman tidak "merambat" ke elemen lain
+      dan terasa sebagai jeda sesaat sebelum scroll lanjut merespons.
+      Dibungkus @supports selector(:has()) — browser yang belum mendukung
+      cukup mengabaikan aturan ini, tidak menimbulkan efek samping apa pun.
+   ========================================================================= */
+
+@supports (overflow: clip) {
+    #page-edukasi {
+        overflow-x: clip;
+        overflow-y: visible;
+    }
+}
+
+@supports selector(:has(*)) {
+    body:has(#page-edukasi.active) {
+        overscroll-behavior-y: contain;
+    }
+}

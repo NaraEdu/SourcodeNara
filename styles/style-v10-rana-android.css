@@ -1,0 +1,243 @@
+/* =========================================================================
+   NARA — REDESAIN VISUAL HALAMAN "TANYA RANA AI" (style-v10-rana-android.css)
+   Lapisan aditif murni tampilan (UI/UX), mobile-first, ala aplikasi Android
+   modern: card rounded, spacing konsisten, tombol utama menonjol, info
+   privasi ringkas & mudah dibaca.
+
+   PENTING: file ini HANYA menata elemen di dalam #page-rana. Tidak ada
+   teks, fungsi, onclick, id, atau alur yang diubah — murni CSS di atas
+   style.css / style-v2.css / style-v3.css / style-v4-konsultasi.css.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------
+   1. HERO — eyebrow, judul, deskripsi singkat
+   --------------------------------------------------------------------- */
+#page-rana > .wrap.section {
+    padding-top: 32px;
+    padding-bottom: 8px;
+}
+#page-rana .eyebrow {
+    font-size: 0.72rem;
+    margin-bottom: 12px;
+}
+#page-rana .section-title {
+    font-size: clamp(1.55rem, 6vw, 1.95rem);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+}
+#page-rana .section-sub {
+    font-size: 0.93rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+/* ---------------------------------------------------------------------
+   2. KARTU INFO PRIVASI — ringkas, lembut, mudah dipindai matanya
+   --------------------------------------------------------------------- */
+#page-rana .privacy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    background: var(--blue-softer);
+    border: 1px solid rgba(74, 159, 245, .16);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin: 0 auto 20px;
+    max-width: 640px;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+#page-rana .privacy-note .material-symbols-rounded {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    margin-top: 1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--blue);
+    font-size: 1.05rem;
+}
+
+/* ---------------------------------------------------------------------
+   3. TOMBOL UTAMA "Konsultasi dengan Layanan Psikologis" — CTA khas Android
+   --------------------------------------------------------------------- */
+#page-rana .rana-cta-wrap {
+    margin: 0 auto 24px;
+    max-width: 640px;
+}
+#page-rana .rana-cta-wrap .btn-primary {
+    width: 100%;
+    min-height: 54px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, var(--navy) 0%, var(--navy-2) 45%, var(--blue) 145%);
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 10px 24px -10px rgba(19, 34, 66, .5), 0 4px 10px -4px rgba(74, 159, 245, .35);
+    transition: transform .15s var(--ease-spring, ease), box-shadow .2s ease, filter .2s ease;
+}
+#page-rana .rana-cta-wrap .btn-primary .material-symbols-rounded {
+    font-size: 1.2rem;
+}
+#page-rana .rana-cta-wrap .btn-primary:active {
+    transform: scale(.97);
+    box-shadow: 0 4px 10px -6px rgba(19, 34, 66, .4);
+    filter: brightness(.97);
+}
+@media (hover: hover) {
+    #page-rana .rana-cta-wrap .btn-primary:hover {
+        box-shadow: 0 14px 30px -10px rgba(19, 34, 66, .55), 0 6px 14px -4px rgba(74, 159, 245, .4);
+    }
+}
+
+/* ---------------------------------------------------------------------
+   4. CHAT SHELL — kartu sidebar & jendela chat lebih konsisten
+   --------------------------------------------------------------------- */
+#page-rana .chat-shell {
+    gap: 16px;
+}
+#page-rana .card.chat-side,
+#page-rana .card.chat-window {
+    border-radius: 20px;
+}
+
+/* Daftar pertanyaan cepat -> list card yang nyaman disentuh jari */
+#page-rana .chat-side h5 {
+    margin-bottom: 10px;
+}
+#page-rana .chat-side .qs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    background: var(--blue-softer);
+    border: 1px solid transparent;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: background .18s ease, transform .12s ease, border-color .18s ease;
+}
+#page-rana .chat-side .qs:last-child {
+    margin-bottom: 0;
+    border-bottom: 1px solid transparent;
+}
+#page-rana .chat-side .qs .material-symbols-rounded {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--blue);
+    font-size: 1.05rem;
+}
+#page-rana .chat-side .qs:active {
+    transform: scale(.98);
+    background: var(--blue-light);
+}
+@media (hover: hover) {
+    #page-rana .chat-side .qs:hover {
+        background: var(--blue-light);
+        border-color: rgba(74, 159, 245, .25);
+        color: var(--text);
+    }
+}
+
+/* Jendela chat: bubble & kolom input lebih rapi ala aplikasi pesan */
+#page-rana .chat-head {
+    padding: 16px 18px;
+}
+#page-rana .chat-body {
+    padding: 18px;
+    gap: 12px;
+}
+#page-rana .msg {
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(15, 27, 51, .05);
+}
+#page-rana .msg.bot {
+    border-bottom-left-radius: 6px;
+}
+#page-rana .msg.user {
+    border-bottom-right-radius: 6px;
+}
+#page-rana .chat-input {
+    padding: 14px 16px;
+    gap: 8px;
+}
+#page-rana .chat-input input {
+    background: var(--blue-softer);
+    border-color: transparent;
+    transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+#page-rana .chat-input input:focus {
+    background: #fff;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(74, 159, 245, .15);
+}
+#page-rana .chat-input button {
+    box-shadow: 0 6px 14px -6px rgba(74, 159, 245, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+#page-rana .chat-input button:active {
+    transform: scale(.92);
+}
+
+/* ---------------------------------------------------------------------
+   5. PENYESUAIAN HALUS DI LEBAR LAYAR ANDROID (HP)
+   --------------------------------------------------------------------- */
+@media (max-width: 640px) {
+    #page-rana > .wrap.section {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 22px;
+    }
+    #page-rana .section-title {
+        font-size: 1.55rem;
+    }
+    #page-rana .section-sub {
+        font-size: 0.88rem;
+    }
+    #page-rana .privacy-note {
+        padding: 14px 16px;
+        border-radius: 16px;
+        font-size: 0.8rem;
+        gap: 10px;
+    }
+    #page-rana .rana-cta-wrap .btn-primary {
+        min-height: 52px;
+        font-size: 0.95rem;
+    }
+    #page-rana .card.chat-side,
+    #page-rana .card.chat-window {
+        padding: 16px;
+        border-radius: 18px;
+    }
+    #page-rana .chat-window {
+        padding: 0;
+    }
+    #page-rana .chat-side {
+        max-height: 260px;
+    }
+}
+
+@media (max-width: 380px) {
+    #page-rana .section-title {
+        font-size: 1.35rem;
+    }
+    #page-rana .rana-cta-wrap .btn-primary {
+        font-size: 0.9rem;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "NARA — Navigasi Aman Remaja",
+  "short_name": "NARA",
+  "description": "Edukasi, kuis, dan konsultasi untuk remaja dan orang tua: pergaulan sehat, keamanan digital, kesehatan mental.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F6F8FC",
+  "theme_color": "#132242",
+  "categories": ["education", "lifestyle"],
+  "icons": [
+    { "src": "assets/images/app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/app-icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/images/app-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Edukasi", "short_name": "Edukasi", "url": "./#edukasi", "icons": [{ "src": "assets/images/app-icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tanya RANA AI", "short_name": "RANA", "url": "./#rana", "icons": [{ "src": "assets/images/app-icon-192.png", "sizes": "192x192" }] },
+    { "name": "Konsultasi", "short_name": "Konsultasi", "url": "./#konsultasi", "icons": [{ "src": "assets/images/app-icon-192.png", "sizes": "192x192" }] }
+  ]
+}

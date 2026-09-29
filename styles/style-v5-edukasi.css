@@ -1,0 +1,211 @@
+/* =========================================================================
+   NARA — REDESIGN HALAMAN EDUKASI (style-v5-edukasi.css)
+   Lapisan aditif paling akhir, murni di atas style.css / style-v2.css /
+   style-v3.css / style-v4-konsultasi.css. TIDAK mengubah HTML struktural,
+   TIDAK mengubah nama/atribut yang dipakai JS (onclick, id, data-*), TIDAK
+   menghapus/mengubah materi, navigasi, atau fungsi tombol apa pun — murni
+   perombakan visual: layout kartu jadi horizontal scroll, spacing lebih
+   ringkas, kartu lebih minimalis & modern ala aplikasi Android.
+
+   Sebagian besar selector di-scope ke #page-edukasi supaya tidak berdampak
+   ke halaman lain (mis. blok "Aktivitas Hari Ini" / "Modul Saya" di Beranda
+   yang kebetulan memakai class .edu-cat-block / .edu-cat-head yang sama).
+   Bagian Bottom Navigation sengaja global (komponen bersama semua halaman)
+   sesuai permintaan redesign, namun perubahannya murni kosmetik (ukuran,
+   shadow, background) dan tidak menyentuh logic/ikon/label/urutan menu.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. KATEGORI MATERI — blok lebih ringkas, jarak antar kategori dirapikan
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-cat-block {
+    margin-bottom: 4px;
+}
+#page-edukasi .edu-cat-block + .edu-cat-block {
+    margin-top: 22px;
+}
+#page-edukasi .edu-cat-head {
+    margin-bottom: 12px;
+    gap: 8px;
+}
+#page-edukasi .edu-cat-head h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+#page-edukasi .edu-cat-head span.count {
+    font-size: 0.7rem;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0;
+}
+
+/* -------------------------------------------------------------------------
+   2. GRID MATERI -> HORIZONTAL SCROLL CAROUSEL (khas aplikasi Android)
+   Hanya menyasar grid kartu materi (.edu-grid), TIDAK menyentuh .uji-grid
+   yang sudah punya carousel sendiri.
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    /* PERBAIKAN: sebelumnya "pan-x" saja — sesuai spesifikasi CSS Touch
+       Action, ini justru MEMATIKAN pan-y sepenuhnya di titik sentuh
+       (irisan aksi yang diizinkan), bukan meneruskannya ke body. Karena
+       kartu ini menutupi sebagian besar layar, efeknya scroll vertikal
+       halaman jadi terkunci total saat swipe dimulai di atas kartu.
+       "pan-x pan-y" mengizinkan browser menangani kedua arah sesuai
+       gerakan jari (native direction-locking), sehingga scroll horizontal
+       carousel tetap jalan TANPA mengunci scroll vertikal halaman. */
+    touch-action: pan-x pan-y;
+    padding: 3px 3px 6px;
+    margin: -3px -3px -2px;
+    /* sembunyikan scrollbar horizontal di semua browser agar tampilan clean */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-grid::-webkit-scrollbar {
+    display: none;
+    height: 0;
+}
+
+/* Ukuran kartu diatur supaya ~1-2 kartu terlihat penuh di layar HP, dengan
+   sedikit bagian kartu berikutnya "mengintip" di sisi kanan sebagai isyarat
+   bahwa konten masih bisa digeser. */
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+    flex: 0 0 44%;
+    max-width: 44%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+@media (max-width: 340px) {
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+        flex-basis: 48%;
+        max-width: 48%;
+    }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+        flex-basis: 33%;
+        max-width: 33%;
+    }
+}
+@media (min-width: 768px) {
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+        flex-basis: 168px;
+        max-width: 168px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   3. KARTU MATERI — lebih minimalis, rounded, shadow lembut, border tipis
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-card {
+    border: 1px solid rgba(19, 34, 66, .05) !important;
+    border-radius: 18px;
+    padding: 16px 12px 14px;
+    box-shadow: 0 2px 10px -6px rgba(19, 34, 66, .12) !important;
+}
+@media (hover: hover) and (pointer: fine) {
+    #page-edukasi .edu-card:hover {
+        box-shadow: 0 8px 18px -10px rgba(19, 34, 66, .18) !important;
+    }
+}
+
+/* Thumbnail ikon dibuat konsisten & rapi */
+#page-edukasi .edu-card .ic-wrap.ic-img,
+#page-edukasi .edu-card .ic-wrap.ic-img .nara-icon {
+    width: 48px;
+    height: 48px;
+}
+#page-edukasi .edu-card .ic-wrap {
+    margin-bottom: 10px;
+}
+
+/* Judul materi: jelas, maksimal 2-3 baris, tidak meluber */
+#page-edukasi .edu-card h4 {
+    font-size: 0.8rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+/* Badge status "Belum mulai" / "Selesai" dibuat lebih compact */
+#page-edukasi .edu-card [data-materi-status] {
+    position: static;
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 3px 8px;
+}
+
+/* Icon bookmark disederhanakan: lebih kecil & latar lebih lembut */
+#page-edukasi .edu-save-btn {
+    width: 26px;
+    height: 26px;
+    background: rgba(255, 255, 255, .92);
+    box-shadow: 0 2px 6px -2px rgba(19, 34, 66, .18);
+}
+#page-edukasi .edu-save-btn .material-symbols-rounded {
+    font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------------------
+   4. PENCARIAN & FILTER — jarak dirapikan agar section tidak terlalu tinggi
+   ------------------------------------------------------------------------- */
+#page-edukasi .nara-edu-search-wrap {
+    margin: 2px 0 12px;
+}
+#page-edukasi .nara-edu-search {
+    margin-bottom: 10px;
+}
+
+/* -------------------------------------------------------------------------
+   5. PASTIKAN TIDAK ADA OVERFLOW HORIZONTAL DI LUAR CAROUSEL
+   ------------------------------------------------------------------------- */
+#page-edukasi {
+    overflow-x: hidden;
+}
+#page-edukasi .edu-summary-compact,
+#page-edukasi .nara-edu-search-wrap {
+    max-width: 100%;
+}
+
+/* -------------------------------------------------------------------------
+   6. BOTTOM NAVIGATION — sedikit lebih compact & bersih (komponen bersama)
+   Murni kosmetik: tinggi, padding, dan shadow. Label, ikon, urutan menu,
+   state aktif, dan seluruh fungsi tombol tidak diubah sama sekali.
+   ------------------------------------------------------------------------- */
+@media (max-width: 759px) {
+    body {
+        padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+    .bottom-nav {
+        padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+        background: rgba(255, 255, 255, .97) !important;
+        backdrop-filter: saturate(140%) blur(8px);
+        -webkit-backdrop-filter: saturate(140%) blur(8px);
+        box-shadow: 0 -1px 0 rgba(19, 34, 66, .05), 0 -6px 16px -14px rgba(15, 27, 51, .10) !important;
+    }
+    .bottom-nav-btn {
+        min-height: 44px;
+        padding: 5px 4px;
+    }
+    .bottom-nav-btn .icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    .bottom-nav-btn[data-group="bantuan"] .icon {
+        width: 28px;
+        height: 28px;
+    }
+}

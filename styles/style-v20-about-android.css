@@ -1,0 +1,332 @@
+/* =========================================================================
+   NARA — HALAMAN ABOUT (TIM PENGEMBANG & KONTAK) GAYA APLIKASI ANDROID (v20)
+   -------------------------------------------------------------------------
+   Berlaku untuk halaman About saja (#page-tim).
+
+   Lapisan CSS murni — tidak ada teks, elemen, id, onclick, atau logika JS
+   yang diubah/ditambah. Yang diubah hanya tampilan:
+
+   - Judul halaman (garis kecil + label biru, judul gradasi, subjudul) TIDAK
+     diubah: sudah sesuai desain acuan.
+   - Kartu Tim Pengembang & Kontak menjadi "grup daftar" ala Material 3:
+     satu permukaan putih, baris penuh selebar kartu (tinggi sentuh >= 64px),
+     pembatas tipis yang dimulai dari teks, bukan kotak di dalam kotak.
+   - Avatar & ikon memakai tile tonal biru muda (kontras teks >= 4.5:1).
+   - Kartu Pembimbing menjadi baris tonal: ikon di kiri, teks rata kiri.
+   - Tombol "Hubungi →" menjadi tombol tonal kecil; teks email/YouTube tidak
+     lagi terpotong "…".
+   - Efek hover angkat / skala saat disentuh dimatikan; diganti latar tekan
+     tipis, seperti perilaku daftar di aplikasi Android native.
+   - Satu kolom sempit (maks. 480px) di tengah, seperti layar ponsel.
+
+   Dimuat PALING TERAKHIR. Semua selector diberi prefix #page-tim supaya
+   tidak menyentuh halaman lain (Beranda, Edukasi, Konsultasi, dst.).
+   Tidak menyentuh overflow halaman / position / scroll.
+   ========================================================================= */
+
+#page-tim {
+    --tim-navy: #132242;
+    --tim-ink: #1F6BC9;                    /* teks/ikon di atas latar biru muda (kontras >= 4.5:1) */
+    --tim-tonal: #EAF3FE;                  /* permukaan tonal biru muda */
+    --tim-outline: rgba(19, 34, 66, 0.08);
+    --tim-divider: #E8EDF6;
+    --tim-press: rgba(74, 159, 245, 0.12);
+    --tim-gutter: 20px;
+    --tim-lead: 44px;                      /* lebar ikon/avatar di kiri baris */
+    --tim-lead-gap: 14px;
+}
+
+/* =========================================================================
+   1. KOLOM UTAMA — satu kolom sempit di tengah, seperti layar ponsel
+   ========================================================================= */
+#page-tim > .wrap {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* =========================================================================
+   2. PERMUKAAN GRUP — satu kartu putih bersudut 24px, tanpa efek kaca/angkat
+   ========================================================================= */
+#page-tim .about-card,
+#page-tim .mentor-card {
+    margin: 0 0 14px !important;
+    border: 1px solid var(--tim-outline) !important;
+    border-radius: 24px !important;
+    background: #fff !important;
+    box-shadow: 0 1px 2px rgba(19, 34, 66, 0.04), 0 8px 20px -12px rgba(19, 34, 66, 0.16) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    transition: none !important;
+    overflow: hidden;
+}
+#page-tim .about-card:hover,
+#page-tim .about-card:active,
+#page-tim .mentor-card:hover,
+#page-tim .mentor-card:active {
+    transform: none !important;
+    box-shadow: 0 1px 2px rgba(19, 34, 66, 0.04), 0 8px 20px -12px rgba(19, 34, 66, 0.16) !important;
+}
+#page-tim .about-card {
+    padding: 0 0 8px !important;
+}
+
+/* Judul grup: ikon dalam tile tonal + judul */
+#page-tim .about-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 18px var(--tim-gutter) 6px;
+    color: var(--tim-navy);
+    font-family: var(--font-d);
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+#page-tim .about-card h4 > .material-symbols-rounded {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--tim-tonal);
+    color: var(--tim-ink);
+    font-size: 1.25rem;
+}
+
+/* Sub-judul ("Penata Program", "Penata Grafis"): teks biasa berwarna aksen,
+   bukan huruf kapital berjarak. Elemennya memakai style inline, karena itu
+   perlu !important. */
+#page-tim .about-card > div:not([class]) {
+    margin: 0 !important;
+    padding: 16px var(--tim-gutter) 4px !important;
+    color: var(--tim-ink) !important;
+    font-family: var(--font-d);
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    line-height: 1.3;
+}
+
+/* =========================================================================
+   3. TIM — baris daftar: avatar bulat tonal + nama + peran
+   ========================================================================= */
+#page-tim .team-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--tim-lead-gap);
+    min-height: 64px;
+    padding: 10px var(--tim-gutter);
+    border: 0;
+}
+/* Pembatas tipis yang dimulai dari teks (bukan dari tepi kartu) */
+#page-tim .team-row + .team-row {
+    background-image: linear-gradient(var(--tim-divider), var(--tim-divider));
+    background-repeat: no-repeat;
+    background-position: calc(var(--tim-gutter) + var(--tim-lead) + var(--tim-lead-gap)) 0;
+    background-size: calc(100% - var(--tim-gutter) * 2 - var(--tim-lead) - var(--tim-lead-gap)) 1px;
+}
+#page-tim .team-avatar {
+    flex: 0 0 auto;
+    width: var(--tim-lead);
+    height: var(--tim-lead);
+    background: var(--tim-tonal);
+    color: var(--tim-ink);
+    box-shadow: none;
+    font-size: 1.3rem;
+}
+#page-tim .team-row > div:last-child {
+    min-width: 0;
+}
+#page-tim .team-row > div:last-child > div:first-child {
+    color: var(--tim-navy);
+    font-family: var(--font-d);
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+}
+#page-tim .team-row .role {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+/* =========================================================================
+   4. PEMBIMBING — baris tonal: ikon di kiri, teks rata kiri
+   ========================================================================= */
+#page-tim .mentor-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 18px var(--tim-gutter) !important;
+    border-color: rgba(74, 159, 245, 0.22) !important;
+    background: var(--tim-tonal) !important;
+    text-align: left;
+}
+#page-tim .mentor-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    color: #fff;
+    font-size: 1.55rem;
+    box-shadow: 0 8px 18px -8px rgba(74, 159, 245, 0.6);
+}
+#page-tim .mentor-card > div:last-child {
+    min-width: 0;
+}
+#page-tim .mentor-heading {
+    margin: 0 0 4px;
+    color: var(--tim-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.3;
+}
+#page-tim .mentor-name {
+    margin: 0 0 2px;
+    color: var(--tim-navy);
+    font-family: var(--font-d);
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+#page-tim .mentor-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    text-wrap: balance;
+}
+
+/* =========================================================================
+   5. KONTAK — baris penuh yang bisa ditekan (bukan kotak di dalam kotak)
+   ========================================================================= */
+#page-tim .contact-card-grid {
+    display: block;
+    margin: 0;
+    padding: 4px 0 0;
+}
+#page-tim .contact-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--tim-lead-gap);
+    min-height: 64px;
+    padding: 10px var(--tim-gutter);
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: background-color .15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+#page-tim .contact-card + .contact-card {
+    background-image: linear-gradient(var(--tim-divider), var(--tim-divider));
+    background-repeat: no-repeat;
+    background-position: calc(var(--tim-gutter) + var(--tim-lead) + var(--tim-lead-gap)) 0;
+    background-size: calc(100% - var(--tim-gutter) * 2 - var(--tim-lead) - var(--tim-lead-gap)) 1px;
+}
+#page-tim .contact-card:active {
+    background-color: var(--tim-press) !important;
+}
+@media (hover: hover) and (pointer: fine) {
+    #page-tim .contact-card:hover {
+        background-color: rgba(74, 159, 245, 0.07) !important;
+    }
+}
+#page-tim .contact-card:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+    border-radius: 14px !important;
+}
+#page-tim .contact-card-ic {
+    flex: 0 0 auto;
+    width: var(--tim-lead);
+    height: var(--tim-lead);
+    border-radius: 14px;
+    background: var(--tim-tonal);
+    color: var(--tim-ink);
+    box-shadow: none;
+    font-size: 1.3rem;
+}
+#page-tim .contact-card-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+#page-tim .contact-card-title {
+    color: var(--tim-navy);
+    font-family: var(--font-d);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+/* Teks tidak lagi dipotong "…": boleh turun baris bila layar sempit */
+#page-tim .contact-card-sub {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+/* "Hubungi →" menjadi tombol tonal kecil */
+#page-tim .contact-card-arrow {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: var(--tim-tonal);
+    color: var(--tim-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* =========================================================================
+   6. HAK CIPTA — teks penutup, lebih lega dan tenang
+   ========================================================================= */
+#page-tim .about-page-footer {
+    margin: 8px 0 0;
+    padding: 12px 8px 8px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+/* =========================================================================
+   7. LAYAR KECIL — rapatkan agar alamat email muat tanpa terpotong
+   ========================================================================= */
+@media (max-width: 380px) {
+    #page-tim { --tim-gutter: 16px; --tim-lead: 40px; --tim-lead-gap: 12px; }
+    #page-tim .team-avatar,
+    #page-tim .contact-card-ic { font-size: 1.2rem; }
+    #page-tim .contact-card-sub { font-size: 0.8rem; }
+    #page-tim .contact-card-arrow { min-height: 34px; padding: 0 10px; font-size: 0.76rem; }
+}
+/* Layar sangat sempit (<= 340px): tombol turun ke baris sendiri, sejajar teks */
+@media (max-width: 340px) {
+    #page-tim .contact-card { flex-wrap: wrap; row-gap: 6px; }
+    #page-tim .contact-card-arrow {
+        margin-left: calc(var(--tim-lead) + var(--tim-lead-gap));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #page-tim .contact-card { transition: none; }
+}

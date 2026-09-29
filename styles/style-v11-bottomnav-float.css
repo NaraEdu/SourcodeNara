@@ -1,0 +1,106 @@
+/* =========================================================================
+   NARA — FLOATING BOTTOM NAVIGATION (Material Design 3, mobile)
+   Lapisan aditif paling akhir: hanya menata ulang tampilan .bottom-nav
+   dan .bottom-nav-btn pada layar ponsel (<760px), agar berbentuk kartu
+   mengambang yang compact & profesional.
+
+   TIDAK mengubah HTML, TIDAK mengubah onclick/route/data-group,
+   TIDAK mengubah file lama (style.css, style-v2.css, style-v3.css, dst).
+   Breakpoint >=760px (tablet/desktop) sengaja tidak disentuh karena
+   di sana .bottom-nav sudah berupa pill mengambang bawaan, dan pada
+   >=1024px .bottom-nav memang disembunyikan (digantikan .sidebar).
+   ========================================================================= */
+
+@media (max-width: 759px) {
+
+    /* Ruang aman tambahan di bawah konten agar tidak tertutup kartu
+       navbar yang kini mengambang (di atas spacer bawaan yang sudah ada). */
+    body {
+        padding-bottom: calc(104px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav {
+        left: 14px;
+        right: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom));
+        z-index: 300;
+
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 2px;
+
+        background: #FFFFFF;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        border-top: none;
+        border-radius: 24px;
+
+        padding: 7px 6px;
+
+        box-shadow:
+            0 10px 26px -12px rgba(19, 34, 66, .20),
+            0 2px 8px -3px rgba(19, 34, 66, .10);
+    }
+
+    .bottom-nav-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 46px;
+        padding: 6px 2px;
+        gap: 2px;
+        border-radius: 16px;
+        font-size: .62rem;
+        white-space: nowrap;
+        transition:
+            color .2s ease,
+            background .25s cubic-bezier(.34, 1.56, .64, 1),
+            transform .18s ease;
+    }
+
+    .bottom-nav-btn:active {
+        transform: scale(.95);
+    }
+
+    .bottom-nav-btn .icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Tombol "Bantuan" pakai kotak ikon aksen berwarna — diperkecil
+       secara proporsional mengikuti ikon lain agar tetap serasi &
+       tidak terlihat lebih besar dari menu lainnya. */
+    .bottom-nav-btn[data-group="bantuan"] .icon {
+        width: 27px;
+        height: 27px;
+        border-radius: 11px;
+    }
+    .bottom-nav-btn[data-group="bantuan"] .icon svg {
+        width: 15px;
+        height: 15px;
+    }
+    .bottom-nav-btn[data-group="bantuan"]::after {
+        top: 3px;
+        right: calc(50% - 18px);
+    }
+}
+
+/* Layar sangat sempit (mis. 320px) — rapatkan sedikit lagi supaya
+   5 menu tetap muat tanpa teks terpotong atau ikon bertumpuk. */
+@media (max-width: 359px) {
+    .bottom-nav {
+        left: 10px;
+        right: 10px;
+        bottom: calc(12px + env(safe-area-inset-bottom));
+        padding: 6px 3px;
+    }
+    .bottom-nav-btn {
+        padding: 5px 1px;
+        font-size: .58rem;
+        letter-spacing: 0;
+    }
+    .bottom-nav-btn .icon svg {
+        width: 19px;
+        height: 19px;
+    }
+}

@@ -1,0 +1,164 @@
+/* =========================================================================
+   NARA — OPTIMASI SCROLL & PERFORMA HALAMAN EDUKASI (style-v6-edukasi-perf.css)
+   Lapisan aditif PALING AKHIR, murni di atas style.css s/d style-v5-edukasi.css.
+   TIDAK mengubah HTML struktural, tidak mengubah nama/atribut yang dipakai JS
+   (onclick, id, data-*), TIDAK menghapus/mengubah materi, navigasi, atau
+   fungsi apa pun — murni penyempurnaan performa scroll, responsivitas layout,
+   dan micro-interaction kartu supaya terasa seperti aplikasi Android modern
+   yang ringan & profesional.
+
+   Semua selector di-scope ke #page-edukasi, KECUALI bagian 2 (Navbar atas +
+   Bottom Nav) yang sengaja global — melanjutkan pendekatan yang sudah
+   dipakai style-v5-edukasi.css untuk komponen bersama ini. Perubahannya
+   murni performa (menghapus backdrop-filter yang berat saat scroll), tidak
+   menyentuh logic, ikon, label, atau urutan menu.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. SCROLL PERFORMANCE
+   Scroll vertikal halaman tetap memakai scroll native body (tidak diubah).
+   Bagian ini murni menjaga agar scroll horizontal kategori/materi ringan
+   dan tidak "membocorkan" gesture ke navigasi browser / mengganggu scroll
+   vertikal halaman.
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-grid,
+#page-edukasi .uji-grid,
+#page-edukasi .nara-edu-chips {
+    /* Cegah swipe horizontal di ujung carousel memicu gesture "back"
+       bawaan browser/OS — bukan animasi, murni perilaku scroll */
+    overscroll-behavior-x: contain;
+}
+
+/* Isolasi layout & style tiap kartu: perubahan kecil pada satu kartu
+   (status, saved-state) tidak memicu kalkulasi ulang seluruh grid,
+   sehingga scroll & update status tetap ringan meski materi banyak */
+#page-edukasi .edu-card,
+#page-edukasi .game-mission-card {
+    contain: layout style;
+}
+
+/* Promosikan track carousel ke layer compositor sendiri supaya scroll
+   horizontal tidak memicu repaint elemen lain di sekitarnya */
+#page-edukasi .edu-cat-block:not(.uji-section) .edu-grid,
+#page-edukasi .uji-grid {
+    transform: translateZ(0);
+}
+
+/* Feedback tekan lebih cepat & ringan khusus di halaman Edukasi — durasi
+   dipersingkat supaya terasa langsung merespons ala Android native,
+   tanpa transition/efek berlebihan */
+#page-edukasi .edu-card,
+#page-edukasi .game-mission-card {
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+#page-edukasi .edu-card:active {
+    transform: scale(.97);
+}
+
+/* -------------------------------------------------------------------------
+   2. NAVBAR ATAS & BOTTOM NAVIGATION — hapus backdrop-filter (blur) di mobile
+   Sama seperti bottom nav, navbar atas (position: sticky) memakai
+   backdrop-filter: blur(20px) (dari --glass-blur di style-v2.css) yang
+   TIDAK ikut dinetralkan oleh style-v3.css (v3 hanya mengganti background,
+   bukan backdrop-filter). Karena navbar diam di atas layar sementara konten
+   Edukasi bergulir di baliknya terus-menerus, browser harus me-render ulang
+   blur setiap frame — paling terasa justru saat arah scroll dibalik
+   (turun→naik), karena browser perlu menggambar ulang area blur dari sisi
+   yang belum "disiapkan" saat scroll ke arah sebelumnya. Inilah penyebab
+   jeda/delay yang muncul setelah scroll ke bawah lalu naik lagi.
+   Diganti latar solid semi-opaque (sudah ada dari style-v3.css) tanpa blur
+   — tampilan tetap bersih & navbar tetap kontras, tanpa beban compositing.
+   Murni kosmetik+performa; tidak mengubah logic, ikon, label, atau menu.
+   ------------------------------------------------------------------------- */
+@media (max-width: 759px) {
+    .navbar {
+        background: rgba(255, 255, 255, .96) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    .bottom-nav {
+        background: rgba(255, 255, 255, .98) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   3. LAYOUT RESPONSIF — spacing & tipografi menyesuaikan ukuran layar HP
+   ------------------------------------------------------------------------- */
+#page-edukasi .wrap.section {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* Tipografi kartu & judul kategori mengalir mengikuti lebar layar supaya
+   tidak terlalu kecil di HP mungil maupun terlalu besar di layar lebar */
+#page-edukasi .edu-card h4 {
+    font-size: clamp(.76rem, 3.1vw, .86rem);
+}
+#page-edukasi .edu-cat-head h3 {
+    font-size: clamp(.92rem, 3.6vw, 1.05rem);
+}
+
+/* Layar sangat kecil (<360px): kartu & ikon sedikit lebih ringkas supaya
+   tidak sesak dan tetap nyaman disentuh */
+@media (max-width: 359px) {
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+        padding: 13px 10px 12px;
+    }
+    #page-edukasi .edu-card .ic-wrap.ic-img,
+    #page-edukasi .edu-card .ic-wrap.ic-img .nara-icon {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* Layar besar (tablet/desktop): batasi lebar kartu supaya carousel tidak
+   terasa aneh (kartu nyaris sebesar layar) & tetap proporsional */
+@media (min-width: 1024px) {
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-card {
+        flex-basis: 180px;
+        max-width: 180px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   4. RAPIKAN JARAK VERTIKAL ANTAR ELEMEN KARTU
+   Supaya hierarki ikon → judul → status terasa lega tapi tetap ringkas,
+   tanpa mengubah struktur/konten kartu.
+   ------------------------------------------------------------------------- */
+#page-edukasi .edu-card .ic-wrap {
+    margin-bottom: 10px;
+}
+#page-edukasi .edu-card h4 {
+    margin-bottom: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   5. MATIKAN ANIMASI "REVEAL" SAAT SCROLL (penyebab kartu terasa delay)
+   nara-v2.js menandai .edu-card / .game-mission-card dengan [data-reveal],
+   lalu style-v2.css membuatnya opacity:0 + translateY(14px) dan baru fade-in
+   penuh dalam .55s begitu kartu masuk viewport (via IntersectionObserver).
+   Efeknya: setiap kali kategori/kartu baru masuk layar saat discroll,
+   kartu terasa "telat muncul" — inilah sumber delay yang dirasakan.
+   Dinetralkan khusus di halaman Edukasi (kartu langsung tampil penuh),
+   TANPA mengubah nara-v2.js atau efek reveal di halaman lain.
+   ------------------------------------------------------------------------- */
+#page-edukasi [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   6. HORMATI PREFERENSI REDUCED MOTION
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    #page-edukasi .edu-card,
+    #page-edukasi .game-mission-card,
+    #page-edukasi .edu-cat-block:not(.uji-section) .edu-grid,
+    #page-edukasi .uji-grid {
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}

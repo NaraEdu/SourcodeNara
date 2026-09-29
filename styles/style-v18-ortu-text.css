@@ -1,0 +1,25 @@
+/* v18 — Halaman materi edukasi (10 halaman):
+   hanya merapikan ukuran teks & jarak agar tidak terlalu memenuhi layar. Tampilan & isi tidak diubah. */
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .wrap.section{padding-top:14px;padding-bottom:112px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .back-link{margin-bottom:10px;font-size:.82rem}
+
+/* Judul halaman: ikon & judul sejajar dalam satu baris */
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .module-hero{flex-wrap:nowrap;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px;border-radius:22px!important}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .module-hero>div:first-child{flex:0 0 42px;width:42px!important;height:42px!important;border-radius:16px!important;font-size:1.25rem!important}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .module-hero .section-title{font-size:1.05rem;line-height:1.3;margin:0}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .section-sub{font-size:.85rem;line-height:1.5;margin-bottom:14px}
+
+/* Kartu ikon */
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .icon-cards{gap:10px;margin-top:4px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .icon-card{padding:14px 16px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .icon-card .ic{width:38px;height:38px;border-radius:11px;margin-bottom:8px;font-size:1.15rem}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .icon-card h4{font-size:.92rem;line-height:1.3;margin-bottom:2px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .icon-card p{font-size:.8rem;line-height:1.4}
+
+/* Daftar materi, catatan, tombol */
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .subsection-title{font-size:.98rem;margin:20px 0 8px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .content-list{gap:8px;margin:12px 0 16px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .content-list li{gap:10px;padding:11px 14px;font-size:.85rem;line-height:1.5;border-radius:14px}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .content-list li .n{width:22px;height:22px;font-size:.7rem}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .empathy-note{margin-top:16px;padding:14px 16px;font-size:.84rem;line-height:1.5}
+:is(#page-ortu,#page-ortukomunikasi,#page-ortupengawasan,#page-pergaulansehat,#page-freesex,#page-revenge,#page-pergaulanbebas,#page-mental,#page-digital,#page-ai) .btn-primary:not(.materi-complete-btn){padding:12px 18px;font-size:.9rem}

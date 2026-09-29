@@ -1,0 +1,122 @@
+/* =========================================================================
+   NARA — v21 CLEAN ANDROID (Material 3 palette)
+   Dimuat paling akhir. Header pill & bottom nav TETAP MELAYANG; yang dirapikan
+   adalah warna, permukaan solid (tanpa glass), indikator menu, kartu, dan tombol.
+   ========================================================================= */
+
+/* Kartu level (semua ukuran layar) */
+.level-card { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 6px 14px; margin-top: 12px; padding: 14px 16px; }
+.level-card #dashLevelBadge { grid-column: 1; grid-row: 1; font-weight: 800; font-family: var(--font-d); color: var(--navy-2); font-size: 1rem; white-space: nowrap; }
+.level-card #dashStreakInline { grid-column: 2; grid-row: 1; }
+.level-card #dashBadgeCount { grid-column: 3; grid-row: 1; }
+.level-card #dashStreakInline, .level-card #dashBadgeCount { display: inline-flex; align-items: center; gap: 4px; font-size: .85rem; font-weight: 700; color: var(--navy-2); white-space: nowrap; }
+.level-card #dashNextLevelMsg { grid-column: 1 / -1; grid-row: 2; font-size: .85rem; line-height: 1.4; color: var(--text-muted); }
+.level-card .material-symbols-rounded { font-size: 18px; }
+
+@media (max-width: 759px) {
+    /* ---- Palet lebih bersih & tenang ---- */
+    :root {
+        --bg: #F5F7FB;
+        --blue: #2F6FE0;
+        --blue-light: #E7EFFD;
+        --blue-softer: #F1F5FE;
+        --text: #172033;
+        --text-muted: #5F6B85;
+        --line: #E5E9F2;
+        --navy: #14264A;
+        --navy-2: #1B305C;
+        --m3-indicator: #DCE8FD;
+        --surface-shadow: 0 1px 2px rgba(20, 38, 74, .05), 0 4px 14px -6px rgba(20, 38, 74, .10);
+    }
+    body::before, body::after { display: none !important; }
+    body { background: var(--bg) !important; }
+    body *:not(.navbar-inner):not(.sheet-overlay):not(.nav-sheet):not(.modal-overlay), body *:not(.navbar-inner):not(.sheet-overlay):not(.nav-sheet):not(.modal-overlay)::before, body *:not(.navbar-inner):not(.sheet-overlay):not(.nav-sheet):not(.modal-overlay)::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+    /* ---- Header pill melayang: putih solid di atas; saat discroll transparan (kaca) seperti desain awal ---- */
+    .navbar .navbar-inner {
+        background: #fff !important; border: 1px solid var(--line) !important;
+        box-shadow: var(--surface-shadow) !important;
+    }
+    .navbar .navbar-inner.is-scrolled {
+        background: var(--nvb-bg-scrolled) !important;
+        border-color: var(--nvb-border-scrolled) !important;
+        box-shadow: var(--nvb-shadow-scrolled) !important;
+        -webkit-backdrop-filter: saturate(160%) blur(var(--nvb-blur-scrolled)) !important;
+        backdrop-filter: saturate(160%) blur(var(--nvb-blur-scrolled)) !important;
+    }
+    .navbar::before, .navbar::after { display: none !important; }
+
+    /* ---- Bottom nav melayang: putih solid + indikator pill M3 ---- */
+    .bottom-nav {
+        background: #fff !important; border: 1px solid var(--line) !important;
+        box-shadow: 0 2px 8px rgba(20, 38, 74, .08), 0 12px 28px -12px rgba(20, 38, 74, .22) !important;
+    }
+    .bottom-nav-btn, .bottom-nav-btn.active {
+        background: transparent !important; color: var(--text-muted) !important;
+        font-size: .68rem !important; font-weight: 600; gap: 3px !important; position: relative;
+    }
+    .bottom-nav-btn.active, .bottom-nav-btn.active[data-group="bantuan"] { color: var(--navy) !important; font-weight: 700; }
+    .bottom-nav .bottom-nav-btn.active::before { display: none !important; }
+    .bottom-nav-btn .icon, .bottom-nav-btn[data-group="bantuan"] .icon {
+        width: 52px !important; height: 28px !important; border-radius: 14px !important;
+        display: flex; align-items: center; justify-content: center;
+        background: transparent !important; color: inherit !important; box-shadow: none !important;
+        transform: none !important; transition: background .2s ease;
+    }
+    .bottom-nav-btn.active .icon, .bottom-nav-btn.active[data-group="bantuan"] .icon { background: var(--m3-indicator) !important; }
+    .bottom-nav-btn .icon svg, .bottom-nav-btn[data-group="bantuan"] .icon svg { width: 22px !important; height: 22px !important; color: inherit !important; stroke: currentColor; }
+    .bottom-nav-btn[data-group="bantuan"]::after { top: 3px !important; right: calc(50% - 20px) !important; }
+
+    /* ---- Kartu: putih, border tipis, bayangan halus ---- */
+    .card { border-radius: 18px !important; border: 1px solid var(--line) !important; box-shadow: var(--surface-shadow) !important; }
+    .nara-carousel { border-radius: 22px !important; }
+
+    /* ---- Tombol & progres: warna solid, tanpa gradient ---- */
+    .btn-accent, .progress-card .btn {
+        background: var(--blue) !important; color: #fff !important; border: 0 !important;
+        box-shadow: none !important; border-radius: 999px !important;
+    }
+    .btn-accent:active { background: #2559BA !important; }
+    .progress-card .bar > div, .nara-challenge-card .bar > div, .bar > div { background: var(--blue) !important; }
+    #dashRingCircle { stroke: var(--blue) !important; }
+
+    /* ---- Kartu progres: cincin kiri, teks kanan, tombol penuh ---- */
+    .progress-card { padding: 16px !important; gap: 12px 16px !important; margin-bottom: 0 !important; }
+    .progress-card .ring-progress { width: 64px; height: 64px; }
+    .progress-card .ring-progress .pct { font-size: .9rem; }
+    .progress-card .info { min-width: 0 !important; flex: 1 1 0; }
+    .progress-card .info h4 { font-size: 1rem; }
+    .progress-card .btn { width: 100%; justify-content: center; min-height: 44px; }
+}
+
+@media (max-width: 759px) {
+    /* ---- Tombol Bantuan: bulat, menonjol di atas navbar (gaya referensi) ---- */
+    .bottom-nav { overflow: visible !important; }
+    .bottom-nav .bottom-nav-btn[data-group="bantuan"] { overflow: visible !important; }
+    .bottom-nav .bottom-nav-btn[data-group="bantuan"] .icon,
+    .bottom-nav .bottom-nav-btn.active[data-group="bantuan"] .icon {
+        box-sizing: border-box;
+        width: 52px !important; height: 52px !important; margin: -12px 0 -12px !important;
+        border-radius: 50% !important;
+        background: var(--blue) !important; color: #fff !important;
+        border: 4px solid var(--bg) !important;
+        box-shadow: 0 6px 14px -6px rgba(47, 111, 224, .55) !important;
+        transform: translateY(-20px) !important;
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .bottom-nav .bottom-nav-btn[data-group="bantuan"]:active .icon { transform: translateY(-19px) scale(.94) !important; }
+    .bottom-nav .bottom-nav-btn[data-group="bantuan"] .icon svg {
+        width: 22px !important; height: 22px !important; color: #fff !important; stroke: #fff !important;
+    }
+    .bottom-nav .bottom-nav-btn[data-group="bantuan"]::after {
+        top: -12px !important; right: calc(50% - 22px) !important; z-index: 2;
+        border: 2px solid var(--bg);
+    }
+}
+
+@media (max-width: 759px) {
+    /* ---- Ruang bawah lebih ringkas: cukup setinggi navbar melayang + sedikit napas ---- */
+    body { padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
+    .page > .wrap, .page > .wrap.section, .page > .section { padding-bottom: 14px !important; }
+    #page-rana > .wrap.section { padding-bottom: 0 !important; }
+}

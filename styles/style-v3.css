@@ -1,0 +1,337 @@
+/* =========================================================================
+   NARA — ANDROID MODERN POLISH LAYER (style-v3.css)
+   Lapisan penyempurnaan tahap akhir, murni aditif di atas style.css dan
+   style-v2.css. Tidak mengubah HTML, nama class, atribut data-*, maupun
+   logic JS apa pun — hanya merapikan visual agar terasa seperti aplikasi
+   Android modern: bersih, tenang, konsisten, dan nyaman disentuh.
+
+   Fokus:
+   1. Menenangkan efek glow/gradient/shadow berlebihan dari style-v2.css
+   2. Menyamakan skala radius, spacing, dan tipografi di seluruh halaman
+   3. Memastikan touch target nyaman (≥44px) pada elemen interaktif kecil
+   4. Memisahkan efek hover agar hanya aktif di perangkat mouse (bukan HP)
+   5. Merapikan navigasi, form, tombol, carousel, dan kartu agar konsisten
+   ========================================================================= */
+
+:root {
+    /* Skala radius tunggal dipakai ulang agar konsisten di semua komponen */
+    --r-card: 20px;
+    --r-card-sm: 16px;
+    --r-input: 14px;
+    --r-pill: 999px;
+
+    /* Shadow lebih tenang & tipis dari style-v2 (bukan neumorphism berat) */
+    --e1: 0 1px 2px rgba(15, 27, 51, .05), 0 1px 3px rgba(15, 27, 51, .06);
+    --e2: 0 2px 6px -2px rgba(15, 27, 51, .08), 0 6px 16px -10px rgba(15, 27, 51, .12);
+    --e3: 0 6px 14px -8px rgba(15, 27, 51, .14), 0 12px 24px -16px rgba(15, 27, 51, .16);
+    --e4: 0 10px 24px -12px rgba(15, 27, 51, .20), 0 18px 36px -20px rgba(15, 27, 51, .18);
+
+    --ease-standard: cubic-bezier(.2, 0, 0, 1);
+    --ease-spring: cubic-bezier(.3, 1.1, .4, 1);
+    --dur-fast: 150ms;
+    --dur-med: 220ms;
+    --dur-slow: 300ms;
+}
+
+/* ---------------------------------------------------------------------
+   0. RESET EFEK BERLEBIHAN DARI style-v2.css
+   Beberapa elemen di v2 (sheen border, glass blur berat, elevation besar)
+   dibuat lebih tenang di sini agar sesuai arahan "soft & calming",
+   "hindari glow/gradient berlebihan", dan "tidak seperti dashboard admin".
+   --------------------------------------------------------------------- */
+.card::before { display: none; }
+.card,
+.edu-card,
+.game-mission-card,
+.dk-card,
+.dk-stat-card,
+.about-card,
+.mentor-card,
+.contact-card {
+    box-shadow: var(--e2) !important;
+    border-color: rgba(19, 34, 66, .05) !important;
+}
+.card:hover,
+.edu-card:hover,
+.game-mission-card:hover,
+.dk-card:hover,
+.dk-stat-card:hover,
+.contact-card:hover {
+    box-shadow: var(--e3) !important;
+}
+.modal-box,
+.modal-box-lg {
+    box-shadow: var(--e4) !important;
+}
+.nara-carousel-slide {
+    box-shadow: var(--e2) !important;
+}
+
+/* Hover "terangkat" hanya untuk perangkat dengan mouse — di HP, efek
+   hover yang menempel setelah tap terasa aneh dan tidak sesuai perilaku
+   aplikasi Android native. */
+@media (hover: hover) and (pointer: fine) {
+    .card:hover,
+    .edu-card:hover,
+    .contact-card:hover,
+    .dk-card:hover,
+    .dk-stat-card:hover {
+        transform: translateY(-2px);
+    }
+    .game-mission-card:hover { transform: translateY(-2px); }
+}
+@media (hover: none), (pointer: coarse) {
+    .card:hover,
+    .edu-card:hover,
+    .contact-card:hover,
+    .dk-card:hover,
+    .dk-stat-card:hover,
+    .game-mission-card:hover,
+    .btn:hover {
+        transform: none !important;
+    }
+}
+
+/* Border radius disamakan ke satu skala di seluruh kartu */
+.card, .modal-box, .modal-box-lg, .mentor-card, .about-card { border-radius: var(--r-card); }
+.contact-card, .dk-card, .dk-stat-card { border-radius: var(--r-card-sm); }
+
+/* ---------------------------------------------------------------------
+   1. NAVBAR ATAS — lebih ringan, tanpa garis gradient tebal
+   --------------------------------------------------------------------- */
+.navbar {
+    background: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 1px 0 rgba(19, 34, 66, .06) !important;
+}
+.navbar::after { opacity: .3; height: 1.5px; }
+
+/* ---------------------------------------------------------------------
+   2. BOTTOM NAV — kapsul Android yang tenang, indikator jelas, aman disentuh
+   --------------------------------------------------------------------- */
+.bottom-nav {
+    box-shadow: 0 -2px 12px -8px rgba(15, 27, 51, .12), var(--e3) !important;
+}
+.bottom-nav-btn {
+    min-height: 48px;
+    transition: color var(--dur-fast) var(--ease-standard),
+                background var(--dur-med) var(--ease-spring),
+                transform var(--dur-fast) var(--ease-spring);
+}
+.bottom-nav-btn.active {
+    background: var(--blue-light) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+.bottom-nav-btn[data-group="bantuan"] .icon {
+    box-shadow: var(--e2) !important;
+}
+/* Badge notifikasi Bantuan dibuat lebih tenang (durasi lebih panjang,
+   amplitudo lebih kecil) agar tidak terasa seperti iklan berkedip */
+.bottom-nav-btn[data-group="bantuan"]::after {
+    animation: pulseHelpCalm 2.8s ease-in-out infinite;
+}
+@keyframes pulseHelpCalm {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: .85; }
+}
+
+/* Sidebar desktop: indikator aktif lebih flat, sesuai gaya Android/Material */
+@media (min-width: 1024px) {
+    .sidebar .sidebar-nav-btn.active {
+        background: var(--blue) !important;
+        box-shadow: none !important;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   3. TOMBOL — hierarki jelas: primary menonjol, secondary minimal
+   --------------------------------------------------------------------- */
+.btn {
+    min-height: 46px;
+    border-radius: var(--r-pill);
+    transition: transform var(--dur-fast) var(--ease-spring),
+                box-shadow var(--dur-med) var(--ease-standard),
+                filter var(--dur-fast) ease,
+                opacity var(--dur-fast) ease;
+}
+.btn-primary,
+.btn-accent,
+.btn-success,
+.btn-whatsapp {
+    box-shadow: var(--e2) !important;
+}
+.btn-primary:hover, .btn-accent:hover, .btn-success:hover { box-shadow: var(--e3) !important; }
+.btn-outline {
+    box-shadow: none !important;
+    background: #fff !important;
+    border: 1.5px solid var(--line) !important;
+}
+.btn-outline:hover { box-shadow: var(--e1) !important; }
+.btn:active { box-shadow: none !important; }
+
+/* Status disabled & loading konsisten (dipakai bila markup sudah tersedia) */
+.btn:disabled,
+.btn[disabled],
+.btn.is-loading {
+    opacity: .55;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: not-allowed;
+    filter: none !important;
+}
+.btn.is-loading {
+    color: transparent !important;
+    position: relative;
+}
+.btn.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2.5px solid rgba(255, 255, 255, .5);
+    border-top-color: #fff;
+    animation: btnSpin .7s linear infinite;
+}
+.btn-outline.is-loading::after { border-color: rgba(19, 34, 66, .25); border-top-color: var(--navy-2); }
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+
+/* ---------------------------------------------------------------------
+   4. FORM & INPUT — rounded, latar lembut, focus jelas
+   --------------------------------------------------------------------- */
+.form-field input,
+.form-field select,
+.form-field textarea {
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: var(--r-input);
+    background: var(--blue-softer);
+    border: 1.5px solid transparent;
+    transition: border-color var(--dur-fast) ease,
+                box-shadow var(--dur-fast) ease,
+                background var(--dur-fast) ease;
+}
+.form-field textarea { min-height: 88px; padding-top: 12px; }
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    background: #fff;
+    border-color: var(--blue) !important;
+    box-shadow: 0 0 0 3.5px rgba(74, 159, 245, .16) !important;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--text-muted); opacity: .75; }
+
+/* Search bar bergaya Android: pill, ikon lebih jelas — hanya menata versi
+   yang sudah ada di markup (tidak membuat elemen baru) */
+.search-bar, input[type="search"] {
+    border-radius: var(--r-pill) !important;
+    background: var(--blue-softer) !important;
+    border: 1.5px solid transparent !important;
+    min-height: 46px;
+}
+.search-bar:focus-within, input[type="search"]:focus {
+    background: #fff !important;
+    box-shadow: 0 0 0 3.5px rgba(74, 159, 245, .16) !important;
+}
+
+/* Chip & tombol simpan (bookmark) — target sentuh lebih nyaman */
+.chip, .nara-chip, .kategori-chip, .method-btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: transform var(--dur-fast) var(--ease-spring),
+                background var(--dur-fast) ease,
+                border-color var(--dur-fast) ease,
+                color var(--dur-fast) ease;
+}
+.chip:active, .nara-chip:active, .kategori-chip:active, .method-btn:active {
+    transform: scale(.96);
+}
+.edu-save-btn {
+    width: 32px;
+    height: 32px;
+    transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast) ease;
+}
+.edu-save-btn:active { transform: scale(.88); }
+
+/* ---------------------------------------------------------------------
+   5. CAROUSEL BERANDA — indikator minimalis, transisi halus
+   --------------------------------------------------------------------- */
+.nara-carousel-slide {
+    transition: opacity var(--dur-slow) var(--ease-standard);
+}
+.nara-carousel-dots button.nara-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    transition: width var(--dur-med) var(--ease-spring), background var(--dur-fast) ease, opacity var(--dur-fast) ease;
+}
+.nara-carousel-dots button.is-active {
+    width: 20px;
+}
+
+/* ---------------------------------------------------------------------
+   6. TIPOGRAFI — hierarki lebih tegas & konsisten lintas layar 320–430px
+   --------------------------------------------------------------------- */
+.section-title {
+    font-size: clamp(1.2rem, 4.6vw, 1.55rem);
+    font-weight: 800;
+    line-height: 1.25;
+}
+.section-sub {
+    font-size: clamp(.82rem, 3vw, .92rem);
+    line-height: 1.5;
+}
+.hero-title-v2 { font-size: clamp(1.4rem, 6vw, 1.9rem); }
+h4 { letter-spacing: -0.01em; }
+p, li, .body-text { line-height: 1.6; }
+
+/* ---------------------------------------------------------------------
+   7. SPACING & VISUAL HIERARCHY — beri ruang lega antar blok beranda
+   --------------------------------------------------------------------- */
+.wrap.section > * + .card,
+.wrap.section > * + .edu-cat-block,
+.wrap.section > .card + .card {
+    margin-top: 4px;
+}
+.edu-cat-block + .edu-cat-block { margin-top: 28px; }
+.edu-cat-head { margin-bottom: 14px; }
+
+/* Jarak antar section beranda sedikit lebih longgar agar tidak sesak */
+#page-beranda .wrap.section > * {
+    margin-bottom: 22px;
+}
+#page-beranda .wrap.section > *:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------
+   8. MODAL — sudut atas membulat besar khas bottom sheet Android
+   --------------------------------------------------------------------- */
+@media (max-width: 639px) {
+    .modal-box, .modal-box-lg {
+        border-radius: 24px 24px 0 0 !important;
+        width: 100%;
+        margin-bottom: 0;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   9. SAFE AREA & TOUCH — pastikan tidak ada elemen mepet tepi layar
+   --------------------------------------------------------------------- */
+.navbar-inner { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+.bottom-nav { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(4px, env(safe-area-inset-right)); }
+
+/* ---------------------------------------------------------------------
+   10. RESPONSIVE FINE-TUNE TAMBAHAN
+   --------------------------------------------------------------------- */
+@media (max-width: 380px) {
+    .card { padding: 18px; }
+    .edu-card { padding: 11px 6px 10px; }
+    .section-title { font-size: clamp(1.1rem, 5.5vw, 1.3rem); }
+}
+@media (min-width: 1024px) {
+    .card:hover { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, .card, .edu-card, .game-mission-card, .bottom-nav-btn, .chip { transition: none !important; animation: none !important; }
+}
